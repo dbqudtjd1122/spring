@@ -1,14 +1,31 @@
-.gradle
-/build/
+.metadata/
+.recommenders/
+**/.idea/
+**/.git/
+**/.gradle/
+**/.settings/
+**/bin/
+**/build/
+**/captures/
+**/gradle/
+**/log*/
+**/target/
 
-# Ignore Gradle GUI config
-gradle-app.setting
+**/nbproject/
+**/nbbuild/
+**/.nb-gradle/
 
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
+Server*/
+RemoteSystemsTempFiles/
 
-# Cache of project
-.gradletasknamecache
+/spring00.docs/책-AOP01-스프링3입문.하세가와.한빛.CH03.AOP.pdf
+/spring00.docs/책-DI01-스프링공작소.DI.pdf
+/spring00.docs/책-Git입문.pdf
+/spring00.docs/책-MVC01-스프링인액션(제4판)-ch05~07.MVC.pdf
+/spring00.docs/책-자바파워툴.ch14.DbUnit을이용한DB통합테스트.pdf
+/spring00.docs/책-코드로배우는스프링웹프로젝트.ch06.mybatis.pdf
+/spring00.docs/책-JUnit을 이용한 테스트.pdf
+/spring00.docs/책-코드로배우는스프링웹프로젝트.ch06.mybatis.pdf
+/spring00.docs/책-JUnit을 이용한 테스트.pdf
 
-# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
-# gradle/wrapper/gradle-wrapper.properties
+/spring24.editor

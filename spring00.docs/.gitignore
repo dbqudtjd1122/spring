@@ -1,0 +1,15 @@
+.metadata/
+.recommenders/
+**/.idea/
+**/.git/
+**/.gradle/
+**/.settings/
+**/bin/
+**/build/
+**/captures/
+**/gradle/
+**/log*/
+**/target/
+Server*/
+RemoteSystemsTempFiles/
+
