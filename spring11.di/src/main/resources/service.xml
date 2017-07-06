@@ -8,13 +8,13 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-4.0.xsd">
   
-    <bean id="webType"  class="di00.model.Type">
+    <bean id="webType"  class="di01.model.Type">
         <property name="name" value="web"/>
         <property name="extension" value=".url" />
         <property name="desc" value="web link" />
     </bean>
     
-    <bean id="doc1" class="di00.model.Document">
+    <bean id="doc1" class="di01.model.Document">
         <constructor-arg index="0" value="aaa" />
         <constructor-arg index="1" ref="webType" />   
         <constructor-arg index="2" value="/aaa.txt" />     

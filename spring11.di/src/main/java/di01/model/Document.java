@@ -1,7 +1,7 @@
-package di00.model;
+package di01.model;
 
 public class Document {
-
+    
     private String name;
     private Type type;
     private String location;

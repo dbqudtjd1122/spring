@@ -10,19 +10,19 @@
         
     <beans:bean id="engine" class="di02.service.MySearchEngine" />  
     
-    <beans:bean id="webType"  class="di00.model.Type">
+    <beans:bean id="webType"  class="di01.model.Type">
         <beans:property name="name" value="web"/>
         <beans:property name="extension" value=".url" />
         <beans:property name="desc" value="web link" />
     </beans:bean>
     
-    <beans:bean id="txtType" class="di00.model.Type">
+    <beans:bean id="txtType" class="di01.model.Type">
         <beans:constructor-arg name="name" value="text"/>
         <beans:constructor-arg name="extension" value=".txt" />
         <beans:constructor-arg name="desc" value="note" />
     </beans:bean>
     
-    <beans:bean id="doc1" class="di00.model.Document">
+    <beans:bean id="doc1" class="di01.model.Document">
         <beans:property name="location" value="/aaa.txt" />
         <beans:property name="name" value="aaa" />
         <beans:property name="type" ref="txtType" />        

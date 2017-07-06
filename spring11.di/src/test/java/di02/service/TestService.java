@@ -7,8 +7,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import di00.model.Document;
-import di00.model.Type;
+import di01.model.Document;
+import di01.model.Type;
 
 public class TestService {
     @Test

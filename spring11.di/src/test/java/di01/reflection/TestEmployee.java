@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import di00.model.Employee;
+import di01.model.Employee;
 
 public class TestEmployee {
     
@@ -49,7 +49,7 @@ public class TestEmployee {
         // reflection을 이용하여 
         // Employee emp2 = new Employee("aaaa", "bbbb", 100)
         // 코드를 구현하여 본다.
-        Class klass = Class.forName("di00.model.Employee");     
+        Class klass = Class.forName("di01.model.Employee");     
         
         Class[] paramTypes = { String.class, String.class, Integer.TYPE };
         

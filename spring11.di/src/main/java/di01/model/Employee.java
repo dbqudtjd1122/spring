@@ -1,7 +1,7 @@
-package di00.model;
+package di01.model;
 
 public class Employee {
-
+    
     // 필드 추가
     private String firstname;
     private String lastname;

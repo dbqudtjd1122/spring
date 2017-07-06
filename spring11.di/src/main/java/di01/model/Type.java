@@ -1,5 +1,4 @@
-package di00.model;
-
+package di01.model;
 
 public class Type {
 
