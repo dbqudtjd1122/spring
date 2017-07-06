@@ -44,9 +44,13 @@ public class TestEmployee {
         assertEquals(emp2.getFirstname(), "aaaa");
     }
     
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
-    public void testMakeInstatnceWithReflection() throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-        // reflection을 이용하여 
+    public void testMakeInstanceWithReflection()
+            throws InstantiationException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException,
+            NoSuchMethodException, SecurityException, ClassNotFoundException {
+        // Reflection 을 이용해서
         // Employee emp2 = new Employee("aaaa", "bbbb", 100)
         // 코드를 구현하여 본다.
         Class klass = Class.forName("di01.model.Employee");     
@@ -61,12 +65,14 @@ public class TestEmployee {
         Object instance = cons.newInstance(objs);
         System.out.println( instance.toString() );
         
-        // setter를 이용한 필드값 바꾸기.
-        // 메서드 지정.
+        // setter를 이용해서 필드값 바꾸기
+        // 메서드 선언.
         Method m = klass.getMethod("setFirstname", String.class);
         
-        // 메서드 호출
+        // 메서드 매개변수 정의
         Object [] params = { "hello" };
+
+        // 메서드 호출
         m.invoke(instance, params);
         
         // 값 출력하기.
@@ -75,10 +81,10 @@ public class TestEmployee {
         
         // getter를 이용해서 필드값 가져오.ㅣ
         m = klass.getMethod("getFirstname");
-        Object resutl = m.invoke(instance);
-        System.out.println( resutl );
+        Object result = m.invoke(instance);
+        System.out.println( result );
         
-        assertEquals("hello", resutl);     
+        assertEquals("hello", result);     
     }
     
 }
