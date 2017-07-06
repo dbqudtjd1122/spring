@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc" 
+        xmlns:beans="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                            http://www.springframework.org/schema/context
+                            http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+        
+    <beans:bean id="engine" class="di02.service.MySearchEngine" />  
+    
+    <beans:bean id="webType"  class="di00.model.Type">
+        <beans:property name="name" value="web"/>
+        <beans:property name="extension" value=".url" />
+        <beans:property name="desc" value="web link" />
+    </beans:bean>
+    
+    <beans:bean id="txtType" class="di00.model.Type">
+        <beans:constructor-arg name="name" value="text"/>
+        <beans:constructor-arg name="extension" value=".txt" />
+        <beans:constructor-arg name="desc" value="note" />
+    </beans:bean>
+    
+    <beans:bean id="doc1" class="di00.model.Document">
+        <beans:property name="location" value="/aaa.txt" />
+        <beans:property name="name" value="aaa" />
+        <beans:property name="type" ref="txtType" />        
+    </beans:bean>
+            
+</beans:beans>
