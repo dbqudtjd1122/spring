@@ -11,6 +11,7 @@ import model.ModelProduct;
 
 @Service("serviceProduct")
 public class ServiceProduct implements IServiceProduct {
+    
     // SLF4J Logging
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     

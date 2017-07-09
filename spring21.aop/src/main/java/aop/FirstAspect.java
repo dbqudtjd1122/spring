@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import model.ModelProduct;
 
 public class FirstAspect {
+    
     // SLF4J Logging
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     
@@ -39,7 +40,4 @@ public class FirstAspect {
     public void afterThrowing( Throwable e) {
         
     }
-    
-    
-    
 }

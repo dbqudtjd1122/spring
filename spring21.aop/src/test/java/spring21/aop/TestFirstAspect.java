@@ -1,7 +1,6 @@
-package spring21.aop;
+package aop;
 
-import static org.junit.Assert.*;
-
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -20,7 +19,7 @@ public class TestFirstAspect {
     
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        context =  new ClassPathXmlApplicationContext("classpath:aop.xml");
+        context = new ClassPathXmlApplicationContext("classpath:aop.xml");
         service = context.getBean("serviceProduct", IServiceProduct.class);
     }
     
@@ -38,6 +37,7 @@ public class TestFirstAspect {
         try {
             service.getException("");
         } catch (Exception e) {
+            // e.printStackTrace();
             logger.error("testGetException" + e.getMessage() );
         }
         logger.debug("It should be now cached!");

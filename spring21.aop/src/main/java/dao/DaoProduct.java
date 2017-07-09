@@ -8,6 +8,7 @@ import model.ModelProduct;
 
 @Repository("productDao")
 public class DaoProduct implements IDaoProduct {
+    
     // SLF4J Logging
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     
