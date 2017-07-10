@@ -11,7 +11,7 @@ import model.ModelProduct;
 
 @Service("serviceProduct")
 public class ServiceProduct implements IServiceProduct {
-    
+
     // SLF4J Logging
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     
@@ -19,6 +19,10 @@ public class ServiceProduct implements IServiceProduct {
     @Qualifier("productDao")
     private IDaoProduct productDao;
     
+    public ServiceProduct() {
+        super();
+    }
+
     @Override
     public ModelProduct getProduct(String name) {
         ModelProduct product = productDao.getProduct("빵");        
@@ -27,12 +31,10 @@ public class ServiceProduct implements IServiceProduct {
     
     @Override
     public ModelProduct getException(String name) throws Exception {
-        try {
-            productDao.getException("빵");
-        } catch (Throwable e) {
-            logger.error("getException" + e.getMessage() );
-        }
-        return null;
+        
+        ModelProduct result = productDao.getException("빵");
+
+        return result;
     }
     
     @Override

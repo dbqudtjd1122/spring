@@ -12,6 +12,10 @@ public class DaoProduct implements IDaoProduct {
     // SLF4J Logging
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     
+    public DaoProduct() {
+        super();
+    }
+    
     @Override
     public ModelProduct getProduct(String name) {
 

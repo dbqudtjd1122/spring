@@ -19,7 +19,8 @@ public class TestFirstAspect {
     private static IServiceProduct  service = null;
     
     @BeforeClass
-    public static void setUpBeforeClass() {
+    public static void setUpBeforeClass()  {
+
         try {
             context = new ClassPathXmlApplicationContext("classpath:aop.xml");
             service = context.getBean("serviceProduct", IServiceProduct.class);
@@ -37,6 +38,13 @@ public class TestFirstAspect {
     }
     
     @Test
+    public void testGetNone() {
+        logger.debug("Using Spring AOP:");        
+        service.getNone();        
+        logger.debug("It should be now cached!");
+    }
+    
+    @Test
     public void testGetException() {
         logger.debug("Using Spring AOP:");        
         try {
@@ -45,13 +53,6 @@ public class TestFirstAspect {
             // e.printStackTrace();
             logger.error("testGetException" + e.getMessage() );
         }
-        logger.debug("It should be now cached!");
-    }
-    
-    @Test
-    public void testGetNone() {
-        logger.debug("Using Spring AOP:");        
-        service.getNone();        
         logger.debug("It should be now cached!");
     }
 }
