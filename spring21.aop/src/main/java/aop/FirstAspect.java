@@ -32,12 +32,22 @@ public class FirstAspect {
     }
     // 메서드 실행 전.후
     public ModelProduct around( ProceedingJoinPoint jp ) throws Throwable {
-        ModelProduct p = null ;
+        logger.debug( "around ----> before가 호출되기 전에 실행됨.");
+        logger.debug( "around ----> before *** aop:around 메서드 이름은 " + jp.getSignature().getName() );
+       
+        ModelProduct p = (ModelProduct)jp.proceed();
+        
+        logger.debug( "around ----> after 가 호출된 후에 실행됨.");
+        logger.debug( "around ----> after 가 호출된 후에 실행됨."); 
         
         return p;
-    }    
-    // 메서드 실행시 예외가 발생했을 때
-    public void afterThrowing( Throwable e) {
-        
+    }
+    
+    // 예외가 발생 했을 때
+    public void afterThrowing( Throwable e ) {
+
+        logger.debug( "afterThrowing ----> exception value = " + e.getMessage() );
+        logger.debug( "afterThrowing ----> exception 이 생기면 나온다." );
+        logger.debug( "afterThrowing ----> exception 이 생기면 나온다." );
     }
 }

@@ -5,6 +5,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -18,9 +19,13 @@ public class TestFirstAspect {
     private static IServiceProduct  service = null;
     
     @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-        context = new ClassPathXmlApplicationContext("classpath:aop.xml");
-        service = context.getBean("serviceProduct", IServiceProduct.class);
+    public static void setUpBeforeClass() {
+        try {
+            context = new ClassPathXmlApplicationContext("classpath:aop.xml");
+            service = context.getBean("serviceProduct", IServiceProduct.class);
+        } catch (BeansException e) {
+            e.printStackTrace();
+        }
     }
     
     @Test
