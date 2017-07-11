@@ -10,7 +10,7 @@
     <title>JSTL 변수 선언</title>
 </head>
 <body>
-    <h1>JSTL 변수 선언 >> jstl02 MVC </h1>
+    <h3>JSTL 변수 선언 >> jstl02 MVC </h3>
 
     <c:set var="result" value="${num1*num2}"/>
 

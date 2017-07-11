@@ -20,10 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
@@ -38,18 +35,20 @@ public class HomeController {
 		return "home";
 	}
 	
-    @RequestMapping( value = "/ckeditor", method = RequestMethod.GET)
+   @RequestMapping(value = "/ckeditor", method = RequestMethod.GET)
     public String ckeditor(Model model) {
-        model.addAttribute("msg", "sejoong" );
+        logger.info("Welcome home! The client locale is {}.");
+        
+        model.addAttribute("msg", "message test");
         
         return "ckeditor";
     }
-    
-    @RequestMapping( value = "/ckeditor", method = RequestMethod.POST)
-    public String ckeditor(Model model, HttpServletRequest request) {
-        
-        String input  = request.getParameter("inputArticleContents");
-        
-        return "redirect:/";
-    }
+   
+  @RequestMapping(value = "/ckeditor", method = RequestMethod.POST)
+   public String ckeditor(Model model, HttpServletRequest request) {
+
+       String inputArticleContents = request.getParameter("inputArticleContents");
+       
+       return "redirect:/";
+   }
 }
