@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -36,10 +38,18 @@ public class HomeController {
 		return "home";
 	}
 	
-    @RequestMapping(value = "/ckeditor", method = RequestMethod.GET)
-    public String ckeditor(Locale locale, Model model) {
-        model.addAttribute("serverTime", "sejoong" );
+    @RequestMapping( value = "/ckeditor", method = RequestMethod.GET)
+    public String ckeditor(Model model) {
+        model.addAttribute("msg", "sejoong" );
         
         return "ckeditor";
+    }
+    
+    @RequestMapping( value = "/ckeditor", method = RequestMethod.POST)
+    public String ckeditor(Model model, HttpServletRequest request) {
+        
+        String input  = request.getParameter("inputArticleContents");
+        
+        return "redirect:/";
     }
 }
