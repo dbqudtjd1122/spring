@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
@@ -11,12 +10,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form method="get" action="ELEx02Sub.jsp" enctype="application/x-www-form-urlencoded">
-<label for="userid"> 아이디 : </label>
-<input type="text" name="id" id="userid"><br>
-<label for="userpwd"> 암 &nbsp; 호 : </label>
-<input type ="password" name="pwd" id="userpwd"><br>
-<input type="submit" value="로그인">
-</form>
+    <form method="get" action="/el/el02sub" enctype="application/x-www-form-urlencoded">
+        <label for="userid"> 아이디 : </label>
+        <input type="text" name="id" id="userid"><br>
+        <label for="userpwd"> 암 &nbsp; 호 : </label>
+        <input type ="password" name="pwd" id="userpwd"><br>
+        <input type="submit" value="로그인">
+    </form>
 </body>
 </html>

@@ -35,4 +35,18 @@ public class ElController {
 
         return "el/el02";
     }
+    
+    @RequestMapping(value = "/el/el02sub", method = RequestMethod.GET)
+    public String elel02sub(Locale locale, Model model) {
+        logger.info("el02sub");
+
+        return "el/el02sub";
+    }
+    
+    @RequestMapping(value = "/el/el03", method = RequestMethod.GET)
+    public String el03(Locale locale, Model model) {
+        logger.info("el03");
+
+        return "el/el03";
+    }
 }
