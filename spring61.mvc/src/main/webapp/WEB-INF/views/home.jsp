@@ -22,8 +22,8 @@
     <hr>
     
     <a href="spring/querystring?name=test&phone=1244" target="_blank">/spring/querystring?name=test&phone=1244</a> <br />
-    <a href="spring/querypath/test" target="_blank">/spring/pathvalue/test</a> <br />
-    <a href="spring/querypath/test/1244" target="_blank">/spring/pathvalue/test/1244</a> <br />
+    <a href="spring/pathvalue/test" target="_blank">/spring/pathvalue/test</a> <br />
+    <a href="spring/pathvalue/test/1244" target="_blank">/spring/pathvalue/test/1244</a> <br />
     <hr />
     
     <a href="spring/login" target="_blank">/spring/login</a> <br /> 
