@@ -26,7 +26,10 @@
     <a href="spring/pathvalue/test/1244" target="_blank">/spring/pathvalue/test/1244</a> <br />
     <hr />
     
-    <a href="spring/login" target="_blank">/spring/login</a> <br /> 
+    <a href="spring/login" target="_blank">@RequestParam 을 이용한 /spring/login</a> <br /> 
+    <hr>
+    
+    <a href="spring/loginmodel" target="_blank">@ModelAttribute 를 이용한 /spring/login</a> <br /> 
     <hr>
     
     <h2> PhoneController </h2> 

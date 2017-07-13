@@ -9,10 +9,9 @@
     <title>Home</title>
 </head>
 <body>  
-    <p> name  : ${ name } </p>     
-    <c:if test=${ phone != null } >
-    <p> phone : ${ phone } </p>   
-    </c:if> 
-      
+    <h3> @RequestParam을 이용한 로그인 처리 정보 </h3>
+    <label for="id"> ID : ${ id } </label>
+    <br>
+    <label for="pw"> PW : ${ pw } </label>
 </body>
 </html>

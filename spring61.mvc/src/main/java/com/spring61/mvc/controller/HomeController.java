@@ -12,11 +12,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.UriTemplate;
+import com.spring61.mvc.model.ModelLogin;
 
 /**
  * Handles requests for the application home page.
@@ -82,8 +86,6 @@ public class HomeController {
         return "forward:/spring/helloworld";
     }
 
-
-    
     // QueryString 테스트 >> @RequestParam 테스트
     @RequestMapping(value = "/spring/querystring", method = RequestMethod.GET)
     public String querystring(Locale locale
@@ -130,11 +132,50 @@ public class HomeController {
         return "spring/pathvalue";
     }
     
+    // login 테스트
+    @RequestMapping(value = "/spring/login", method = RequestMethod.GET)
+    public String login(Locale locale, Model model) {
+        logger.info("/spring/login :: get");
+        
+        model.addAttribute("id", "aaa");
+        
+        return "spring/loginget";
+    }
+    // login 테스트
+    @RequestMapping(value = "/spring/login", method = RequestMethod.POST)
+    public String login(Locale locale
+            , Model model
+            , @RequestParam( value="id") String id 
+            , @RequestParam( value="pw") String pw ) {
+        logger.info("/spring/login :: post ");
+        
+        // DB 조회
+        
+        model.addAttribute("id", id );
+        model.addAttribute("pw", pw );
+        
+        return "spring/loginpost";
+    }
     
+
     
-    
-    
-    
-    
+    // login 테스트
+    @RequestMapping(value = "/spring/loginmodel", method = RequestMethod.GET)
+    public String loginmodel(Locale locale, Model model) {
+        logger.info("/spring/loginmodel :: get");
+                
+        return "spring/loginmodelget";
+    }
+    // login 테스트
+    @RequestMapping(value = "/spring/loginmodel", method = RequestMethod.POST)
+    public String loginmodel(Locale locale
+            , Model model
+            , @ModelAttribute ModelLogin info ) {
+        logger.info("/spring/loginmodel :: post ");
+            
+        model.addAttribute("info", info );
+        
+        return "spring/loginmodelpost";
+    }
     
 }

@@ -9,10 +9,9 @@
     <title>Home</title>
 </head>
 <body>  
-    <p> name  : ${ name } </p>     
-    <c:if test=${ phone != null } >
-    <p> phone : ${ phone } </p>   
-    </c:if> 
-      
+    <h3> @ModelAttribute를 이용한 로그인 처리 정보 </h3>
+    <label> 이름 : ${ info.name } </label>
+    <br>
+    <label> 폰 : ${ info.phone } </label>
 </body>
 </html>
