@@ -17,7 +17,7 @@ public class DaoPhone implements IDaoPhone {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     
     @Autowired
-    @Qualifier("sqlSessionFactory")
+    @Qualifier("sqlSession")
     private SqlSession session;
         
     @Override

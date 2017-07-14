@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.spring61.mvc.dao.IDaoPhone;
 import com.spring61.mvc.model.ModelPhone;
 
-@Service
+@Service("servicePhone")
 public class ServicePhone implements IServicePhone {
     // SLF4J Logging
     private Logger logger = LoggerFactory.getLogger(this.getClass());
