@@ -132,6 +132,38 @@ public class HomeController {
         return "spring/pathvalue";
     }
     
+    // QueryString 테스트 >> @PathVariable 테스트
+    /*
+    ?  - zero or one charecter
+    *  - one charecter
+    ** - one or more charecters
+    */
+    @RequestMapping(value = "/spring/querypath/{name}/**", method = RequestMethod.GET)
+    public ModelAndView querypath(
+            Model model,
+            @PathVariable(value="name") String name,  
+            HttpServletRequest request ) {     
+        logger.info("HomeController.querypath");
+        
+        String phone = null;
+        
+        String restOfUrl = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+     
+        UriTemplate template = new UriTemplate("/spring/querypath/{name}/{phone}");        
+        boolean isTemplateMatched = template.matches(restOfUrl);
+        if(isTemplateMatched) {
+            Map<String, String> matchTemplate = new HashMap<String, String>();
+            matchTemplate = template.match(restOfUrl);
+            phone = matchTemplate.get("phone");
+        }
+        
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("name" , name  );
+        map.put("phone", phone );
+        
+        return new ModelAndView("home/pathvalue", map) ;       
+    }
+           
     // login 테스트
     @RequestMapping(value = "/spring/login", method = RequestMethod.GET)
     public String login(Locale locale, Model model) {

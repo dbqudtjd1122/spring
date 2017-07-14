@@ -48,8 +48,31 @@
         <beans:property name="poolPreparedStatements"     value="true"/>
         <beans:property name="cacheState"                 value="true"/>
     </beans:bean>
+        
+    <!-- 
+    <beans:bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <beans:property name="driverClassName"   value="com.mysql.jdbc.Driver" />
+        <beans:property name="url"               value="jdbc:mysql://localhost:3306/springboard?useUnicode=true&amp;characterEncoding=utf8" />
+        <beans:property name="username"          value="tester1" />
+        <beans:property name="password"          value="1234" />
+             
+        <beans:property name="defaultAutoCommit"          value="true"/> 
+        <beans:property name="poolPreparedStatements"     value="true"/>
+        <beans:property name="cacheState"                 value="true"/>
+    </beans:bean>
+    <beans:bean id="dataSourceLog4j" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+        <beans:constructor-arg ref="dataSourceSpied" />
+        <beans:property name="logFormatter">
+            <beans:bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+                <beans:property name="loggingType" value="MULTI_LINE" />
+                <beans:property name="sqlPrefix" value="SQL         :  "/>
+            </beans:bean>
+        </beans:property>
+    </beans:bean>
+    -->
     
-    <!-- SessionFactory 설정 :: MyBatis가 사용할 Database에 연결하도록 설정 -->
+    
+    <!-- step4. SessionFactory 설정 :: MyBatis가 사용할 Database에 연결하도록 설정 -->
     <beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <beans:property name="dataSource"         ref="dataSource" />
         <beans:property name="configLocation"     value="classpath:Configuration.xml" />
@@ -66,7 +89,7 @@
 
 
 
-    <!-- Transaction 설정하기 -->
+    <!-- step5. Transaction 설정하기 -->
     <!-- Transaction Manager 설정 commit, rollback -->
     <beans:bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <beans:property name="dataSource" ref="dataSource" />
@@ -109,4 +132,6 @@
             <tx:method name="get*"          read-only="true" />
         </tx:attributes>
     </tx:advice>
+    
+    
 </beans:beans>

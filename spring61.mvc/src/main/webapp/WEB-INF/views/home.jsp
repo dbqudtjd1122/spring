@@ -32,7 +32,7 @@
     <a href="spring/loginmodel" target="_blank">@ModelAttribute 를 이용한 /spring/login</a> <br /> 
     <hr>
     
-    <h2> PhoneController </h2> 
+    <h2> PhoneCUontroller </h2> 
     <a href="/phone/writeone" target="_blank">/phone/writeone</a> <br />
     <a href="/phone/writelist" target="_blank">/phone/writelist</a> <br />
     <hr>
