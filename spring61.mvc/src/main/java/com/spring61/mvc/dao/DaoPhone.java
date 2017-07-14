@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.spring61.mvc.model.ModelPhone;
 
-@Repository
+@Repository("daoPhone")
 public class DaoPhone implements IDaoPhone {
     // SLF4J Logging
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -27,16 +27,16 @@ public class DaoPhone implements IDaoPhone {
     
     @Override
     public List<ModelPhone> getPhoneList() {
-        return null;
+        return session.selectList("mapper.mysql.mapperPhone.getPhoneList");
     }
     
     @Override
     public int insertPhone(ModelPhone phone) {
-        return 0;
+        return session.insert("mapper.mysql.mapperPhone.insertPhone", phone);
     }
     
     @Override
     public int insertPhoneList(List<ModelPhone> phones) {
-        return 0;
+        return session.insert("mapper.mysql.mapperPhone.insertPhoneList", phones);
     }
 }
