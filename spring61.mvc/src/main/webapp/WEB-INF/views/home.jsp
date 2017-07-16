@@ -37,6 +37,14 @@
     <a href="/phone/writelist" target="_blank">/phone/writelist</a> <br />
     <hr>
     
+    <h2> RestController </h2> 
+    <a href="/rest/ajaxone"   target="_blank">/rest/ajaxone </a> <br />
+    <a href="/rest/ajaxlist"  target="_blank">/rest/ajaxlist</a> <br />
+    <a href="/rest/httpget"   target="_blank">/rest/httpget </a> <br />
+    <a href="/rest/httppost"  target="_blank">/rest/httppost</a> <br />
+    <hr>
+    
+    
     <h2> UploadController, DownloadController 만들기 </h2>
     <a href="./upload/fileupload"    target="_blank">./upload/fileupload </a> <br> 
     <a href="./upload/filedownload"  target="_blank">./upload/filedownload </a> <br>

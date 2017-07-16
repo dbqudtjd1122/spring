@@ -27,6 +27,10 @@ public class ModelLogin {
         super();
     }
     
-    
+    public ModelLogin(String name, String phone) {
+        super();
+        this.name = name;
+        this.phone = phone;
+    } 
 
 }
