@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.oracle.mapperUpload">     
+       
+    <insert id="insertAttachFile" parameterType="ModelUploadFile">
+        INSERT INTO 
+        TB_Upload_File (   fileName ,   contentType ,   fileSize )
+        VALUES         ( #{fileName}, #{contentType}, #{fileSize})
+    </insert>
+    
+    
+    
+    <select id="getImageList" parameterType="int" resultType="ModelUploadImage">
+        SELECT uploadImageNo, fileName, contentType, fileSize, imageBytes, imageBase64
+        FROM TB_Upload_Image
+    </select>
+    
+    
+    <select id="getImageByte" parameterType="int" resultType="ModelUploadImage">
+        SELECT uploadImageNo, fileName, contentType, fileSize, imageBytes, imageBase64
+        FROM TB_Upload_Image
+        where uploadImageNo = #{uploadImageNo}
+    </select>
+    
+    <insert id="insertPhoto" parameterType="map" statementType="CALLABLE">
+        
+        declare
+            s2  number := 0;
+        begin    
+            INSERT INTO 
+            TB_Upload_Image   (   fileName      ,   fileSize      ,   contentType      ,   imageBytes      ,   imageBase64       )
+            VALUES            ( #{file.fileName}, #{file.fileSize}, #{file.contentType}, #{file.imageBytes}, #{file.imageBase64} )            
+            RETURNING uploadImageNo INTO s2;
+            
+            #{result, jdbcType=INTEGER, mode=OUT} := s2;
+        end; 
+    </insert>
+
+    <update id="updateAttachImage" parameterType="ModelUploadImage">
+        update TB_Upload_Image
+        <set>
+            <if test="photo.originalFilename != null">fileName     = #{photo.originalFilename}, </if>
+            <if test="photo.ContentType      != null">contentType  = #{photo.contentType}     , </if>
+            <if test="photo.bytes            != null">imageBytes   = #{photo.bytes}           , </if>
+            <if test="photo.bytes            != null">imageBytes   = #{photo.bytes}           , </if>
+        </set>
+        where uploadImageNo = #{uploadImageNo}
+    </update>
+
+</mapper>

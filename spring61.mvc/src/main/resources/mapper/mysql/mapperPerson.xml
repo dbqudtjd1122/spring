@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.mysql.mapperPerson">     
+
+    <select id="getTotalRecord" parameterType="hashmap" resultType="int">
+        SELECT count(*) FROM TB_Person 
+         WHERE boardcd = #{boardcd}
+            <if test="searchWord != null">
+            AND (title LIKE '%${searchWord}%' OR content LIKE '%${searchWord}%')
+            </if>
+    </select>    
+
+    <select id="getPersonList" parameterType="hashmap" resultType="ModelPerson">
+        SELECT id, name, email, country
+        FROM (
+            SELECT @RNUM := @RNUM + 1 AS r, a.* 
+            FROM (
+                    SELECT a.id, 
+                           a.name, 
+                           a.email, 
+                           a.country
+                    FROM 
+                        TB_Person a
+                  where 1 = 1 
+                        <if test="searchWord != null">
+                        AND name LIKE '%${searchWord}%' 
+                        </if>
+                  ORDER BY id DESC
+                 ) a
+                 , (SELECT @RNUM:=0) b
+            ) temp
+        WHERE r BETWEEN #{start} AND #{end}
+    </select>
+    
+    <select id="getPersonName" parameterType="string" resultType="string">        
+        SELECT name FROM TB_Person  
+         WHERE id = #{id}
+    </select>
+    
+    <select id="getPersonOne" parameterType="string" resultType="ModelPerson">
+        SELECT id, name, email, country 
+          FROM TB_Person 
+         WHERE id = #{id}
+    </select>
+    
+    <insert id="insertPerson" parameterType="ModelPerson">
+        INSERT INTO 
+        TB_Person ( id, name, email, country   )
+        VALUES   ( #{id}, #{name}, #{email}, #{country}  )
+    </insert>
+    
+    <insert id="insertMultiPerson" parameterType="java.util.List">
+        INSERT INTO 
+        TB_Person ( id, name, email, country   )
+        VALUES   
+        <foreach collection="list" item="i" index="index"  separator=",">
+            ( #{i.id}, #{i.name}, #{i.email}, #{i.country}  )
+        </foreach>
+        
+    </insert>
+    
+    <update id="updatePerson" parameterType="ModelPerson">
+        UPDATE TB_Person 
+           SET name    = #{name}
+             , email   = #{email}
+             , country = #{country}
+         WHERE id      = #{id}
+    </update>
+    
+    <delete id="deletePerson" parameterType="string">
+        DELETE FROM TB_Person 
+         WHERE id = #{id}
+    </delete>
+    
+    <select id="getNextPerson" parameterType="hashmap" resultType="ModelPerson">
+        SELECT articleno, title
+        FROM
+        (
+            SELECT @RNUM := @RNUM + 1 AS r,a.*
+            FROM
+                (SELECT articleno, title 
+                   FROM TB_Person 
+                  WHERE boardcd = #{boardcd} 
+                    AND articleno = #{articleNo}
+                    <if test="searchWord != null">
+                        AND (title LIKE '%${searchWord}%' OR content LIKE '%${searchWord}%')
+                    </if> 
+                    ORDER BY articleno
+                ) a
+                , (SELECT @RNUM:=0) b
+        ) c
+        WHERE r = 1
+    </select>
+    
+    <select id="getPrevPerson" parameterType="hashmap" resultType="ModelPerson">
+        SELECT articleno, title
+        FROM
+        (
+            SELECT @RNUM := @RNUM + 1 AS r,a.*
+            FROM
+            (SELECT articleno, title 
+               FROM TB_Person 
+              WHERE boardcd = #{boardcd} 
+                AND articleno = #{articleNo}
+                <if test="searchWord != null">
+                    AND (title LIKE '%${searchWord}%' OR
+                    content LIKE '%${searchWord}%')
+                </if> 
+                ORDER BY articleno DESC
+            ) a
+            , (SELECT @RNUM:=0) b
+        ) c
+        WHERE r = 1
+    </select>
+
+ </mapper>

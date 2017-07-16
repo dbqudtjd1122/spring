@@ -15,7 +15,7 @@
     </script>
 </head>
 <body>
-    <form action="/phone/write" method="post" enctype="multipart/form-data">
+    <form action="" method="post" enctype="multipart/form-data">
         <input type="text" name="name"  size="50" placeholder="폰 이름" required="required" /> <br> 
         <input type="text" name="manufacturer" size="50" placeholder="폰 제조사" required="required"/> <br> 
         <input type="text" name="price" size="50" placeholder="폰 가격" required="required" /> <br> 

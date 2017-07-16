@@ -8,5 +8,5 @@ public interface IServicePhone {
     ModelPhone  getPhoneOne(String name);
     List<ModelPhone>  getPhoneList();
     int insertPhone( ModelPhone phone );
-    int insertPhoneList( List<ModelPhone> phones );    
+    int insertPhoneList( List<ModelPhone> phones );
 }

@@ -1,6 +1,7 @@
 package com.spring61.mvc.model;
 
 public class ModelPhone {
+
     private String  name          ; // NVARCHAR(20)  
     private String  manufacturer  ; // NVARCHAR(40)  
     private Integer price         ; // INTEGER 
@@ -29,6 +30,7 @@ public class ModelPhone {
         return "ModelPhone [name=" + name + ", manufacturer=" + manufacturer
                 + ", price=" + price + "]";
     }
+    
     public ModelPhone() {
         super();
     }

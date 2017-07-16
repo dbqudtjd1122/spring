@@ -13,6 +13,7 @@ import com.spring61.mvc.model.ModelPhone;
 
 @Service("servicePhone")
 public class ServicePhone implements IServicePhone {
+
     // SLF4J Logging
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     
@@ -59,7 +60,7 @@ public class ServicePhone implements IServicePhone {
         try {
             result = dao.insertPhoneList(phones);
         } catch (Exception e) {
-            logger.error("insertPhone" + e.getMessage() );
+            logger.error("insertPhoneList" + e.getMessage() );
         }
         return result ;
     }
