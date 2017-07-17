@@ -1,11 +1,13 @@
 package com.spring61.mvc.controller;
 
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring61.mvc.model.ModelPhone;
+import com.spring61.mvc.service.IServicePhone;
 
 /**
  * Handles requests for the application home page.
@@ -22,6 +25,9 @@ import com.spring61.mvc.model.ModelPhone;
 public class PhoneController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PhoneController.class);
+	
+	@Autowired
+	IServicePhone svrphone;
 	
 	@RequestMapping(value = "/phone/writeone", method = RequestMethod.GET)
 	public String writeone(Locale locale, Model model) {
@@ -39,9 +45,15 @@ public class PhoneController {
         
         ModelPhone phone = new ModelPhone(name, manufacturer, price);
         
-        model.addAttribute("phone", phone);
+        // DB insert
+        int result = svrphone.insertPhone(phone);
         
-        return "phone/writeOneResult";
+        // DB select
+        List<ModelPhone> list = svrphone.getPhoneList();
+        
+        model.addAttribute("list", list);
+        
+        return "phone/writeListResult";
     }
     @RequestMapping(value = "/phone/writeone2", method = RequestMethod.POST)
     public String writeone2(Locale locale
