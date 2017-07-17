@@ -1,14 +1,9 @@
 package com.spring61.mvc.model;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class ModelPerson {
-    // SLF4J Logging
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-    
-    private String name     = null; 
+public class ModelPerson  implements Serializable {
+     
     private String id       = null; 
+    private String name     = null;
     private String email    = null; 
     private String password = null;
     
@@ -53,10 +48,5 @@ public class ModelPerson {
         this.email = email;
         this.password = password;
     } 
-    
-    
-    
-    
-    
     
 }

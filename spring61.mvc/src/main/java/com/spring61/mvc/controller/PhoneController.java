@@ -41,9 +41,11 @@ public class PhoneController {
         
         String name         = request.getParameter("name");
         String manufacturer = request.getParameter("manufacturer");
-        Integer price       = Integer.valueOf(  request.getParameter("price") );
+        String price        = request.getParameter("price");
+
+        int iprice =  StringUtils.isEmpty(price) ?  0 : Integer.parseInt(price) ;
         
-        ModelPhone phone = new ModelPhone(name, manufacturer, price);
+        ModelPhone phone = new ModelPhone( name, manufacturer, iprice );
         
         // DB insert
         int result = svrphone.insertPhone(phone);
@@ -65,9 +67,15 @@ public class PhoneController {
         
         ModelPhone phone = new ModelPhone(name, manufacturer, price);
         
-        model.addAttribute("phone", phone);
+        // DB insert
+        int result = svrphone.insertPhone(phone);
         
-        return "phone/writeOneResult";
+        // DB select
+        List<ModelPhone> list = svrphone.getPhoneList();
+        
+        model.addAttribute("list", list);
+        
+        return "phone/writeListResult";
     }
     
     @RequestMapping(value = "/phone/writeone3", method = RequestMethod.POST)
@@ -75,17 +83,29 @@ public class PhoneController {
             , Model model
             , @ModelAttribute ModelPhone phone) {
         logger.info("writeone3 :: post", locale);
-                
-        model.addAttribute("phone", phone);
         
-        return "phone/writeOneResult";
+        // DB insert
+        int result = svrphone.insertPhone(phone);
+        
+        // DB select
+        List<ModelPhone> list = svrphone.getPhoneList();
+        
+        model.addAttribute("list", list);
+        
+        return "phone/writeListResult";
     }
     
-    
-    
-    
-    
-    
-    
-    
+
+    @RequestMapping(value = "writelist", method = RequestMethod.GET)
+    public String writeListGet(Model model) {        
+        return "phone/writeListForm";
+    }
+
+    @RequestMapping(value = "writelist", method = RequestMethod.POST)
+    public String writeListPost(@ModelAttribute RepositoryPhone phone, Model model) {        
+        List<ModelPhone> phonelist = phone.getPhoneItems();
+        model.addAttribute("list", phonelist);        
+        return "phone/writeListResult";
+    }
+ 
 }
