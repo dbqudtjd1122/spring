@@ -20,7 +20,6 @@
     <mappers>
         <mapper resource="mapper/mysql/mapperBoard.xml" />
         <mapper resource="mapper/mysql/mapperUser.xml" />
-        <mapper resource="mapper/mysql/mapperPhone.xml" />
     </mappers>
     
 </configuration>
