@@ -40,8 +40,8 @@
     <h2> RestController </h2> 
     <a href="/rest/ajaxone"   target="_blank">/rest/ajaxone </a> <br />
     <a href="/rest/ajaxlist"  target="_blank">/rest/ajaxlist</a> <br />
-    <a href="/rest/httpget"   target="_blank">/rest/httpget </a> <br />
-    <a href="/rest/httppost"  target="_blank">/rest/httppost</a> <br />
+    <a href="/rest/newversion"   target="_blank">/rest/newversion </a> <br />
+    <a href="/rest/uploadimage"  target="_blank">/rest/uploadimage</a> <br />
     <hr>
     
     
