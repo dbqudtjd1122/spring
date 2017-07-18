@@ -1,5 +1,7 @@
 package com.spring61.mvc.model;
 
+import java.io.Serializable;
+
 public class ModelPerson  implements Serializable {
      
     private String id       = null; 

@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,19 +93,6 @@ public class PhoneController {
         
         model.addAttribute("list", list);
         
-        return "phone/writeListResult";
-    }
-    
-
-    @RequestMapping(value = "writelist", method = RequestMethod.GET)
-    public String writeListGet(Model model) {        
-        return "phone/writeListForm";
-    }
-
-    @RequestMapping(value = "writelist", method = RequestMethod.POST)
-    public String writeListPost(@ModelAttribute RepositoryPhone phone, Model model) {        
-        List<ModelPhone> phonelist = phone.getPhoneItems();
-        model.addAttribute("list", phonelist);        
         return "phone/writeListResult";
     }
  
