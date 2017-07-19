@@ -28,13 +28,12 @@
                     , ('val3_1', 'val3_2', 'val3_3')
         ;
      -->
-    <insert id="insertBoardList" parameterType="java.util.List">
-        INSERT INTO TB_Phone( boardcd , boardnm , UseYN  )
+    <insert id="insertPhoneList" parameterType="java.util.List"  >
+        INSERT INTO TB_Phone( name , manufacturer , price  )
         VALUES
             <foreach collection="list" item="item" index="index" open="(" separator="),(" close=")">
-                #{item.boardcd} , #{item.boardnm} , #{item.UseYN}
+                #{item.name} , #{item.manufacturer} , #{item.price}
             </foreach>
     </insert>
-    
 
  </mapper>

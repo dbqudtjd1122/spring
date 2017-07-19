@@ -20,25 +20,21 @@ public class DaoPhone implements IDaoPhone {
         
     @Override
     public ModelPhone getPhoneOne(String name) {
-        ModelPhone result = session.selectOne("mapper.mysql.mapperPhone.????", name);
-        return null;
+        return session.selectOne("mapper.mysql.mapperPhone.getPhoneOne", name);
     }
     
     @Override
     public List<ModelPhone> getPhoneList() {
-        // TODO Auto-generated method stub
-        return null;
+        return session.selectList("mapper.mysql.mapperPhone.getPhoneList");
     }
     
     @Override
     public int insertPhone(ModelPhone phone) {
-        // TODO Auto-generated method stub
-        return 0;
+        return session.insert("mapper.mysql.mapperPhone.insertPhone", phone);
     }
     
     @Override
     public int insertPhoneList(List<ModelPhone> phones) {
-        // TODO Auto-generated method stub
-        return 0;
+        return session.insert("mapper.mysql.mapperPhone.insertPhoneList", phones);
     }
 }
