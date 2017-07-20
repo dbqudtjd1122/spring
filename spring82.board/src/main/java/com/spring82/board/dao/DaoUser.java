@@ -1,75 +1,83 @@
 package com.spring82.board.dao;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.ibatis.session.SqlSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Repository;
 
 import com.spring82.board.model.ModelUser;
 
-@Repository
+@Repository("daouser")
 public class DaoUser implements IDaoUser {
-    // SLF4J Logging
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-    
+
     @Autowired
-    SqlSession session;
+    @Qualifier("sqlSession")
+    private SqlSession session;
+    
+
+    public DaoUser() {
+        super();
+    }
+
+
+    @Override
+    public ModelUser selectUserOne(ModelUser user) {
+        return session.selectOne("mapper.mapperUser.selectUserOne", user);
+    }
+
+    @Override
+    public List<ModelUser> selectUserList(ModelUser user) {
+        return session.selectList("mapper.mapperUser.selectUserList", user);
+    }
     
     @Override
     public int insertUser(ModelUser user) {
-        return session.insert("mapper.mysql.mapperUser.insertUser", user);
+        return session.insert("mapper.mapperUser.insertUser", user);   
     }
-    
+
     @Override
-    public ModelUser login(String id, String pw) {
+    public ModelUser login(String id, String pw ) {
+
         ModelUser user = new ModelUser(id, pw);
-        return session.selectOne("mapper.mysql.mapperUser.login", user);
+        return session.selectOne("mapper.mapperUser.login", user);
     }
-    
+
     @Override
     public int logout(String userid) {
+        // TODO Auto-generated method stub
         return 0;
     }
-    
+
     @Override
     public int updateUserInfo(ModelUser updateValue, ModelUser searchValue) {
-        Map<String, ModelUser> map = new HashMap<>();
-        map.put("updateValue", updateValue);
-        map.put("searchValue", searchValue);
-        return session.update("mapper.mysql.mapperUser.updateUserInfo", map);
+        
+        Map<String, ModelUser> parameter = new HashMap<String, ModelUser>();
+ 
+        parameter.put("updateValue",             updateValue);
+        parameter.put("searchValue",             searchValue);
+
+        return session.update("mapper.mapperUser.updateUserInfo", parameter);
     }
-    
+
     @Override
     public int updatePasswd(String newPasswd, String currentPasswd, String userid) {
         Map<String, String> map = new HashMap<>();
-        map.put("newPasswd"    , newPasswd    );
+        map.put("newPasswd"    , newPasswd);
         map.put("currentPasswd", currentPasswd);
-        map.put("userid"       , userid       );
-        return session.update("mapper.mysql.mapperUser.updatePasswd", map);
+        map.put("userid"       , userid);
+                
+        return session.update("mapper.mapperUser.updatePasswd", map);
     }
-    
+
     @Override
     public int deleteUser(ModelUser user) {
-        return session.update("mapper.mysql.mapperUser.deleteUser", user);
+        return session.update("mapper.mapperUser.deleteUser", user);
     }
-    
-    @Override
-    public ModelUser selectUserOne(ModelUser user) {
-        return session.selectOne("mapper.mysql.mapperUser.selectUserOne", user);
-    }
-    
-    @Override
-    public List<ModelUser> selectUserList(ModelUser user) {
-        return session.selectList("mapper.mysql.mapperUser.selectUserList", user);
-    }
-    
+	
     @Override
     public int checkuserid(String userid) {
-        return session.selectOne("mapper.mysql.mapperUser.checkuserid", userid);
+        return session.selectOne("mapper.mapperUser.checkuserid", userid);
     }
+    
 }
