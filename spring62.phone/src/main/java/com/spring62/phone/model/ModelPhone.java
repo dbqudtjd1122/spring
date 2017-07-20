@@ -6,7 +6,7 @@ public class ModelPhone {
     private String  name         = null; // `name`         VARCHAR(20) 
     private String  manufacturer = null; // `manufacturer` VARCHAR(40) 
     private Integer price        = null; // `price`        INT(11)
-    
+  
     public String getName() {
         return name;
     }

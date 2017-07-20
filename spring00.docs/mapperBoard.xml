@@ -21,7 +21,8 @@
           FROM TB_Bbs_Board
         ORDER BY boardnm
     </select>         
-           
+          
+    <!--  
     <select id="getBoardListResultMap" resultType="ModelBoard">
         SELECT * 
           FROM TB_Bbs_Board 
@@ -36,11 +37,12 @@
         <result property="UpdateUID" column="UpdateUID" />
         <result property="UpdateDT"  column="UpdateDT" />
     </resultMap>
-
+    
     <select id="getBoardCustomMap" resultMap="bbsResultMap">
         SELECT * 
           FROM TB_Bbs_Board 
     </select>
+    -->
         
     <insert id="insertBoard" parameterType="ModelBoard">
         INSERT INTO 

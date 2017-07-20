@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java24.board.dao.DaoBoard;
-import java24.board.infc.IBoard;
+import java24.board.dao.IDaoBoard;
 import java24.board.model.ModelArticle;
 import java24.board.model.ModelAttachfile;
 import java24.board.model.ModelBoard;
@@ -17,7 +17,7 @@ import java.util.List;
 
 
 @Service("serviceboard")
-public class ServiceBoard implements IBoard{
+public class ServiceBoard implements IServiceBoard{
     private static Logger log = LoggerFactory.getLogger(ServiceBoard.class);
     
 

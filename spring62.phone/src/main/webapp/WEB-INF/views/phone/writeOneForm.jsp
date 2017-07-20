@@ -33,8 +33,8 @@
         <input type="text" name="price" size="50" placeholder="폰 가격" required="required" /> <br> 
         
         <input type="button" id="writeone1" value="getParameter" />   
-        <input type="button" id="writeone2" value="@RequestParam " /> <br/>
-        <input type="button" id="writeone3" value="@ModelAttribute" />
+        <input type="button" id="writeone2" value="@RequestParam " /> 
+        <input type="button" id="writeone3" value="@ModelAttribute" /><br/>
         <input type="button" id="writeone4" value="Repository 패턴" /><br/>
     </form>
 </body>

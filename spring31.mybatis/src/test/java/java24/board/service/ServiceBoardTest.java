@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java24.board.infc.IBoard;
+import java24.board.dao.IDaoBoard;
 import java24.board.model.ModelArticle;
 import java24.board.model.ModelAttachfile;
 import java24.board.model.ModelBoard;
@@ -22,12 +22,12 @@ import java.util.List;
  * Created by Administrator on 2017-05-31.
  */
 public class ServiceBoardTest {
-    private  static IBoard service = null;
+    private  static IDaoBoard service = null;
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         try{
             ApplicationContext context = new ClassPathXmlApplicationContext("classpath:java24/board/ApplicationContext.xml");
-            service = context.getBean("serviceboard", IBoard.class);
+            service = context.getBean("serviceboard", IDaoBoard.class);
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -9,14 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import java24.board.infc.IBoard;
 import java24.board.model.ModelArticle;
 import java24.board.model.ModelAttachfile;
 import java24.board.model.ModelBoard;
 import java24.board.model.ModelComments;
 
 @Repository("daoboard")
-public class DaoBoard implements IBoard{
+public class DaoBoard implements IDaoBoard{
 
     @Autowired
     @Qualifier("sqlSession")

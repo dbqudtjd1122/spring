@@ -21,26 +21,6 @@
           FROM TB_Bbs_Board
         ORDER BY boardnm
     </select>         
-           
-    <select id="getBoardListResultMap" resultType="ModelBoard">
-        SELECT * 
-          FROM TB_Bbs_Board 
-    </select>
-    
-    <resultMap id="bbsResultMap" type="java.util.HashMap">
-        <id property="boardcd"       column="boardcd" />
-        <result property="boardnm"   column="boardnm" />
-        <result property="UseYN"     column="UseYN" />
-        <result property="InsertUID" column="InsertUID" />
-        <result property="InsertDT"  column="InsertDT" />
-        <result property="UpdateUID" column="UpdateUID" />
-        <result property="UpdateDT"  column="UpdateDT" />
-    </resultMap>
-
-    <select id="getBoardCustomMap" resultMap="bbsResultMap">
-        SELECT * 
-          FROM TB_Bbs_Board 
-    </select>
         
     <insert id="insertBoard" parameterType="ModelBoard">
         INSERT INTO 
