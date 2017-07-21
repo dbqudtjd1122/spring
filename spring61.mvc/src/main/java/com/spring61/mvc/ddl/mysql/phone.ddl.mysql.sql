@@ -1,15 +1,15 @@
 
--- springboard µ¥ÀÌÅÍº£ÀÌ½º ±¸Á¶ ³»º¸³»±â
+-- springboard ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 DROP DATABASE IF EXISTS springboard;
 CREATE DATABASE springboard DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
--- »ç¿ëÀÚ Ãß°¡
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
 GRANT ALL ON springboard.* TO tester1@localhost IDENTIFIED BY '1234';
 
 FLUSH PRIVILEGES;
 
 
--- µ¥ÀÌÅÍº£ÀÌ½º º¯°æ
+-- ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½
 USE springboard;
 
 
@@ -28,10 +28,10 @@ select * from TB_Phone;
 -- create a table TB_PERSON
 DROP TABLE IF EXISTS TB_PERSON;
 CREATE TABLE TB_PERSON (
-      id        NVARCHAR(20)    NOT NULL
+      id        NVARCHAR(20)    NOT NULL primary key 
+    , pw        NVARCHAR(40)    NOT NULL
     , name      NVARCHAR(40)    NOT NULL
     , email     NVARCHAR(40)    NOT NULL
-    , country   NVARCHAR(40)    NOT NULL
 );
 
 select * from TB_PERSON;

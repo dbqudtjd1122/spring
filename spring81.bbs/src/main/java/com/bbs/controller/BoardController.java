@@ -31,49 +31,68 @@ import com.bbs.model.*;
 import com.bbs.service.*;
 
 @Controller
-@RequestMapping("/board")
-public class BoardController  {
-
-    private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
-    
-    @Autowired
-    @Qualifier("serviceboard")
-	private IServiceBoard boardsrv; 
-    public IServiceBoard getBoardsrv() { return boardsrv; } 
-    public void setBoardsrv(IServiceBoard boardsrv) { this.boardsrv = boardsrv; } 
+public class BoardController {
 	
-    public BoardController() {
-        super();
-    }
+	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+
+	@Autowired
+	IServiceBoard boardsrv;
+	
+	@RequestMapping(value = "/board/boardlist", method = RequestMethod.GET)
+	public String boardlist( Model model ) {
+		logger.info("/board/boardlist");
+		
+		List<ModelBoard>  result = boardsrv.getBoardList();
+		model.addAttribute("list", result);
+		
+		return "board/boardlist";
+	}
+    
 
     /**
-	 * http://localhost/board/boardlist
-	 */
-	@RequestMapping(value = "/boardlist", method = RequestMethod.GET)
-    public String boardlist(Model model)  {
-
-        logger.info("BoardController.boardlist");
-		
-		List<ModelBoard> list = boardsrv.getBoardList();
-        
-        model.addAttribute("list", list);
-
-        return "board/boardlist";
+     * http://localhost/board/boardwrite
+     */
+    @RequestMapping(value = "/board/boardwrite", method = RequestMethod.GET)
+    public String boardwrite( Model model ) {
+        logger.info("/board/boardwrite : get");
+                
+        return "board/boardwrite";
     }
+    @RequestMapping(value = "/board/boardwrite", method = RequestMethod.POST)
+    public String boardwrite( Model model
+            , @RequestParam(value="boardcd", defaultValue="") String boardcd
+            , @RequestParam(value="boardnm", defaultValue="") String boardnm 
+            , @RequestParam(value="UseYN"  , defaultValue="") Boolean useYN ) {
+        logger.info("/board/boardwrite : post");
+        
+        // DB insert
+        ModelBoard board  = new ModelBoard();
+        board.setBoardcd(boardcd);
+        board.setBoardnm(boardnm);
+        board.setUseYN  (useYN  );
+        
+        int result =  boardsrv.insertBoard(board);
+        
+        if( result == 1 ){
+            // /board/boardlist 리다이렉트 
+            return "redirect:/board/boardlist";
+        }
+        else {            
+            return "board/boardwrite";            
+        }
+    }
+
+
 	
     /**
      * http://localhost/board/boardview?boardcd=qna
      */
-    @RequestMapping(value = "/boardview", method = RequestMethod.GET)
-    public String boardview( 
-		  @RequestParam(value="boardcd", required = false, defaultValue = "free") String boardcd 
-        , @RequestParam(value="boardnm", required = false, defaultValue = ""    ) String boardnm
-		, HttpServletRequest request
-		, Model model ) {
+    @RequestMapping(value = "/board/boardview", method = RequestMethod.GET)
+    public String boardview( Model model 
+		, @RequestParam(value="boardcd", required = false, defaultValue = "free") String boardcd 
+        , @RequestParam(value="boardnm", required = false, defaultValue = ""    ) String boardnm ) {
 
-        logger.info("BoardController.boardview");
-
-        boardcd = request.getParameter("boardcd");
+        logger.info("/board/boardview");
 
         if( StringUtils.isEmpty(boardcd) ) boardcd = "free";
 
@@ -85,22 +104,22 @@ public class BoardController  {
         model.addAttribute("board"  ,  board );
 
         return "board/boardview";
-    }
+    }	
 
-    
-    @RequestMapping(value="/boardview/{boardcd}", method=RequestMethod.GET)
-    public String boardviewPath( 
-		  @PathVariable(value="boardcd")  String boardcd 
-		, Model model) {
+    /**
+     * http://localhost/board/boardview/qna
+     */
+    @RequestMapping(value = "/board/boardview/{boardcd}", method = RequestMethod.GET)
+    public String boardview( Model model, @PathVariable(value="boardcd") String boardcd  ) {
 
-        logger.info("BoardController.boardview"); 
-                
+        logger.info("/board/boardview/{boardcd}");
+
         // DB 처리
-		ModelBoard board =  boardsrv.getBoardOne(boardcd);
+        ModelBoard board =  boardsrv.getBoardOne(boardcd);
         
-        // 모델 바인딩        
+        // 모델 바인딩
         model.addAttribute("boardNm", board.getBoardnm() );
-        model.addAttribute("board"  , board );
+        model.addAttribute("board"  ,  board );
 
         return "board/boardview";
     }
@@ -109,11 +128,10 @@ public class BoardController  {
     /**
      * http://localhost/board/boardmodify?boardcd=qna
      */
-    @RequestMapping(value = "/boardmodify", method = RequestMethod.GET)
-    public String boardmodify(
-	    	  HttpServletRequest request
-            , @RequestParam(value="boardcd")  String boardcd
-            , Model model) {
+    @RequestMapping(value = "/board/boardmodify", method = RequestMethod.GET)
+    public String boardmodify( Model model
+	    	, HttpServletRequest request
+            , @RequestParam(value="boardcd")  String boardcd ) {
 
         logger.info("BoardController.boardmodify");
 
@@ -135,7 +153,7 @@ public class BoardController  {
     /**
      * http://localhost/board/boardmodify?boardcd=qna
      */
-    @RequestMapping(value = "/boardmodify", method = RequestMethod.POST)
+    @RequestMapping(value = "/board/boardmodify", method = RequestMethod.POST)
     public String boardmodify( 
 		  HttpServletRequest request
 		, @ModelAttribute ModelBoard board
@@ -167,7 +185,7 @@ public class BoardController  {
     /**
      * http://localhost/board/boardmodify/qna
      */
-    @RequestMapping(value = "/boardmodify/{boardcd}", method = RequestMethod.GET)
+    @RequestMapping(value = "/board/boardmodify/{boardcd}", method = RequestMethod.GET)
     public String boardmodifyPath(
               HttpServletRequest request
             , @PathVariable(value="boardcd")  String boardcd
@@ -191,7 +209,7 @@ public class BoardController  {
     /**
      * http://localhost/board/boardview/qna
      */
-    @RequestMapping(value = "/boardmodify/{boardcd}", method = RequestMethod.POST)
+    @RequestMapping(value = "/board/boardmodify/{boardcd}", method = RequestMethod.POST)
     public String boardmodifyPath( 
           HttpServletRequest request
         , @PathVariable(value="boardcd")  String boardcd
@@ -221,31 +239,7 @@ public class BoardController  {
     }
     
 
-    /**
-     * http://localhost/board/boardwrite
-     */
-    @RequestMapping(value = "/boardwrite", method = RequestMethod.GET)
-    public String boardwrite(Model model)  {
-
-        logger.info("BoardController.boardwrite");
-
-        return "board/boardwrite";
-    }
-    @RequestMapping(value = "/boardwrite", method = RequestMethod.POST)
-    public String boardwrite(@ModelAttribute ModelBoard board, Model model)  {
-
-        logger.info("BoardController.boardwrite");
-        
-        // DB 처리
-        boardsrv.insertBoard(board);
-
-        // http://localhost/board/boardlist 가 출력되게. redirect 를 이용 
-        return "redirect:/board/boardlist";
-        //return "redirect:/board/boardlist?boardcd=" + board.getBoardcd();
-    }
-    
-
-    @RequestMapping(value = "/boarddelete/{boardcd}", method = { RequestMethod.POST } )
+    @RequestMapping(value = "/board/boarddelete/{boardcd}", method = { RequestMethod.POST } )
     public String boarddelete(  @PathVariable(value="boardcd") String boardcd,  Model model)  {
 
         logger.info("BoardController.boarddelete");
@@ -271,7 +265,7 @@ public class BoardController  {
     /**
      * http://localhost/board/articlelist?boardcd=qna&curPage=1&searchWord=
      */
-	@RequestMapping(value="/articlelist", method={RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value="/board/articlelist", method={RequestMethod.GET, RequestMethod.POST})
     public String articlelist( @RequestParam(value="boardcd"   , required = false, defaultValue = "free") String boardcd
                              , @RequestParam(value="curPage"   , required = false, defaultValue = "1"   ) Integer curPage
                              , @RequestParam(value="searchWord", required = false, defaultValue = ""    ) String searchWord 
@@ -317,7 +311,7 @@ public class BoardController  {
     /**
      * http://localhost/board/articlewrite?boardcd=qna&curPage=1&searchWord=
      */
-	@RequestMapping(value = "/articlewrite", method = RequestMethod.GET)
+	@RequestMapping(value = "/board/articlewrite", method = RequestMethod.GET)
     public String articlewrite(Model model
             , @RequestParam(value="boardcd"   , defaultValue="free") String boardcd
             , @RequestParam(value="curPage"   , defaultValue="1"   ) Integer curPage 
@@ -340,7 +334,7 @@ public class BoardController  {
      * http://localhost/board/articlewrite
      */
     
-   @RequestMapping(value = "/articlewrite", method = RequestMethod.POST)
+   @RequestMapping(value = "/board/articlewrite", method = RequestMethod.POST)
     public String articlewrite(Model model
             , @ModelAttribute ModelArticle article
             , MultipartFile upload ) throws IllegalStateException, IOException {
@@ -368,7 +362,7 @@ public class BoardController  {
 	}
 
 	// http://localhost/board/articleview?articleno=17&boardcd=free&curPage=1&searchWord=
-	@RequestMapping(value="/articleview", method=RequestMethod.GET)
+	@RequestMapping(value="/board/articleview", method=RequestMethod.GET)
 	public String articleview(
 	          @RequestParam(value="articleno" , defaultValue="") Integer articleno 
 			, @RequestParam(value="boardcd"   , defaultValue="") String boardcd 
@@ -434,7 +428,7 @@ public class BoardController  {
 		return "board/articleview";
 	}
 
-    @RequestMapping(value="/articlemodify", method=RequestMethod.GET)
+    @RequestMapping(value="/board/articlemodify", method=RequestMethod.GET)
     public String articlemodify(
             @RequestParam(value="articleno" , defaultValue="") Integer articleno 
           , @RequestParam(value="boardcd"   , defaultValue="") String  boardcd 
@@ -457,7 +451,7 @@ public class BoardController  {
         return "board/articlemodify";
     }
     
-    @RequestMapping(value="/articlemodify", method=RequestMethod.POST)
+    @RequestMapping(value="/board/articlemodify", method=RequestMethod.POST)
     public String articlemodify(
               @ModelAttribute ModelArticle updatearticle
             , @RequestParam(value="articleno" , defaultValue="") Integer articleno 
@@ -511,7 +505,7 @@ public class BoardController  {
 
     }
 
-    @RequestMapping(value="/articledelete", method=RequestMethod.POST)
+    @RequestMapping(value="/board/articledelete", method=RequestMethod.POST)
     public String articledelete(
               @RequestParam(value="articleno" , defaultValue="") Integer articleno 
             , @RequestParam(value="boardcd"   , defaultValue="") String boardcd 
@@ -531,7 +525,7 @@ public class BoardController  {
     }
     
 	
-	@RequestMapping(value="/commentadd", method=RequestMethod.POST)
+	@RequestMapping(value="/board/commentadd", method=RequestMethod.POST)
 	public String commentadd(
               @RequestParam(value="articleno" , defaultValue="") Integer articleno 
             , @RequestParam(value="boardcd"   , defaultValue="") String boardcd 
@@ -553,7 +547,7 @@ public class BoardController  {
 			"&searchWord=" + searchWord;
 	}
 
-	@RequestMapping(value="/commentupdate", method=RequestMethod.POST)
+	@RequestMapping(value="/board/commentupdate", method=RequestMethod.POST)
 	public String commentupdate(
             @RequestParam(value="articleno" , defaultValue="") Integer articleno 
           , @RequestParam(value="boardcd"   , defaultValue="") String boardcd 
@@ -579,7 +573,7 @@ public class BoardController  {
 	}
 	
 
-	@RequestMapping(value="/commentdel", method=RequestMethod.POST)
+	@RequestMapping(value="/board/commentdel", method=RequestMethod.POST)
 	public String commentdelete( 
             @RequestParam(value="articleno" , defaultValue="") Integer articleno 
           , @RequestParam(value="boardcd"   , defaultValue="") String boardcd 
@@ -632,7 +626,7 @@ public class BoardController  {
 	}
 
     
-    @RequestMapping(value="/commentaddajax", method=RequestMethod.POST)
+    @RequestMapping(value="/board/commentaddajax", method=RequestMethod.POST)
     public String commentaddajax(
               @RequestParam(value="articleno" , defaultValue="") Integer articleno 
             , @RequestParam(value="memo", defaultValue="") String memo
@@ -655,7 +649,7 @@ public class BoardController  {
         return "board/articleview-commentlistbody";
     }
 
-    @RequestMapping(value="/commentupdateajax", method=RequestMethod.POST)
+    @RequestMapping(value="/board/commentupdateajax", method=RequestMethod.POST)
     @ResponseBody
     public int commentupdateajax(
             @RequestParam(value="commentno", defaultValue="") Integer commentno  
@@ -680,7 +674,7 @@ public class BoardController  {
     }
     
 
-    @RequestMapping(value="/commentdeleteajax", method=RequestMethod.POST)
+    @RequestMapping(value="/board/commentdeleteajax", method=RequestMethod.POST)
     @ResponseBody
     public int commentdeleteajax( @RequestParam(value="commentno", defaultValue="") Integer commentno  ) throws Exception {
         

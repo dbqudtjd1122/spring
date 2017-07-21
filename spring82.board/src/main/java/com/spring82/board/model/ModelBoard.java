@@ -30,11 +30,14 @@ public class ModelBoard {
     }
     
     public Boolean getUseYN() {
-        return UseYN;
+        if( this.UseYN == null)
+            return false;
+        else 
+            return UseYN;
     }
     
     public void setUseYN(Boolean useYN) {
-        UseYN = useYN;
+       this.UseYN = useYN;
     }
     
     public String getInsertUID() {
