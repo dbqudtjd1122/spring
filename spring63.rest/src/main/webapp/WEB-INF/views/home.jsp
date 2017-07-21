@@ -10,9 +10,10 @@
 </h1>
 
 <P>  The time on the server is ${serverTime}. </P>
-<p> <a href="/rest/currentversion"              target="_blank"> /rest/currentversion </a></p>
-<p> <a href="/rest/login?id=test1id&pw=test1pw" target="_blank"> /rest/login?id=test1id&pw=test1pw" </a></p>
-<p> <a href="/rest/personlist"                  target="_blank"> /rest/personlist </a></p>
-<p> <a href="/rest/insertperson?id=test11id&pw=test11pw&name=test11name&email=test11email" > /rest/insertperson </a></p>
+<p> <a href="/rest/currentversion"              target="_blank"> "/rest/currentversion"               </a></p>
+<p> <a href="/rest/login?id=test1id&pw=test1pw" target="_blank"> "/rest/login?id=test1id&pw=test1pw"  </a></p>
+<p> <a href="/rest/login?id=test2id&pw=test2pw" target="_blank"> "/rest/login?id=test2id&pw=test2pw"  </a></p>
+<p> <a href="/rest/personlist?name=test"        target="_blank"> "/rest/personlist?name=test"         </a></p>
+<p> <a href="/rest/insertperson?id=test3id&pw=test3pw&name=test3name&email=test3email" > /rest/insertperson </a></p>
 </body>
 </html>
