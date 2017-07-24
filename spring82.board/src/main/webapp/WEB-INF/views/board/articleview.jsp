@@ -267,7 +267,7 @@
                 		</td>
                 		<td>
                 			<a href="javascript:goView('${article.articleno }')">${article.title }</a>
-                			<c:if test="${article.attachFileNum > 0 }">
+                			<c:if test="${article.attachfileNum > 0 }">
                 				<img src="/resources/images/attach.png" alt="첨부파일" />
                 			</c:if>
                 			<c:if test="${article.commentNum > 0 }">

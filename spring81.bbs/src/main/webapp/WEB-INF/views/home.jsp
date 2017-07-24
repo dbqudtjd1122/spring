@@ -13,17 +13,6 @@
     <p>  The time on the server is ${serverTime}. </p>
     <hr />
     
-    <h2>article 게시판 만들기</h2>  
-    <ul>
-        <li><a href="./board/articlelist"  target="_blank">./board/articlelist</a> </li>
-        <li>/board/articleview  ?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
-        <li>/board/articlewrite ?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
-        <li>/board/articlemodify?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
-        <li>/board/articledelete?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
-    </ul>
-    <br />
-    <hr />
-    
     <h2>board 게시판 만들기</h2>  
     
     <ol>
@@ -31,8 +20,8 @@
         <li><a href="./board/boardview?boardcd=qna" target="_blank">./board/boardview?boardcd=qna </a></li>
         <li><a href="./board/boardview" target="_blank">./board/boardview  == ./board/boardview?boardcd=free</a></li>
         <li><a href="./board/boardview/qna" target="_blank">./board/boardview/qna</a></li>
-        <li><span> boardlist 에 boardview 연결하기 </span> </li>
-        <li><span> boardlist의 tr을 클릭하면 boardview 가 열리게 하시오 </span>
+        <li><a href="/board/boardlist" target="_blank">./board/boardlist</a>에 <a href="/board/boardview" target="_blank">./board/boardview</a> 연결하기</li>
+        <li><span> <a href="/board/boardlist" target="_blank">./board/boardlist</a>에서 tr을 클릭하면 boardview 가 열리게 하시오 </span>
             <xmp>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script>    
@@ -50,10 +39,16 @@
         </li>
         <li><a href="./board/boardmodify?boardcd=qna" target="_blank">./board/boardmodify?boardcd=qna</a></li>
         <li><a href="./board/boardmodify/qna" target="_blank">./board/boardmodify/qna</a></li>
-        <li><span> boardview 에 boardmodify 연결하기 </span></li>
+        <li><a href=".//board/boardview" target="_blank">./board/boardview</a>에 ./board/boardmodify 연결하기 </li>
         <li><a href="./board/boardwrite" target="_blank">./board/boardwrite</a></li>
-        <li><span> boardlist와 boardview 에 boardwrite 연결하기 </span></li>
-        <li><span> boardview 에 boarddelete 연결하기 </span></li>
+        <li><a href="/board/boardlist" target="_blank">./board/boardlist</a>와 <a href="/board/boardview" target="_blank">./board/boardview</a> 에 <a href="/board/boardwrite" target="_blank">boardwrite</a> 연결하기</li>
+        <li><a href="/board/boardview" target="_blank">./board/boardview</a>에 ./board/boarddelete 연결하기
+            <ul>
+                <li>delete 는 반드시 post 방식으로 처리해야 함. get으로 하면 안됨.</li>
+                <li>ajax를 이용하는 POST 방식</li>
+                <li>form 을 이용하는 POST 방식</li>
+            </ul>
+        </li>
         <li>jsp 파일에 layout include 하기
             <ul> 
                 <li> boardlist.jsp      </li>
@@ -63,49 +58,51 @@
             </ul>
             <xmp>
 
-&lt;div id="wrap"&gt;
+<div id="wrap">
 
-    &lt;div id="header"&gt;
-        &lt; %@ include file="../inc/header.jsp" % &gt;
-    &lt;/div&gt;
+    <div id="header">
+        < %@ include file="../inc/header.jsp" % >
+    </div>
 
-    &lt;div id="main-menu"&gt;
-        &lt; %@ include file="../inc/main-menu.jsp" % &gt;
-    &lt;/div&gt; 
+    <div id="main-menu">
+        < %@ include file="../inc/main-menu.jsp" % >
+    </div> 
 
-    &lt;div id="container"&gt;
-    &lt;/div&gt;
+    <div id="container">
+    </div>
         
-    &lt;div id="sidebar"&gt;
-        &lt; %@ include file="bbs-menu.jsp" % &gt;
-    &lt;/div&gt;
+    <div id="sidebar">
+        < %@ include file="bbs-menu.jsp" % >
+    </div>
     
-    &lt;div id="extra"&gt;
-        &lt; %@ include file="../inc/extra.jsp" % &gt;
-    &lt;/div&gt;
+    <div id="extra">
+        < %@ include file="../inc/extra.jsp" % >
+    </div>
 
-    &lt;div id="footer"&gt;
-        &lt; %@ include file="../inc/footer.jsp" % &gt;
-    &lt;/div&gt; 
+    <div id="footer">
+        < %@ include file="../inc/footer.jsp" % >
+    </div> 
     
-&lt;/div&gt;            
+</div>            
             </xmp>
         </li>
     </ol>    
     <hr />
     
     
+    <h2>article 게시판 만들기</h2>  
+    <ul>
+        <li><a href="./board/articlelist"  target="_blank">./board/articlelist</a> </li>
+        <li>/board/articleview  ?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
+        <li>/board/articlewrite ?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
+        <li>/board/articlemodify?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
+        <li>/board/articledelete?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
+    </ul>
+    <br />
+    <hr />
+    
     <h2> RestController </h2>    
     <ol>
-        <li>build.gradle 라이브러리 추가
-            <xmp>
-    // json library :: @ResponseBody를 이용해 json 데이터를 반환하기 위한 라이브러리
-    compile "org.codehaus.jackson:jackson-mapper-asl:1.9.13"
-        
-    // JsonView를 사용하기 위한 라이브러리
-    compile group: 'net.sf.json-lib', name: 'json-lib-ext-spring', version: '1.0.2'
-            </xmp>
-        </li>
         <li>RestConroller.java 만들기
             <xmp>
 @Controller
@@ -184,20 +181,20 @@ public class RestController {
   
     <xmp>
         <!-- 에러 페이지 설정 -->
-        &lt;error-page&gt;
-            &lt;error-code&gt;403&lt;/error-code&gt;
-            &lt;location&gt;/WEB-INF/views/common/error.jsp&lt;/location&gt;
-        &lt;/error-page&gt;
+        <error-page>
+            <error-code>403</error-code>
+            <location>/WEB-INF/views/common/error.jsp</location>
+        </error-page>
     
-        &lt;error-page&gt;
-            &lt;error-code&gt;404&lt;/error-code&gt;
-            &lt;location&gt;/WEB-INF/views/common/error/404.jsp&lt;/location&gt;
-        &lt;/error-page&gt;
+        <error-page>
+            <error-code>404</error-code>
+            <location>/WEB-INF/views/common/error/404.jsp</location>
+        </error-page>
     
-        &lt;error-page&gt;
-            &lt;error-code&gt;500&lt;/error-code&gt;
-            &lt;location&gt;/WEB-INF/views/common/error/500.jsp&lt;/location&gt;
-        &lt;/error-page&gt;  
+        <error-page>
+            <error-code>500</error-code>
+            <location>/WEB-INF/views/common/error/500.jsp</location>
+        </error-page>  
     </xmp>
     <hr />
    

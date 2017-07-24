@@ -41,7 +41,7 @@
               <if test="searchValue.boardnm != null and searchValue.boardnm != ''">
               AND boardnm  = #{searchValue.boardnm}
               </if>
-              <if test="searchValue.UseYN != null">
+              <if test="searchValue.UseYN != null and searchValue.UseYN != ''">
               AND UseYN    = #{searchValue.UseYN}
               </if>
     </update>

@@ -20,10 +20,10 @@
         $(document).ready( function(e){
         	
         	$("#boardlist").click(function(e){
-        		window.location='/board/boardview/${board.boardcd}' ;
+                window.location='/board/boardlist' ;
         	});
             $("#boardview").click(function(e){
-            	window.location='/board/boardlist' ;
+                window.location='/board/boardview/${board.boardcd}' ;
             });
             $("#boardsubmit").click(function(e){
 

@@ -8,17 +8,13 @@
 <head>
     <meta charset="utf-8" /> 
     <meta name="Keywords" content="게시판 목록" />
-    <meta name="Description" content="게시판 목록" />
-    
-    <title>${boardNm }</title>
-    
+    <meta name="Description" content="게시판 목록" />    
+    <title>${boardnm }</title>    
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" media="screen" />
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script type="text/javascript">
     	function goList(page) {
-    		var form = document.getElementById("listForm");
-    		form.curPage.value = page;
-    		form.submit();
+    		window.location.href = window.location.href + "?curPage=" + page + "&searchWord=${searchWord}"
     	}
     
     	function goView(articleno) {
@@ -28,8 +24,7 @@
     	}
     
     	function goWrite() {
-    		var form = document.getElementById("writeForm");
-    		form.submit();
+            window.location.href = "/board/articlewrite/${boardcd }?curPage=${curPage}&searchWord=${searchWord}"
     	}
     </script>           
 </head>
@@ -50,7 +45,7 @@
 			<div id="url-navi">BBS</div>
                 
                 <!-- 본문 시작 -->			
-                <h1>${boardNm }</h1>
+                <h1>${boardnm }</h1>
                 <div id="bbs">
                 	<table>
                 	<tr>
@@ -65,7 +60,7 @@
                 		<td style="text-align: center;">${no - status.index}</td>
                 		<td>
                 			<a href="javascript:goView('${article.articleno }')">${article.title }</a>
-                			<c:if test="${article.attachFileNum > 0 }">
+                			<c:if test="${article.attachfileNum > 0 }">
                 				<img src="/resources/images/attach.png" alt="첨부파일" />
                 			</c:if>
                 			<c:if test="${article.commentNum > 0 }">
@@ -84,7 +79,7 @@
                 	<div id="paging" style="text-align: center;">
                 		
                 		<c:if test="${prevLink > 0 }">
-                			<a href="javascript:goList('${prevPage }')">[이전]</a>
+                			<a href="javascript:goList('${firstPage }')">[이전]</a>
                 		</c:if>
                 
                 		<c:forEach var="i" items="${pageLinks }" varStatus="stat">
@@ -99,7 +94,7 @@
                 		</c:forEach>
                 		
                 		<c:if test="${nextLink > 0 }">
-                			<a href="javascript:goList('${nextPage }')">[다음]</a>
+                			<a href="javascript:goList('${lastPage }')">[다음]</a>
                 		</c:if>
                 		
                 	</div>
@@ -139,23 +134,10 @@
 </div>
 
 <div id="form-group" style="display: none;">
-	<form id="listForm" action="./articlelist" method="get">
-		<p>
-			<input type="hidden" name="boardcd" value="${boardcd }" />
-			<input type="hidden" name="curPage" />
-			<input type="hidden" name="searchWord" value="${searchWord }" />
-		</p>
-		</form>
-		<form id="viewForm" action="./articleview" method="get">
+
+	<form id="viewForm" action="./articleview" method="get">
 		<p>
 			<input type="hidden" name="articleno" />
-			<input type="hidden" name="boardcd" value="${boardcd }" />
-			<input type="hidden" name="curPage" value="${curPage }" />
-			<input type="hidden" name="searchWord" value="${searchWord }" />
-		</p>
-		</form>
-		<form id="writeForm" action="./articlewrite" method="get">
-		<p>
 			<input type="hidden" name="boardcd" value="${boardcd }" />
 			<input type="hidden" name="curPage" value="${curPage }" />
 			<input type="hidden" name="searchWord" value="${searchWord }" />

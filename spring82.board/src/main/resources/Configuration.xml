@@ -12,7 +12,7 @@
 
     <!-- Model 클래스를 등록한다. --> 
     <typeAliases>
-        <package name="com.spring82.board.model" />
+        <package name="com.spring81.bbs.model" />
     </typeAliases>
 
 

@@ -10,7 +10,7 @@
     <meta name="Keywords" content="게시판 상세보기" />
     <meta name="Description" content="게시판 상세보기" />
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" media="screen" />
-    <title>${boardNm }</title>
+    <title>${boardnm }</title>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script type="text/javascript">
         $(document).ready( function(e){
@@ -23,14 +23,12 @@
             $('.boardmodify').click( function(e){
                 window.location = "/board/boardmodify/${board.boardcd}" ;
             });
-            $('.boarddelete').click( function(e){
-                //window.location = "/board/boarddelete/${board.boardcd}" ;
-                
-
+            $('.boarddelete').click( function(e){  
+                          
                 $.ajax({
                     url : '/board/boarddelete/${board.boardcd}',
-                    data: null,        // 사용하는 경우에는 { data1:'test1', data2:'test2' }
-                    type: 'post',       // get, post
+                    data: null,        // 사용하는 경우에는 {boardcd: '${board.boardcd}'}
+                    type: 'post',      // get, post
                     timeout: 30000,    // 30초
                     dataType: 'text',  // text, html, xml, json, jsonp, script
                     beforeSend : function() {
@@ -43,10 +41,10 @@
                 }).fail( function(xhr, textStatus, error ) {
                     // 통신이 실패했을 때 이 함수를 타게 된다.
                     var msg ='';
-                    msg += "code:"    + xhr.status         + "\n";
-                    msg += "message:" + xhr.responseText   + "\n";
-                    msg += "status:"  + textStatus         + "\n";
-                    msg += "error  : "+ error              + "\n";
+                    msg += "code:"    + xhr.status       + "\n";
+                    msg += "message:" + xhr.responseText + "\n";
+                    msg += "status:"  + textStatus       + "\n";
+                    msg += "error : " + error            + "\n";
                     alert( msg );
                     console.log(msg);
                 }).always( function(data, textStatus, xhr ) {
