@@ -73,4 +73,15 @@ public class RestController {
         
         return result;
     }
+
+    @RequestMapping(value = "/rest/personone", method = {RequestMethod.GET, RequestMethod.POST} )
+    @ResponseBody
+    public ModelPerson personone(Model model
+            , @RequestParam(value="name", defaultValue="") String name ) {
+        logger.info("/rest/personone");
+
+        ModelPerson person = new ModelPerson("id", "pw", "name", "email");
+       
+        return person;
+    }
 }
