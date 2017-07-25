@@ -51,6 +51,18 @@ public class RestController {
         return result;
     }    
 
+    @RequestMapping(value = "/rest/personone", method = {RequestMethod.GET, RequestMethod.POST} )
+    @ResponseBody
+    public ModelPerson personone(Model model
+            , @RequestParam(value="name", defaultValue="") String name ) {
+        logger.info("/rest/personone");
+        
+        ModelPerson result = new ModelPerson("valid", "valpw", "valname", "valemail");
+        
+        return result;
+    }    
+
+
     @RequestMapping(value = "/rest/personlist", method = {RequestMethod.GET, RequestMethod.POST} )
     @ResponseBody
     public List<ModelPerson> personlist(Model model
@@ -74,16 +86,5 @@ public class RestController {
         int  result = svr.insertPerson(person);
         
         return result;
-    }
-
-    @RequestMapping(value = "/rest/personone", method = {RequestMethod.GET, RequestMethod.POST} )
-    @ResponseBody
-    public ModelPerson personone(Model model
-            , @RequestParam(value="name", defaultValue="") String name ) {
-        logger.info("/rest/personone");
-
-        ModelPerson person = new ModelPerson("id", "pw", "name", "email");
-       
-        return person;
     }
 }
