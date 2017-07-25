@@ -79,8 +79,7 @@ public class RestController {
     
     @RequestMapping(value = "/rest/insertperson", method = {RequestMethod.GET, RequestMethod.POST} )
     @ResponseBody
-    public int insertperson(Model model
-            , @RequestBody ModelPerson person) {
+    public int insertperson(Model model, @RequestBody ModelPerson person) {
         logger.info("/rest/insertperson");
         
         int  result = svr.insertPerson(person);
@@ -90,8 +89,7 @@ public class RestController {
 
     @RequestMapping(value = "/rest/personfind", method = {RequestMethod.GET, RequestMethod.POST} )
     @ResponseBody
-    public List<ModelPerson> personfind(Model model
-            , @RequestBody ModelPerson person) {
+    public List<ModelPerson> personfind(Model model, @RequestBody ModelPerson person) {
         logger.info("/rest/personfind");
 
         List<ModelPerson>  result = svr.getPersonList(person);
