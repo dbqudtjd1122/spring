@@ -266,15 +266,17 @@ ul#nav li a:hover {
 .bbs-strong {
 	color: #FFA500;
 	font-weight: bold;
+	cursor:auto;
 }
 
-#paging a {
+#paging span {
 	color: #555;
 	text-decoration: none;
 	font-weight: bold;
+	cursor:pointer;
 }
 
-#paging a:hover {
+#paging span:hover {
 	color: #555;
 	text-decoration: underline;
 }

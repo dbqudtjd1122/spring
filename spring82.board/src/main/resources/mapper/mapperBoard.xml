@@ -71,6 +71,17 @@
            AND boardnm LIKE CONCAT( '%' , #{boardnm} , '%' )
            </if>
     </select>
+        
+    <select id="getBoardTotalRecord" parameterType="hashmap" resultType="int">
+        SELECT count(*) FROM TB_Bbs_Board 
+         WHERE 1 = 1
+            <if test="boardcd != null and boardcd != ''">
+            AND boardcd = #{boardcd}
+            </if>
+            <if test="boardnm != null and boardnm != ''">
+            AND boardnm LIKE #{searchWord} 
+            </if>
+    </select>
     
     <select id="getBoardPaging"  parameterType="hashmap"  resultType="ModelBoard">
         SELECT boardcd, boardnm, UseYN

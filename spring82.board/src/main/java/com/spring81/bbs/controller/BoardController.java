@@ -5,11 +5,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.support.PagedListHolder;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,15 +21,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.spring81.bbs.commons.PagingHelper;
-import com.spring81.bbs.model.ModelArticle;
-import com.spring81.bbs.model.ModelBoard;
-import com.spring81.bbs.service.IServiceBoard;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-/**
- * Handles requests for the application home page.
- */
+import com.spring81.bbs.commons.*;
+import com.spring81.bbs.model.*;
+import com.spring81.bbs.service.*;
+
 @Controller
 public class BoardController {
 	
@@ -161,7 +165,7 @@ public class BoardController {
             return "redirect:/board/boardlist";
         }
         else {            
-            return "board/boardmodify";            
+            return "board/boardmodify/" + board.getBoardcd();            
         }
     }
     
@@ -173,7 +177,7 @@ public class BoardController {
     public String boardmodifypath( Model model 
             , @PathVariable(value="boardcd")  String boardcd
             , HttpServletRequest request) {
-        logger.info("/board/boardmodifypath");
+        logger.info("/board/boardmodifypath : GET");
         
         // DB 처리
         ModelBoard board =  boardsrv.getBoardOne(boardcd);
@@ -183,7 +187,40 @@ public class BoardController {
         model.addAttribute("board"  , board );
 
         return "board/boardmodify";
-    }     
+    }
+    
+
+    /**
+     * http://localhost/board/boardview/qna
+     */
+    @RequestMapping(value = "/board/boardmodify/{boardcd}", method = RequestMethod.POST)
+    public String boardmodifypath( 
+          HttpServletRequest request
+        , @PathVariable(value="boardcd")  String boardcd
+        , @ModelAttribute("board") ModelBoard board
+        , Model model )  {
+
+        logger.info("/board/boardmodifypath : POST");
+
+        ModelBoard updateBoard = new ModelBoard();
+        updateBoard.setBoardnm(  board.getBoardnm()  );
+        updateBoard.setUseYN  (  board.getUseYN() == null ? false:  board.getUseYN()  );
+        
+        ModelBoard searchBoard = new ModelBoard();
+        searchBoard.setBoardcd(  board.getBoardcd()  );
+                
+        // 디비 업데이트
+        int result = boardsrv.updateBoard(updateBoard, searchBoard);
+        
+        if( result > 0 ) {
+            // http://localhost/board/boardlist 가 출력되게. redirect 를 이용 
+            return "redirect:/board/boardlist";       
+        }
+        else {
+            // http://localhost/board/boardmodify?boardcd=qna
+            return "redirect:/board/boardmodify/" + board.getBoardcd() ;  
+        }
+    }       
 
     /**
      * http://localhost/board/boarddelete/qna
@@ -208,15 +245,13 @@ public class BoardController {
         }
     } 
     
-
-
     /**
      * http://localhost/board/articlelist/qna?curPage=1&searchWord=
      */
     @RequestMapping(value = "/board/articlelist/{boardcd}", method = RequestMethod.GET)
     public String articlelist( Model model
             , @PathVariable(value="boardcd") String boardcd
-            , @RequestParam(value="curPage"   , defaultValue="1") int    curPage
+            , @RequestParam(value="curPage"   , defaultValue="1") Integer    curPage
             , @RequestParam(value="searchWord", defaultValue="" ) String searchWord) {
         logger.info("/board/articlelist");
 
@@ -239,11 +274,73 @@ public class BoardController {
         model.addAttribute("list"      , list      );
         model.addAttribute("no"        , paging.getListNo   () );
         model.addAttribute("prevLink"  , paging.getPrevLink () );
-        model.addAttribute("firstPage" , paging.getFirstPage() );
         model.addAttribute("pageLinks" , paging.getPageLinks() );
-        model.addAttribute("lastPage"  , paging.getLastPage () );
         model.addAttribute("nextLink"  , paging.getNextLink () );
         
         return "board/articlelist";
+    }
+
+	// http://localhost/board/articleview/free/17?curPage=1&searchWord=    
+    @RequestMapping(value = "/board/articleview/{boardcd}/{articleno}", method = RequestMethod.GET)
+    public String articleview( Model model 
+            , @PathVariable(value="boardcd"  )  String  boardcd
+            , @PathVariable(value="articleno")  Integer articleno
+            , @RequestParam(value="curPage"   , defaultValue="1") Integer curPage
+            , @RequestParam(value="searchWord", defaultValue="" ) String  searchWord ) {
+        logger.info("/board/articleview");
+        
+        // boardcd
+        // articleno
+        // curPage
+        // searchWord
+        
+        //boardnm
+        String boardnm = boardsrv.getBoardName(boardcd);
+        model.addAttribute("boardnm", boardnm);
+        
+        //thisArticle
+        ModelArticle thisArticle = boardsrv.getArticle(articleno);
+        model.addAttribute("thisArticle", thisArticle);
+        
+        // attachFileList
+        List<ModelAttachfile> attachFileList = boardsrv.getAttachFileList(articleno);
+        model.addAttribute("attachFileList", attachFileList);
+        
+        //commentList
+        List<ModelComments> commentList = boardsrv.getCommentList(articleno);
+        model.addAttribute("commentList", commentList);        
+        
+        //nextArticle
+        ModelArticle nextArticle = boardsrv.getNextArticle(articleno, boardcd, searchWord);
+        model.addAttribute("nextArticle", nextArticle);
+        
+        //prevArticle
+        ModelArticle prevArticle = boardsrv.getPrevArticle(articleno, boardcd, searchWord);
+        model.addAttribute("prevArticle", nextArticle);
+
+        //articleList
+        //no
+        //prevLink
+        //pageLinks
+        //nextLink
+
+        
+        // 전체 게시글 갯수 가져오기
+        int totalRecord = boardsrv.getArticleTotalRecord(boardcd, searchWord);
+        
+        // 페이지 처리
+        PagingHelper paging = new PagingHelper(totalRecord, curPage);        
+        int start = paging.getStartRecord();
+        int end   = paging.getEndRecord();
+        
+        List<ModelArticle> list = boardsrv.getArticleList(boardcd, searchWord, start, end);
+        model.addAttribute("articleList"      , articleList      );
+        model.addAttribute("no"        , paging.getListNo   () );
+        model.addAttribute("prevLink"  , paging.getPrevLink () );
+        model.addAttribute("pageLinks" , paging.getPageLinks() );
+        model.addAttribute("nextLink"  , paging.getNextLink () );
+        
+        
+        return "board/articleview";
     }
 }
