@@ -53,8 +53,20 @@ public class ModelBoard {
         UpdateDT = updateDT;
     }
     
+    @Override
+    public String toString() {
+        return "ModelBoard [boardcd=" + boardcd + ", boardnm=" + boardnm
+                + ", UseYN=" + UseYN + ", InsertUID=" + InsertUID
+                + ", InsertDT=" + InsertDT + ", UpdateUID=" + UpdateUID
+                + ", UpdateDT=" + UpdateDT + "]";
+    }
+    
     public ModelBoard() {
         super();
+    }
+    
+    public ModelBoard(String boardcd) {
+        this.boardcd = boardcd;
     }
     
     public ModelBoard(String boardcd, String boardnm, Boolean useYN) {
@@ -62,14 +74,6 @@ public class ModelBoard {
         this.boardcd = boardcd;
         this.boardnm = boardnm;
         this.UseYN = useYN;
-    }
-    
-    @Override
-    public String toString() {
-        return "ModelBoard [boardcd=" + boardcd + ", boardnm=" + boardnm
-                + ", UseYN=" + UseYN + ", InsertUID=" + InsertUID
-                + ", InsertDT=" + InsertDT + ", UpdateUID=" + UpdateUID
-                + ", UpdateDT=" + UpdateDT + "]";
     }
      
     

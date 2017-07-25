@@ -160,7 +160,7 @@
     <select id="getArticle" parameterType="int" resultType="ModelArticle">
         SELECT articleno, boardcd, title, content, email, hit, regdate
         FROM TB_BBS_Article
-        WHERE articleno = #{articleNo}
+        WHERE articleno = #{articleno}
     </select>
     
     <insert id="insertArticle" parameterType="ModelArticle">
@@ -198,7 +198,7 @@
         DELETE FROM TB_BBS_Article 
          WHERE 1 = 1 
           <if test="articleno != null and articleno != ''" >
-          AND articleno = #{articleNo}
+          AND articleno = #{articleno}
           </if>
           <if test="boardcd != null and boardcd != ''">
           AND boardcd  = #{boardcd}
@@ -214,7 +214,7 @@
     <update id="increaseHit" parameterType="int">
         UPDATE TB_BBS_Article 
            SET hit=hit+1 
-         WHERE articleno=#{articleNo}
+         WHERE articleno=#{articleno}
     </update>
     
     <select id="getNextArticle" parameterType="hashmap" resultType="ModelArticle">
@@ -225,12 +225,13 @@
             FROM
                 (SELECT articleno, title 
                    FROM TB_BBS_Article 
-                  WHERE boardcd   = #{boardcd} 
-                    AND articleno = #{articleNo}
+                  WHERE boardcd      =    #{boardcd} 
+                    AND articleno   &gt;  #{articleno}
                     <if test="searchWord != null">
-                        AND (title LIKE '%${searchWord}%' OR content LIKE '%${searchWord}%')
+                        AND ( title LIKE CONCAT('%', #{searchWord}, '%')
+                               OR content LIKE CONCAT('%', #{searchWord}, '%') )
                     </if> 
-                    ORDER BY articleno
+                    ORDER BY articleno ASC
                 ) a
                 , (SELECT @RNUM:=0) b
         ) c
@@ -245,11 +246,11 @@
             FROM
             (SELECT articleno, title 
                FROM TB_BBS_Article 
-              WHERE boardcd = #{boardcd} 
-                AND articleno = #{articleNo}
+              WHERE boardcd     =    #{boardcd} 
+                AND articleno  &lt;  #{articleno}
                 <if test="searchWord != null">
-                    AND (title LIKE '%${searchWord}%' OR
-                    content LIKE '%${searchWord}%')
+                AND ( title LIKE CONCAT('%', #{searchWord}, '%')
+                       OR content LIKE CONCAT('%', #{searchWord}, '%') )
                 </if> 
                 ORDER BY articleno DESC
             ) a
@@ -271,7 +272,7 @@
     <select id="getAttachFileList" parameterType="int" resultType="ModelAttachFile">
         SELECT attachfileno, filename, filetype, filesize,articleno 
           FROM TB_BBS_Attachfile 
-         WHERE articleno = #{articleNo} 
+         WHERE articleno = #{articleno} 
         ORDER BY attachfileno
     </select>
     
@@ -305,7 +306,7 @@
     <select id="getCommentList" parameterType="int" resultType="ModelComments">
         SELECT commentno, articleno, email, memo, regdate
         FROM TB_BBS_Comments
-        WHERE articleno = #{articleNo}
+        WHERE articleno = #{articleno}
         ORDER BY commentno DESC
     </select>
     

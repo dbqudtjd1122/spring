@@ -6,7 +6,7 @@
 <%@ page import="java.io.FileInputStream" %>
 <%@ page import="java.io.IOException" %>
 <%@ page import="org.springframework.util.FileCopyUtils" %>
-<%@ page import="com.bbs.commons.WebConstants" %>
+<%@ page import="com.spring81.bbs.commons.WebConstants" %>
 <%
     //request.setCharacterEncoding("UTF-8");//이 작업은 필터가 한다.
     String filename = request.getParameter("filename");

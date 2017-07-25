@@ -260,7 +260,10 @@ public class BoardController {
         model.addAttribute("boardcd"   , boardcd   );
         model.addAttribute("curPage"   , curPage   );
         model.addAttribute("searchWord", searchWord);
-        
+
+        /*
+         *  articlelist-table.jsp 와 관련된 처리
+         */
         
         // 전체 게시글 갯수 가져오기
         int totalRecord = boardsrv.getArticleTotalRecord(boardcd, searchWord);
@@ -316,15 +319,12 @@ public class BoardController {
         
         //prevArticle
         ModelArticle prevArticle = boardsrv.getPrevArticle(articleno, boardcd, searchWord);
-        model.addAttribute("prevArticle", nextArticle);
+        model.addAttribute("prevArticle", prevArticle);
 
-        //articleList
-        //no
-        //prevLink
-        //pageLinks
-        //nextLink
-
-        
+        /*
+         *  articlelist-table.jsp 와 관련된 처리
+         */
+                
         // 전체 게시글 갯수 가져오기
         int totalRecord = boardsrv.getArticleTotalRecord(boardcd, searchWord);
         
@@ -334,7 +334,7 @@ public class BoardController {
         int end   = paging.getEndRecord();
         
         List<ModelArticle> list = boardsrv.getArticleList(boardcd, searchWord, start, end);
-        model.addAttribute("articleList"      , articleList      );
+        model.addAttribute("list"      , list                  );
         model.addAttribute("no"        , paging.getListNo   () );
         model.addAttribute("prevLink"  , paging.getPrevLink () );
         model.addAttribute("pageLinks" , paging.getPageLinks() );

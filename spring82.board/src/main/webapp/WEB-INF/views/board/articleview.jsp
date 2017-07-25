@@ -43,17 +43,17 @@
     			form.submit();
     		}
     	} 
+        
+        function goView(articleno) {
+            window.location.href = "/board/articleview/${boardcd}/" + articleno + "?curPage=${curPage}&searchWord=${searchWord}";
+        }
+    
         $(document).ready(function(e){
             
             $('#paging > span[class!="bbs-strong"]').click(function(e) {
                 var page = $(this).attr('articleno');
                 window.location.href = "/board/articlelist/${boardcd}?curPage=" + page + "&searchWord=${searchWord}";
             });
-        
-            function goView(articleno) {
-                window.location.href = "/board/articleview/${boardcd}?curPage=${curPage}&searchWord=${searchWord}";
-            }
-        
             $('#list-menu > input[type="button"]').click(function(e) {
                 window.location.href = "/board/articlewrite/${boardcd}?curPage=${curPage}&searchWord=${searchWord}";                
             });

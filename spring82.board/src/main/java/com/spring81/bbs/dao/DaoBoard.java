@@ -158,6 +158,7 @@ public class DaoBoard implements IDaoBoard {
 
     @Override
     public ModelArticle getNextArticle(Map<String, Object> hashmap) {
+        
         return  session.selectOne("mapper.mapperBoard.getNextArticle", hashmap);        
     }
 

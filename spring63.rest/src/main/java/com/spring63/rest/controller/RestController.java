@@ -1,5 +1,7 @@
 package com.spring63.rest.controller;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -32,10 +34,10 @@ public class RestController {
 	
 	@RequestMapping(value = "/rest/currentversion", method = {RequestMethod.GET, RequestMethod.POST} )
 	@ResponseBody
-	public int currentversion(Model model) {
+	public long currentversion(Model model) {
 		logger.info("/rest/currentversion");
 		
-		return 1;
+		return new Date().getTime();
 	}
 
     @RequestMapping(value = "/rest/login", method = {RequestMethod.GET, RequestMethod.POST} )
