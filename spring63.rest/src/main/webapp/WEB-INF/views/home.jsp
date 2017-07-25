@@ -15,7 +15,7 @@
     <p> <a href="/rest/login?id=test2id&pw=test2pw" target="_blank"> "/rest/login?id=test2id&pw=test2pw"  </a></p>
     <p> <a href="/rest/personone"                   target="_blank"> "/rest/personone"                    </a></p>
     <p> <a href="/rest/personlist?name=test"        target="_blank"> "/rest/personlist?name=test"         </a></p>
-    <p> <a href="/rest/insertperson?id=test3id&pw=test3pw&name=test3name&email=test3email" > /rest/insertperson </a></p>
+    <p> <a href="/rest/insertperson?id=test3id&pw=test3pw&name=test3name&email=test3email" target="_blank"> /rest/insertperson </a></p>
     <hr />
     
     <img class='imagem_artigo'
