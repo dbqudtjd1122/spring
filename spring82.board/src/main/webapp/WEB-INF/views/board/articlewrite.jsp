@@ -14,24 +14,16 @@
     
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" media="screen" />
     <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script type="text/javascript">
-    	function check() {
-    		var form = document.getElementById("writeForm");
-    		//유효성 검사로직 추가
-    		return true;
-    	}
-    
-    	function goList() {
-    		var form = document.getElementById("listForm");
-    		form.submit();
-    	}
-    
-    	function goView() {
-    		var form = document.getElementById("viewForm");
-    		if (form.articleno.value != 0) {
-    			form.submit();
-    		}
-    	}
+    <script type="text/javascript">    
+        $(document).ready(function(e){            
+            $('.golist').click(function(e) {
+                window.location.href = "/board/articlelist/${boardcd}?curPage=${curPage}&searchWord=${searchWord}";
+            });
+            
+            $('.goview').click(function(e) {
+                window.location.href =  "/board/articleview/${boardcd}/${articleno}?curPage=${curPage}&searchWord=${searchWord}";
+            });
+        });
     </script>
 </head>
 <body>
@@ -74,15 +66,15 @@
 							</tr>
 							<tr>
 								<td>파일첨부</td>
-								<td><input type="file" name="upload" /></td>
+								<td><input type="file" name="uploadfile" /></td>
 							</tr>
 						</table>
 						<div style="text-align: center; padding-bottom: 15px;">
 							<input type="submit" value="전송" />
 							<c:if test="${!empty articleno }">
-								<input type="button" value="상세보기" onclick="goView()" />
+								<input type="button" value="상세보기" class="goview" />
 							</c:if>
-							<input type="button" value="목록" onclick="goList()" />
+							<input type="button" value="목록" class="golist" />
 						</div>
 					</form>
 				</div>

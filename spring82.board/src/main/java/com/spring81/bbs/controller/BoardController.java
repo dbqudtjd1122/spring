@@ -339,7 +339,6 @@ public class BoardController {
         
         return "board/articleview";
     }
-    
 
     /**
      * http://localhost/board/articlewirte/qna
@@ -361,6 +360,7 @@ public class BoardController {
 
         return "board/articlewrite";
     }
+    
     /**
      * http://localhost/board/articlewirte/qna
      */
@@ -369,24 +369,27 @@ public class BoardController {
             , @ModelAttribute ModelArticle article
             , MultipartFile uploadfile ) throws IllegalStateException, IOException  {
         logger.info("/board/articlewrite : POST");
-        
-        // 1. 로컬 첨부 파일을 서버로 올리기 위한 코드
-        String fileName = uploadfile.getOriginalFilename();
-        String filepath = "D:/" + fileName;                 
-        java.io.File f = new java.io.File( filepath );                
-        uploadfile.transferTo( f );
+        int result = -1;
 
-        // 2. DB article 테이블에 insert.
+        // 1. DB article 테이블에 insert.
         int articleno = boardsrv.insertArticle(article); // articleno 는 inserted 된 pk값 
-        articleno = boardsrv.getMaxArticleno();        
-                       
-        // 3. 첨부 파일을 attachfiel 테이블에 insert.
-        ModelAttachfile attachfile = new ModelAttachfile();
-        attachfile.setFilename( f.getName() );  // 파일명
-        attachfile.setFiletype( FilenameUtils.getExtension(fileName) ); //확장자
-        attachfile.setFilesize( (int)f.length() );
-        attachfile.setArticleno( articleno );
-        int result = boardsrv.insertAttachFile( attachfile );
+        articleno = boardsrv.getMaxArticleno(); 
+        
+        if( !uploadfile.getOriginalFilename().isEmpty() ){
+            // 2. 로컬 첨부 파일을 서버로 올리기 위한 코드
+            String fileName = uploadfile.getOriginalFilename();
+            String filepath = "D:/" + fileName;                 
+            java.io.File f = new java.io.File( filepath );                
+            uploadfile.transferTo( f );       
+                           
+            // 3. 첨부 파일을 attachfiel 테이블에 insert.
+            ModelAttachfile attachfile = new ModelAttachfile();
+            attachfile.setFilename( f.getName() );  // 파일명
+            attachfile.setFiletype( FilenameUtils.getExtension(fileName) ); //확장자
+            attachfile.setFilesize( (int)f.length() );
+            attachfile.setArticleno( articleno );
+            result = boardsrv.insertAttachFile( attachfile );            
+        }
 
         if( result > 0 ){
             // /board/boardlist 리다이렉트 
@@ -396,5 +399,26 @@ public class BoardController {
             // /board/boardview 리다이렉트 
             return "redirect:/board/boardwrite/"+ article.getBoardcd();            
         }
+    }
+
+    /**
+     * http://localhost/board/articlemodify/qna
+     */
+    @RequestMapping(value = "/board/articlemodify/{boardcd}", method = RequestMethod.GET)
+    public String articlemodify( Model model 
+            , @PathVariable(value="boardcd")  String boardcd
+            , @RequestParam(value="curPage"   , defaultValue="1") Integer curPage
+            , @RequestParam(value="searchWord", defaultValue="" ) String  searchWord ) {
+        logger.info("/board/articlewrite : GET");
+        
+        String boardnm = boardsrv.getBoardName(boardcd);      
+        // articleno 존재하지 않음.
+        
+        model.addAttribute("boardnm"   , boardnm);
+        model.addAttribute("boardcd"   , boardcd);
+        model.addAttribute("curPage"   , curPage);
+        model.addAttribute("searchWord", searchWord);        
+
+        return "board/articlemodify";
     }
 }

@@ -126,7 +126,7 @@ public class DaoBoard implements IDaoBoard {
     @Override
     public int insertArticle(ModelArticle article) {
         
-        return session.selectOne("mapper.mapperBoard.insertArticle", article );        
+        return session.insert("mapper.mapperBoard.insertArticle", article );        
     }
 
     @Override
