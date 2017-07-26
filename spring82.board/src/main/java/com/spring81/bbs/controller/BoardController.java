@@ -404,20 +404,23 @@ public class BoardController {
     /**
      * http://localhost/board/articlemodify/qna
      */
-    @RequestMapping(value = "/board/articlemodify/{boardcd}", method = RequestMethod.GET)
+    @RequestMapping(value = "/board/articlemodify/{boardcd}/{articleno}", method = RequestMethod.GET)
     public String articlemodify( Model model 
-            , @PathVariable(value="boardcd")  String boardcd
+            , @PathVariable(value="boardcd"  )  String boardcd
+            , @PathVariable(value="articleno")  Integer articleno
             , @RequestParam(value="curPage"   , defaultValue="1") Integer curPage
             , @RequestParam(value="searchWord", defaultValue="" ) String  searchWord ) {
         logger.info("/board/articlewrite : GET");
         
         String boardnm = boardsrv.getBoardName(boardcd);      
-        // articleno 존재하지 않음.
+        ModelArticle thisArticle = boardsrv.getArticle(articleno);
         
-        model.addAttribute("boardnm"   , boardnm);
-        model.addAttribute("boardcd"   , boardcd);
-        model.addAttribute("curPage"   , curPage);
-        model.addAttribute("searchWord", searchWord);        
+        model.addAttribute("boardnm"    , boardnm);
+        model.addAttribute("boardcd"    , boardcd);
+        model.addAttribute("articleno"  , articleno);
+        model.addAttribute("curPage"    , curPage);
+        model.addAttribute("searchWord" , searchWord); 
+        model.addAttribute("thisArticle", thisArticle);         
 
         return "board/articlemodify";
     }
