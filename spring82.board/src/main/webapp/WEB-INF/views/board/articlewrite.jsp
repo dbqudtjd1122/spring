@@ -13,8 +13,9 @@
     <title>${boardnm }</title>
     
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" media="screen" />
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script type="text/javascript">    
+    <script src="/resources/js/jquery-3.1.1.js"></script>
+    <script src="/resources/js/ajaxsetup.js"></script>
+    <script>      
         $(document).ready(function(e){            
             $('.golist').click(function(e) {
                 window.location.href = "/board/articlelist/${boardcd}?curPage=${curPage}&searchWord=${searchWord}";
@@ -40,7 +41,7 @@
 
 		<div id="container">
 			<div id="content" style="min-height: 800px;">
-				<div id="url-navi">BBS</div>
+				
 
 				<!-- 본문 시작 -->
 				<h1>${boardnm }</h1>

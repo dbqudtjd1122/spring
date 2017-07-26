@@ -15,8 +15,9 @@
     <title>${boardnm }</title>
     
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" media="screen" />
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script>
+    <script src="/resources/js/jquery-3.1.1.js"></script>
+    <script src="/resources/js/ajaxsetup.js"></script>
+    <script>    
         $(document).ready( function(e){
         	
         	$("#boardlist").click(function(e){

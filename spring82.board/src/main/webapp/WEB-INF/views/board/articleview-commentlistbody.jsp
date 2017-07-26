@@ -27,3 +27,77 @@
     </div>
 </div>
 
+<script>
+    function commentModifyShowHide(commentno) {
+        $('div[commentno="'+ commentno +'"]  div.modify-comment').toggle(); 
+    }
+    
+    function commentadd(articleno, memo) {
+
+        $.ajax({
+            url : '/board/commentaddajax',
+            data: { 'articleno': articleno, 'memo': memo },   // 사용하는 경우에는 { data1:'test1', data2:'test2' }
+            type: 'post',       // get, post
+            timeout: 30000,     // 30초
+            dataType: 'html',   // text, html, xml, json, jsonp, script
+        }).done( function(data, textStatus, xhr ){
+            // 통신이 성공적으로 이루어졌을 때 이 함수를 타게 된다.
+            if(data != null ){
+                $('#commentlist').append( data );
+                $(textarea).val('');
+            }
+            else {
+                alert( '댓글 삭제 실패');
+            }
+        });
+        
+        return false;
+    }
+    
+    function commentupdate(commentno) {
+        var textarea = $('div[commentno="' + commentno + '"] textarea');
+        
+        $.ajax({
+            url : '/board/commentupdateajax',
+            data: { 'commentno': commentno, 'memo' : $(textarea).val() },   // 사용하는 경우에는 { data1:'test1', data2:'test2' }
+            type: 'post',       // get, post
+            timeout: 30000,     // 30초
+            dataType: 'html',   // text, html, xml, json, jsonp, script
+        }).done( function(data, textStatus, xhr ){
+            // 통신이 성공적으로 이루어졌을 때 이 함수를 타게 된다.
+            if(data == 1 ){
+                $('#comment'+commentno).text( $(textarea).val() );
+                commentModifyShowHide(commentno);
+            }
+            else {
+                alert( '댓글 수정 실패');
+            }
+        });
+        
+        return false;
+    }
+    
+    function commentdelete(commentno) {
+        var chk = confirm("정말로 삭제하시겠습니까?");
+        if (chk==true) {
+    
+            $.ajax({
+                url : '/board/commentdeleteajax',
+                data: { 'commentno': commentno },   // 사용하는 경우에는 { data1:'test1', data2:'test2' }
+                type: 'post',       // get, post
+                timeout: 30000,    // 30초
+                dataType: 'json',  // text, html, xml, json, jsonp, script
+            }).done( function(data, textStatus, xhr ){
+                // 통신이 성공적으로 이루어졌을 때 이 함수를 타게 된다.
+                if(data > 0){
+                    $('div[commentno="' + commentno +'"]').remove();
+                }
+                else {
+                    alert( '댓글 삭제 실패');
+                }
+            });
+            
+            return false;
+        }
+    }
+</script>

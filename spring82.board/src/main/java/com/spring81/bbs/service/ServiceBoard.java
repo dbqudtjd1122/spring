@@ -2,6 +2,7 @@ package com.spring81.bbs.service;
 
 import java.util.*;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.*;
@@ -12,6 +13,7 @@ import com.spring81.bbs.model.*;
 
 @Service("serviceboard")
 public class ServiceBoard implements IServiceBoard {
+    
     // SLF4J Logging
     private static Logger logger = LoggerFactory.getLogger(ServiceBoard.class);
     
@@ -181,13 +183,6 @@ public class ServiceBoard implements IServiceBoard {
     public ModelArticle getArticle(int articleno) {
         ModelArticle result = null;
         try {
-
-            // 상세보기를 할때마다 조회수를 1 증가
-            // 하단에 목록에서 조회수를 제대로 보기위해서는
-            // 목록 레코드를 페치하기 전에 조회수를 먼저 증가시켜야 한다.
-            // 사용자 IP 와 시간을 고려해서 조회수를 증가하도록...
-            
-                     daoboard.increaseHit( articleno );
             result = daoboard.getArticle ( articleno );
         } catch (Exception e) {
             logger.error("getArticle  " + e.getMessage() );
@@ -389,6 +384,25 @@ public class ServiceBoard implements IServiceBoard {
             result = daoboard.getMaxArticleno( );
         } catch (Exception e) {
             logger.error("getMaxArticleno " + e.getMessage() );
+        }
+        
+        return result;
+    }
+
+    @Override
+    public ModelArticle transUpdateHitAndGetArticle(int articleno) {
+        ModelArticle result = null;
+        try {
+
+            // 상세보기를 할때마다 조회수를 1 증가
+            // 하단에 목록에서 조회수를 제대로 보기위해서는
+            // 목록 레코드를 페치하기 전에 조회수를 먼저 증가시켜야 한다.
+            // 사용자 IP 와 시간을 고려해서 조회수를 증가하도록...
+            
+                     daoboard.increaseHit( articleno );
+            result = daoboard.getArticle ( articleno );
+        } catch (Exception e) {
+            logger.error("getArticle  " + e.getMessage() );
         }
         
         return result;

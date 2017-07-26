@@ -20,8 +20,9 @@
         form div {text-align: left; padding-bottom: 15px; }
     </style>    
     
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script>
+    <script src="/resources/js/jquery-3.1.1.js"></script>
+    <script src="/resources/js/ajaxsetup.js"></script>
+    <script>    
         $(document).ready( function(){
 
             $('#writeForm').submit( function(event){     

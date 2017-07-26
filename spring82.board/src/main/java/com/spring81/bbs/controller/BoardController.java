@@ -290,18 +290,13 @@ public class BoardController {
             , @RequestParam(value="curPage"   , defaultValue="1") Integer curPage
             , @RequestParam(value="searchWord", defaultValue="" ) String  searchWord ) {
         logger.info("/board/articleview");
-        
-        // boardcd
-        // articleno
-        // curPage
-        // searchWord
-        
+                
         //boardnm
         String boardnm = boardsrv.getBoardName(boardcd);
         model.addAttribute("boardnm", boardnm);
         
         //thisArticle
-        ModelArticle thisArticle = boardsrv.getArticle(articleno);
+        ModelArticle thisArticle = boardsrv.transUpdateHitAndGetArticle(articleno);
         model.addAttribute("thisArticle", thisArticle);
         
         // attachFileList

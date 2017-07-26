@@ -125,9 +125,21 @@ public class DaoBoard implements IDaoBoard {
 
     @Override
     public int insertArticle(ModelArticle article) {
+        /*
+        // Oracle 인 경우 
+        Map<String, Object> map = new HashMap<>();
+        map.put("article", article);
+        map.put("result", "");
         
-        return session.insert("mapper.mapperBoard.insertArticle", article );        
-    }
+        session.insert("mapper.mapperBoard.insertArticle", map );
+        int result = (int) map.get("result")
+         */
+        
+        // mysql 인 경우
+        session.insert("mapper.mapperBoard.insertArticle", article );
+        return article.getArticleno();        
+    };
+    
 
     @Override
     public int updateArticle(ModelArticle updateValue, ModelArticle searchValue) {

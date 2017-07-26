@@ -125,7 +125,7 @@
         SELECT count(*) FROM TB_BBS_Article 
          WHERE boardcd = #{boardcd}
             <if test="searchWord != null and searchWord != ''">
-            AND (title LIKE '%${searchWord}%' OR content LIKE '%${searchWord}%')
+            AND ( title LIKE CONCAT('%', #{searchWord}, '%') OR content LIKE CONCAT('%', #{searchWord}, '%') )
             </if>
     </select>   
 
@@ -147,7 +147,7 @@
                     WHERE
                         a.boardcd = #{boardcd}
                         <if test="searchWord != null">
-                        AND (title LIKE '%${searchWord}%' OR content LIKE '%${searchWord}%')
+                        AND ( title LIKE CONCAT('%', #{searchWord}, '%') OR content LIKE CONCAT('%', #{searchWord}, '%') )
                         </if>
                     GROUP BY a.articleno, title, a.regdate, hit
                     ORDER BY articleno DESC
@@ -163,11 +163,7 @@
         WHERE articleno = #{articleno}
     </select>
     
-    <select id="getMaxArticleno" resultType="int">
-        SELECT Max(articleno) FROM TB_BBS_Article
-    </select>
-    
-    <insert id="insertArticle" parameterType="ModelArticle" >
+    <insert id="insertArticle" parameterType="ModelArticle" useGeneratedKeys="true" keyProperty="articleno" >
         INSERT INTO 
         TB_BBS_Article ( boardcd   , title   , content   , email   , hit, regdate   , InsertUID   , InsertDT   , UpdateUID   , UpdateDT     )
             VALUES     ( #{boardcd}, #{title}, #{content}, #{email}, 0  , #{regdate}, #{InsertUID}, #{InsertDT}, #{UpdateUID}, #{UpdateDT}  )
@@ -232,8 +228,7 @@
                   WHERE boardcd      =    #{boardcd} 
                     AND articleno   &gt;  #{articleno}
                     <if test="searchWord != null">
-                        AND ( title LIKE CONCAT('%', #{searchWord}, '%')
-                               OR content LIKE CONCAT('%', #{searchWord}, '%') )
+                        AND ( title LIKE CONCAT('%', #{searchWord}, '%') OR content LIKE CONCAT('%', #{searchWord}, '%') )
                     </if> 
                     ORDER BY articleno ASC
                 ) a

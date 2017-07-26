@@ -20,7 +20,7 @@
         <li><a href="./board/boardview?boardcd=qna" target="_blank">./board/boardview?boardcd=qna </a></li>
         <li><a href="./board/boardview" target="_blank">./board/boardview  == ./board/boardview?boardcd=free</a></li>
         <li><a href="./board/boardview/qna" target="_blank">./board/boardview/qna</a></li>
-        <li><a href="/board/boardlist" target="_blank">./board/boardlist</a>에 <a href="/board/boardview" target="_blank">./board/boardview</a> 연결하기</li>
+        <li><a href="./board/boardlist" target="_blank">./board/boardlist</a>에 <a href="/board/boardview" target="_blank">./board/boardview</a> 연결하기</li>
         <li><span> <a href="/board/boardlist" target="_blank">./board/boardlist</a>에서 tr을 클릭하면 boardview 가 열리게 하시오 </span>
             <xmp>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -96,7 +96,7 @@
         free는 boardcd 값을, 17은 arcticleno 값을, curPage는 현재 페이지값, searchWord는 검색 단어를  의미한다.    
         <li><a href="/board/articlelist/free"  target="_blank">/board/articlelist/free</a> </li>
         <li><a href="/board/articleview/free/17?curPage=1&searchWord="    target="_blank">/board/articleview/free/17?curPage=1&amp;searchWord=</a></li>
-        <li><a href="/board/articlewrite/free/17?curPage=1&searchWord="   target="_blank">/board/articlewrite/free/17?curPage=1&amp;searchWord=</a></li>
+        <li><a href="/board/articlewrite/free?curPage=1&searchWord="      target="_blank">/board/articlewrite/free?curPage=1&amp;searchWord=</a></li>
         <li><a href="/board/articlemodify/free/17?&curPage=1&searchWord=" target="_blank">/board/articlemodify/free/17?curPage=1&amp;searchWord=</a></li>
         <li><a href="/board/articledelete/free/17?curPage=1&searchWord="  target="_blank">/board/articledelete/free/17?curPage=1&amp;searchWord=</a></li>
     </ul>

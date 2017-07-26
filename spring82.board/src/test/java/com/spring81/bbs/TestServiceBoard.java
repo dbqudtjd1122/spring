@@ -103,9 +103,7 @@ public class TestServiceBoard {
         article.setBoardcd("free");
         
         int result = service.insertArticle(article);
-        assertNotEquals(result, 1);
-        assertNotEquals(result, 0);
-        assertNotEquals(result, -1);
+        assertTrue( result > 1 );
     }
     
     @Test

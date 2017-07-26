@@ -63,7 +63,7 @@
               <if test="searchValue.boardnm != null and searchValue.boardnm != ''">
               AND boardnm  = #{searchValue.boardnm}
               </if>
-              <if test="searchValue.UseYN != null">
+              <if test="searchValue.UseYN != null and searchValue.UseYN != ''">
               AND UseYN    = #{searchValue.UseYN}
               </if>
     </update>
@@ -92,6 +92,17 @@
            <if  test="boardnm != null and boardnm != ''">
            AND boardnm LIKE CONCAT( '%' , #{boardnm} , '%' )
            </if>
+    </select>
+        
+    <select id="getBoardTotalRecord" parameterType="hashmap" resultType="int">
+        SELECT count(*) FROM TB_Bbs_Board 
+         WHERE 1 = 1
+            <if test="boardcd != null and boardcd != ''">
+            AND boardcd = #{boardcd}
+            </if>
+            <if test="boardnm != null and boardnm != ''">
+            AND boardnm LIKE #{searchWord} 
+            </if>
     </select>
     
     <select id="getBoardPaging"  parameterType="hashmap"  resultType="ModelBoard">
@@ -136,7 +147,7 @@
         SELECT count(*) FROM TB_BBS_Article 
          WHERE boardcd = #{boardcd}
             <if test="searchWord != null and searchWord != ''">
-            AND (title LIKE '%${searchWord}%' OR content LIKE '%${searchWord}%')
+            AND ( title LIKE CONCAT('%', #{searchWord}, '%') OR content LIKE CONCAT('%', #{searchWord}, '%') )
             </if>
     </select>   
 
@@ -158,7 +169,7 @@
                     WHERE
                         a.boardcd = #{boardcd}
                         <if test="searchWord != null">
-                        AND (title LIKE '%${searchWord}%' OR content LIKE '%${searchWord}%')
+                        AND ( title LIKE CONCAT('%', #{searchWord}, '%') OR content LIKE CONCAT('%', #{searchWord}, '%') )
                         </if>
                     GROUP BY a.articleno, title, a.regdate, hit
                     ORDER BY articleno DESC
@@ -174,7 +185,7 @@
         WHERE articleno = #{articleno}
     </select>
     
-    <insert id="insertArticle" parameterType="ModelArticle">
+    <insert id="insertArticle" parameterType="ModelArticle" useGeneratedKeys="true" keyProperty="articleno" >
         INSERT INTO 
         TB_BBS_Article ( boardcd   , title   , content   , email   , hit, regdate   , InsertUID   , InsertDT   , UpdateUID   , UpdateDT     )
             VALUES     ( #{boardcd}, #{title}, #{content}, #{email}, 0  , #{regdate}, #{InsertUID}, #{InsertDT}, #{UpdateUID}, #{UpdateDT}  )
@@ -236,12 +247,12 @@
             FROM
                 (SELECT articleno, title 
                    FROM TB_BBS_Article 
-                  WHERE boardcd   = #{boardcd} 
-                    AND articleno = #{articleno}
+                  WHERE boardcd      =    #{boardcd} 
+                    AND articleno   &gt;  #{articleno}
                     <if test="searchWord != null">
-                        AND (title LIKE '%${searchWord}%' OR content LIKE '%${searchWord}%')
+                        AND ( title LIKE CONCAT('%', #{searchWord}, '%') OR content LIKE CONCAT('%', #{searchWord}, '%') )
                     </if> 
-                    ORDER BY articleno
+                    ORDER BY articleno ASC
                 ) a
                 , (SELECT @RNUM:=0) b
         ) c
@@ -256,11 +267,11 @@
             FROM
             (SELECT articleno, title 
                FROM TB_BBS_Article 
-              WHERE boardcd = #{boardcd} 
-                AND articleno = #{articleno}
+              WHERE boardcd     =    #{boardcd} 
+                AND articleno  &lt;  #{articleno}
                 <if test="searchWord != null">
-                    AND (title LIKE '%${searchWord}%' OR
-                    content LIKE '%${searchWord}%')
+                AND ( title LIKE CONCAT('%', #{searchWord}, '%')
+                       OR content LIKE CONCAT('%', #{searchWord}, '%') )
                 </if> 
                 ORDER BY articleno DESC
             ) a
