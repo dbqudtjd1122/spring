@@ -271,11 +271,13 @@ public class BoardController {
         int end   = paging.getEndRecord();
         
         List<ModelArticle> list = boardsrv.getArticleList(boardcd, searchWord, start, end);
-        model.addAttribute("list"      , list      );
-        model.addAttribute("no"        , paging.getListNo   () );
-        model.addAttribute("prevLink"  , paging.getPrevLink () );
-        model.addAttribute("pageLinks" , paging.getPageLinks() );
-        model.addAttribute("nextLink"  , paging.getNextLink () );
+        model.addAttribute("list"          , list                       );
+        model.addAttribute("no"            , paging.getListNo        () );
+        model.addAttribute("totalFirstPage", paging.getTotalFirstPage() );
+        model.addAttribute("prevLink"      , paging.getPrevLink      () );
+        model.addAttribute("pageLinks"     , paging.getPageLinks     () );
+        model.addAttribute("nextLink"      , paging.getNextLink      () );
+        model.addAttribute("totalLastPage" , paging.getTotalLastPage () );   
         
         return "board/articlelist";
     }
@@ -331,20 +333,30 @@ public class BoardController {
         int end   = paging.getEndRecord();
         
         List<ModelArticle> list = boardsrv.getArticleList(boardcd, searchWord, start, end);
-        model.addAttribute("list"      , list                  );
-        model.addAttribute("no"        , paging.getListNo   () );
-        model.addAttribute("prevLink"  , paging.getPrevLink () );
-        model.addAttribute("pageLinks" , paging.getPageLinks() );
-        model.addAttribute("nextLink"  , paging.getNextLink () );        
+        model.addAttribute("list"          , list                       );
+        model.addAttribute("no"            , paging.getListNo        () );
+        model.addAttribute("totalFirstPage", paging.getTotalFirstPage() );
+        model.addAttribute("prevLink"      , paging.getPrevLink      () );
+        model.addAttribute("pageLinks"     , paging.getPageLinks     () );
+        model.addAttribute("nextLink"      , paging.getNextLink      () );
+        model.addAttribute("totalLastPage" , paging.getTotalLastPage () );  
         
-        return "board/articleview";
-    }
+
+
+        model.addAttribute("articleno"      , articleno );
+        model.addAttribute("boardcd"        , boardcd   );
+        model.addAttribute("curPage"        , curPage   );
+        model.addAttribute("searchWord"     , searchWord);
+                
+		return "board/articleview";
+	}
+	
 
     /**
      * http://localhost/board/articlewirte/qna
      */
     @RequestMapping(value = "/board/articlewrite/{boardcd}", method = RequestMethod.GET)
-    public String articlewirte( Model model 
+    public String articlewrite( Model model 
             , @PathVariable(value="boardcd")  String boardcd
             , @RequestParam(value="curPage"   , defaultValue="1") Integer curPage
             , @RequestParam(value="searchWord", defaultValue="" ) String  searchWord ) {
@@ -371,18 +383,18 @@ public class BoardController {
         logger.info("/board/articlewrite : POST");
         int result = -1;
 
-        // 1. DB article 테이블에 insert.
+        // 1. article 테이블에 insert.
         int articleno = boardsrv.insertArticle(article); // articleno 는 inserted 된 pk값 
         articleno = boardsrv.getMaxArticleno(); 
-        
+
+        // 2. 로컬 첨부 파일을 서버로 올리기 위한 코드
         if( !uploadfile.getOriginalFilename().isEmpty() ){
-            // 2. 로컬 첨부 파일을 서버로 올리기 위한 코드
             String fileName = uploadfile.getOriginalFilename();
-            String filepath = "D:/" + fileName;                 
+            String filepath = WebConstants.UPLOAD_PATH + "/" + fileName;                 
             java.io.File f = new java.io.File( filepath );                
             uploadfile.transferTo( f );       
                            
-            // 3. 첨부 파일을 attachfiel 테이블에 insert.
+            // 첨부 파일을 attachfiel 테이블에 insert.
             ModelAttachfile attachfile = new ModelAttachfile();
             attachfile.setFilename( f.getName() );  // 파일명
             attachfile.setFiletype( FilenameUtils.getExtension(fileName) ); //확장자

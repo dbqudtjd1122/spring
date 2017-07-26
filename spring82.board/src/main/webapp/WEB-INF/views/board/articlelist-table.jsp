@@ -37,25 +37,29 @@
     <!--  반복 구간 끝 -->
 </table>
                          
-<div id="paging" style="text-align: center;">                    
+<div id="paging" style="text-align: center;">  
+    <c:if test="${totalFirstPage > 0 }">
+        <span articleno="${totalFirstPage }">[처음]</span> 
+    </c:if>                  
     <c:if test="${prevLink > 0 }">
         <span articleno="${prevLink}">[이전]</span>
     </c:if>
-
     <c:forEach var="i" items="${pageLinks }" varStatus="stat">
         <c:choose>
-        <c:when test="${curPage == i}">
-            <span class="bbs-strong">${i }</span>
-        </c:when>
-        <c:otherwise>
-            <span articleno="${i }">${i }</span>
-        </c:otherwise>
+            <c:when test="${curPage == i}">
+                <span class="bbs-strong">${i }</span>
+            </c:when>
+            <c:otherwise>
+                <span articleno="${i }">${i }</span>
+            </c:otherwise>
         </c:choose>
-    </c:forEach>
-    
+    </c:forEach>    
     <c:if test="${nextLink > 0 }">
         <span articleno="${nextLink }">[다음]</span>
-    </c:if>                     
+    </c:if> 
+    <c:if test="${totalLastPage> 0 }"> 
+        <span articleno="${totalLastPage}">[마지막]</span>
+    </c:if>                        
 </div>
 
 <div id="list-menu" style="text-align:  right;">

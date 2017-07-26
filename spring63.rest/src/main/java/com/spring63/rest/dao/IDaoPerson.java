@@ -10,5 +10,7 @@ import com.spring63.rest.model.ModelPerson;
 public interface IDaoPerson {    
     int login( ModelPerson person);
     List<ModelPerson> getPersonList( ModelPerson person);
-    int insertPerson( ModelPerson person);    
+    int insertPerson( ModelPerson person);
+    
+    int insertPersonList(List<ModelPerson> persons);    
 }

@@ -79,13 +79,27 @@ public class RestController {
     
     @RequestMapping(value = "/rest/insertperson", method = {RequestMethod.GET, RequestMethod.POST} )
     @ResponseBody
-    public int insertperson(Model model, @RequestBody ModelPerson person) {
+    public int insertperson(Model model, @RequestBody ModelPerson personJson) {
         logger.info("/rest/insertperson");
         
-        int  result = svr.insertPerson(person);
+        int  result = svr.insertPerson(personJson);
         
         return result;
     }
+    
+    @RequestMapping(value = "/rest/insertpersonlist", method = {RequestMethod.GET, RequestMethod.POST} )
+    @ResponseBody
+    public int insertpersonlist(Model model, @RequestBody List<ModelPerson> persons) {
+        logger.info("/rest/insertpersonlist");
+        
+        int  result = svr.insertPersonList(persons);
+        
+        return result;
+    }
+    
+    
+    
+    
 
     @RequestMapping(value = "/rest/personfind", method = {RequestMethod.GET, RequestMethod.POST} )
     @ResponseBody

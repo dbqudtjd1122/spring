@@ -289,60 +289,62 @@ public class BoardController {
         return "board/articlelist";
     }
 
-	// http://localhost/board/articleview?articleno=17&boardcd=free&curPage=1&searchWord=
-	@RequestMapping(value="/board/articleview", method=RequestMethod.GET)
-	public String articleview( Model model
-	        , @RequestParam(value="articleno" , defaultValue="") Integer articleno 
-			, @RequestParam(value="boardcd"   , defaultValue="") String boardcd 
-			, @RequestParam(value="curPage"   , defaultValue="") Integer curPage
-			, @RequestParam(value="searchWord", defaultValue="") String searchWord )  {
-
-		// 검색어가 null 이면 ""으로 변경	
-		if (searchWord == null) searchWord = "";
-
-		// 페이지당 레코드 수 지정
-		int numPerPage = 10;
-		
-		// 페이지 링크의 그룹(block)의 크기 지정
-		int pagePerBlock = 10;
-				
-		//상세보기 
-		ModelArticle thisArticle = boardsrv.getArticle(articleno);
-		List<ModelAttachfile> attachFileList = boardsrv.getAttachFileList(articleno);
-		List<ModelComments> commentList = boardsrv.getCommentList(articleno);
-		ModelArticle nextArticle = boardsrv.getNextArticle(articleno, boardcd, searchWord);
-		ModelArticle prevArticle = boardsrv.getPrevArticle(articleno, boardcd, searchWord);
-		
-		//목록보기
-		int totalRecord = boardsrv.getArticleTotalRecord(boardcd, searchWord);
-		PagingHelper pagingHelper = new PagingHelper(totalRecord, curPage, numPerPage, pagePerBlock);
-
-		int start = pagingHelper.getStartRecord();
-		int end   = pagingHelper.getEndRecord();
-
-		List<ModelArticle> list = boardsrv.getArticleList(boardcd, searchWord, start, end);
-		Integer no        = pagingHelper.getListNo();
-		Integer prevLink  = pagingHelper.getPrevLink();
-		Integer nextLink  = pagingHelper.getNextLink();
-		Integer firstPage = pagingHelper.getFirstPage();
-		Integer lastPage  = pagingHelper.getLastPage();
-		int[] pageLinks   = pagingHelper.getPageLinks();
-
-        String boardNm    = boardsrv.getBoardName(boardcd);
-        model.addAttribute("boardNm"        , boardNm   );
+	// http://localhost/board/articleview/free/17?curPage=1&searchWord=    
+    @RequestMapping(value = "/board/articleview/{boardcd}/{articleno}", method = RequestMethod.GET)
+    public String articleview( Model model 
+            , @PathVariable(value="boardcd"  )  String  boardcd
+            , @PathVariable(value="articleno")  Integer articleno
+            , @RequestParam(value="curPage"   , defaultValue="1") Integer curPage
+            , @RequestParam(value="searchWord", defaultValue="" ) String  searchWord ) {
+        logger.info("/board/articleview");
         
-		model.addAttribute("thisArticle"    , thisArticle    );
-		model.addAttribute("attachFileList" , attachFileList );
-		model.addAttribute("commentList"    , commentList    );
-		model.addAttribute("nextArticle"    , nextArticle    );
-		model.addAttribute("prevArticle"    , prevArticle    );
+        // boardcd
+        // articleno
+        // curPage
+        // searchWord
+        
+        //boardnm
+        String boardnm = boardsrv.getBoardName(boardcd);
+        model.addAttribute("boardnm", boardnm);
+        
+        //thisArticle
+        ModelArticle thisArticle = boardsrv.getArticle(articleno);
+        model.addAttribute("thisArticle", thisArticle);
+        
+        // attachFileList
+        List<ModelAttachfile> attachFileList = boardsrv.getAttachFileList(articleno);
+        model.addAttribute("attachFileList", attachFileList);
+        
+        //commentList
+        List<ModelComments> commentList = boardsrv.getCommentList(articleno);
+        model.addAttribute("commentList", commentList);        
+        
+        //nextArticle
+        ModelArticle nextArticle = boardsrv.getNextArticle(articleno, boardcd, searchWord);
+        model.addAttribute("nextArticle", nextArticle);
+        
+        //prevArticle
+        ModelArticle prevArticle = boardsrv.getPrevArticle(articleno, boardcd, searchWord);
+        model.addAttribute("prevArticle", prevArticle);
 
-		// 목록을 위한 데이터
-		model.addAttribute("list"           , list      );
-		model.addAttribute("no"             , no        );
-		model.addAttribute("prevLink"       , prevLink  );
-		model.addAttribute("nextLink"       , nextLink  );
-		model.addAttribute("pageLinks"      , pageLinks );
+        /*
+         *  articlelist-table.jsp 와 관련된 처리
+         */
+                
+        // 전체 게시글 갯수 가져오기
+        int totalRecord = boardsrv.getArticleTotalRecord(boardcd, searchWord);
+        
+        // 페이지 처리
+        PagingHelper paging = new PagingHelper(totalRecord, curPage);        
+        int start = paging.getStartRecord();
+        int end   = paging.getEndRecord();
+        
+        List<ModelArticle> list = boardsrv.getArticleList(boardcd, searchWord, start, end);
+        model.addAttribute("list"      , list                  );
+        model.addAttribute("no"        , paging.getListNo   () );
+        model.addAttribute("prevLink"  , paging.getPrevLink () );
+        model.addAttribute("pageLinks" , paging.getPageLinks() );
+        model.addAttribute("nextLink"  , paging.getNextLink () );        
 
 
         model.addAttribute("articleno"      , articleno );
@@ -354,79 +356,88 @@ public class BoardController {
 	}
 	
 
-
     /**
-     * http://localhost/board/articlewrite?boardcd=qna&curPage=1&searchWord=
+     * http://localhost/board/articlewirte/qna
      */
-	@RequestMapping(value = "/board/articlewrite", method = RequestMethod.GET)
-    public String articlewrite(Model model
-            , @RequestParam(value="boardcd"   , defaultValue="free") String boardcd
-            , @RequestParam(value="curPage"   , defaultValue="1"   ) Integer curPage 
-            , @RequestParam(value="searchWord", defaultValue=""    ) String searchWord  ) {
-        logger.info("BoardController.articlewrite");
-    
-		//게시판 이름        
-		String boardNm = boardsrv.getBoardName(boardcd);
-		model.addAttribute("boardNm"   , boardNm);
-		
-		model.addAttribute("boardcd"   , boardcd);
-		model.addAttribute("curPage"   , curPage);
-		model.addAttribute("searchWord", searchWord);
-		
-        return "board/articlewrite";      
+    @RequestMapping(value = "/board/articlewrite/{boardcd}", method = RequestMethod.GET)
+    public String articlewrite( Model model 
+            , @PathVariable(value="boardcd")  String boardcd
+            , @RequestParam(value="curPage"   , defaultValue="1") Integer curPage
+            , @RequestParam(value="searchWord", defaultValue="" ) String  searchWord ) {
+        logger.info("/board/articlewrite : GET");
+        
+        String boardnm = boardsrv.getBoardName(boardcd);      
+        // articleno 존재하지 않음.
+        
+        model.addAttribute("boardnm"   , boardnm);
+        model.addAttribute("boardcd"   , boardcd);
+        model.addAttribute("curPage"   , curPage);
+        model.addAttribute("searchWord", searchWord);        
+
+        return "board/articlewrite";
     }
-
-
+    
     /**
      * http://localhost/board/articlewirte/qna
      */
     @RequestMapping(value = "/board/articlewrite", method = RequestMethod.POST)
     public String articlewrite( Model model 
             , @ModelAttribute ModelArticle article
-            , MultipartFile uploadfile ) throws IllegalStateException, IOException {
-       
+            , MultipartFile uploadfile ) throws IllegalStateException, IOException  {
         logger.info("/board/articlewrite : POST");
-        
-        // DB TB_BBS_article insert 
-        int articleno = boardsrv.insertArticle(article);
-               
-        // 로컬 첨부 파일을 서버로 올리기 위한 코드
-        String fileName = uploadfile.getOriginalFilename();
-        String filepath = WebConstants.UPLOAD_PATH + "/" + fileName;                 
-        File f = new File( filepath );                
-        uploadfile.transferTo( f );
-        
-        // 첨부 파일 insert 처리를 위한 코드
-        ModelAttachfile attachfile = new ModelAttachfile();
-        attachfile.setFilename( f.getName() );
-        attachfile.setFiletype( FilenameUtils.getExtension(fileName) ); // 확장자
-        attachfile.setFilesize( (int)f.length() );
-        attachfile.setArticleno( articleno );
-        boardsrv.insertAttachFile( attachfile );
-    		
-		return "redirect:/board/articlelist?boardcd=" + article.getBoardcd();
-	}
+        int result = -1;
 
-    @RequestMapping(value="/board/articlemodify", method=RequestMethod.GET)
-    public String articlemodify(
-            @RequestParam(value="articleno" , defaultValue="") Integer articleno 
-          , @RequestParam(value="boardcd"   , defaultValue="") String  boardcd 
-          , @RequestParam(value="curPage"   , defaultValue="") Integer curPage
-          , @RequestParam(value="searchWord", defaultValue="") String  searchWord 
-          , Model model) throws Exception {
+        // 1. article 테이블에 insert.
+        int articleno = boardsrv.insertArticle(article); // articleno 는 inserted 된 pk값 
+        articleno = boardsrv.getMaxArticleno(); 
+        
+        if( !uploadfile.getOriginalFilename().isEmpty() ){
+            // 2. 로컬 첨부 파일을 서버로 올리기 위한 코드
+            String fileName = uploadfile.getOriginalFilename();
+            String filepath = WebConstants.UPLOAD_PATH + "/" + fileName;                 
+            java.io.File f = new java.io.File( filepath );                
+            uploadfile.transferTo( f );       
+                           
+            // 3. 첨부 파일을 attachfiel 테이블에 insert.
+            ModelAttachfile attachfile = new ModelAttachfile();
+            attachfile.setFilename( f.getName() );  // 파일명
+            attachfile.setFiletype( FilenameUtils.getExtension(fileName) ); //확장자
+            attachfile.setFilesize( (int)f.length() );
+            attachfile.setArticleno( articleno );
+            result = boardsrv.insertAttachFile( attachfile );            
+        }
 
+        if( result > 0 ){
+            // /board/boardlist 리다이렉트 
+            return "redirect:/board/boardlist/"+ article.getBoardcd(); 
+        }
+        else {       
+            // /board/boardview 리다이렉트 
+            return "redirect:/board/boardwrite/"+ article.getBoardcd();            
+        }
+    }
+
+    /**
+     * http://localhost/board/articlemodify/qna
+     */
+    @RequestMapping(value = "/board/articlemodify/{boardcd}/{articleno}", method = RequestMethod.GET)
+    public String articlemodify( Model model 
+            , @PathVariable(value="boardcd"  )  String boardcd
+            , @PathVariable(value="articleno")  Integer articleno
+            , @RequestParam(value="curPage"   , defaultValue="1") Integer curPage
+            , @RequestParam(value="searchWord", defaultValue="" ) String  searchWord ) {
+        logger.info("/board/articlewrite : GET");
+        
+        String boardnm = boardsrv.getBoardName(boardcd);      
         ModelArticle thisArticle = boardsrv.getArticle(articleno);
-        String boardNm = boardsrv.getBoardName(boardcd);
         
-        //수정페이지에서의 보일 게시글 정보
-        model.addAttribute("boardNm"    , boardNm    );
-        model.addAttribute("thisArticle", thisArticle);
-        
-        model.addAttribute("articleno"  , articleno  );
-        model.addAttribute("boardcd"    , boardcd    );
-        model.addAttribute("curPage"    , curPage    );
-        model.addAttribute("searchWord" , searchWord );
-        
+        model.addAttribute("boardnm"    , boardnm);
+        model.addAttribute("boardcd"    , boardcd);
+        model.addAttribute("articleno"  , articleno);
+        model.addAttribute("curPage"    , curPage);
+        model.addAttribute("searchWord" , searchWord); 
+        model.addAttribute("thisArticle", thisArticle);         
+
         return "board/articlemodify";
     }
     
