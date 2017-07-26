@@ -90,10 +90,8 @@ public class RestController {
     @RequestMapping(value = "/rest/insertpersonlist", method = {RequestMethod.GET, RequestMethod.POST} )
     @ResponseBody
     public int insertpersonlist(Model model, @RequestBody List<ModelPerson> persons) {
-        logger.info("/rest/insertpersonlist");
-        
-        int  result = svr.insertPersonList(persons);
-        
+        logger.info("/rest/insertpersonlist");        
+        int  result = svr.insertPersonList(persons);        
         return result;
     }
     

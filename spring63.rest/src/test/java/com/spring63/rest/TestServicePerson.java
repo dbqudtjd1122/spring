@@ -2,6 +2,10 @@ package com.spring63.rest;
 
 import static org.junit.Assert.*;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -52,5 +56,16 @@ public class TestServicePerson {
         List<ModelPerson> result = service.getPersonList(person);
         assertNotNull(result);
         assertNotEquals(0, result.size() );
+    }
+    
+    @Test
+    public void testInsertPersonList() {
+        List<ModelPerson> persons =  new ArrayList<>();
+        String t = new SimpleDateFormat("yyyyMMddHHmmss").format( Calendar.getInstance().getTime() );
+        persons.add( new ModelPerson( "t1id"+t,"t1pw","t1name","t1email" ) ); 
+        persons.add( new ModelPerson( "t2id"+t,"t2pw","t2name","t2email" ) ); 
+        int result = service.insertPersonList(persons );
+        
+        assertEquals(2,result);
     }
 }

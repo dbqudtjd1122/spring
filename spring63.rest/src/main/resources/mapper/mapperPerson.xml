@@ -22,6 +22,22 @@
         VALUES       ( #{id}, #{pw}, #{name}, #{email} )
     </insert>
     
+    <!-- mysql multi insert
+        INSERT INTO t (col1, col2, col3) 
+               VALUES ('val1_1', 'val1_2', 'val1_3')
+                    , ('val2_1', 'val2_2', 'val2_3')
+                    , ('val3_1', 'val3_2', 'val3_3')
+        ;
+     -->
+    <insert id="insertPersonList" parameterType="java.util.List">
+        INSERT INTO 
+        TB_person    ( id   ,   pw ,   name ,   email    )
+        VALUES
+            <foreach collection="list" item="item" index="index" open="(" separator="),(" close=")">
+                    #{item.id}, #{item.pw}, #{item.name}, #{item.email} 
+            </foreach>
+    </insert>
+    
 <!-- 
     <update id="updatePerson" parameterType="hashmap">
         UPDATE TB_Person 

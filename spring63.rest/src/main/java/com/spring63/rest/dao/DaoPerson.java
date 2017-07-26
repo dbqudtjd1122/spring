@@ -35,7 +35,6 @@ public class DaoPerson implements IDaoPerson {
         return session.insert("mapper.mysql.mapperPerson.insertPerson", person);
     }
 
-
     @Override
     public int insertPersonList(List<ModelPerson> persons) {
         return session.insert("mapper.mysql.mapperPerson.insertPersonList", persons);
