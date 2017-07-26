@@ -10,7 +10,7 @@
     <meta name="Keywords" content="게시판 새글쓰기" />
     <meta name="Description" content="게시판 새글쓰기" />
     
-    <title>${boardNm }</title>
+    <title>${boardnm }</title>
     
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" media="screen" />
     <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -51,10 +51,11 @@
 				<div id="url-navi">BBS</div>
 
 				<!-- 본문 시작 -->
-				<h1>${boardNm }</h1>
+				<h1>${boardnm }</h1>
 				<div id="bbs">
 					<h2>글쓰기</h2>
-					<form id="writeForm" action="articlewrite" method="post" enctype="multipart/form-data" onsubmit="return check()">
+					<form id="writeForm" action="/board/articlewrite" method="post" enctype="multipart/form-data" >
+                          
 						<p style="margin: 0; padding: 0;">
 							<input type="hidden" name="boardcd" value="${boardcd }" />
 						</p>
@@ -63,11 +64,14 @@
 								<td>제목</td>
 								<td><input type="text" name="title" size="50" /></td>
 							</tr>
+                            <tr>
+                                <td>이메일</td>
+                                <td><input type="text" name="email" size="50" /></td>
+                            </tr>
 							<tr>
 								<td colspan="2"><textarea name="content" rows="17"></textarea>
 								</td>
 							</tr>
-
 							<tr>
 								<td>파일첨부</td>
 								<td><input type="file" name="upload" /></td>
@@ -102,24 +106,6 @@
 			<%@ include file="../inc/footer.jsp"%>
 		</div>
 
-	</div>
-
-	<div id="form-group" style="display: none;">
-		<form id="listForm" action="artilcelist" method="get">
-			<p>
-				<input type="hidden" name="boardcd" value="${boardcd }" /> 
-				<input type="hidden" name="curPage" value="${curPage }" /> 
-				<input type="hidden" name="searchWord" value="${searchWord }" />
-			</p>
-		</form>
-		<form id="viewForm" action="artilceview" method="get">
-			<p>
-				<input type="hidden" name="articleno" value="${articleno }" />
-				<input type="hidden" name="boardcd" value="${boardcd }" /> 
-				<input type="hidden" name="curPage" value="${curPage }" /> 
-				<input type="hidden" name="searchWord" value="${searchWord }" />
-			</p>
-		</form>
 	</div>
 
 </body>

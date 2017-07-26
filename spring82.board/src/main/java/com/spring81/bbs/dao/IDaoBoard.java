@@ -14,7 +14,7 @@ public interface IDaoBoard {
     /*
      * 특정 게시판의 총 게시물 갯수 구하기
      */
-    public abstract int getBoardTotalRecord(HashMap<String, String> hashmap);
+    public abstract int getBoardTotalRecord(String boardcd, String searchWord);
     
     /*
      * 게시판이름 구하기
@@ -109,12 +109,12 @@ public interface IDaoBoard {
     /*
      * 다음글 보기 articleno,boardcd,searchWord->HahMap 에 담는다
      */
-    public abstract ModelArticle getNextArticle(Map<String, Object> hashmap);
+    public abstract ModelArticle getNextArticle(int articleno, String boardcd, String searchWord);
 
     /*
      * 이전글 보기 articleno,boardcd,searchWord->HahMap 에 담는다
      */
-    public abstract ModelArticle getPrevArticle(Map<String, Object> hashmap);
+    public abstract ModelArticle getPrevArticle(int articleno, String boardcd, String searchWord);
 
     /*
      * 첨부파일
@@ -160,5 +160,10 @@ public interface IDaoBoard {
      * 게시글의 덧글리스트 구하기
      */
     public abstract List<ModelComments> getCommentList(int articleno);
+    
+    /*
+     * 게시판  추가
+     */
+    public abstract int getMaxArticleno();
 
 }

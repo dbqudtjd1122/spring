@@ -1,10 +1,7 @@
 package com.spring81.bbs.controller;
 
-import java.text.DateFormat;
-import java.util.Date;
+import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FilenameUtils;
@@ -338,9 +335,66 @@ public class BoardController {
         model.addAttribute("no"        , paging.getListNo   () );
         model.addAttribute("prevLink"  , paging.getPrevLink () );
         model.addAttribute("pageLinks" , paging.getPageLinks() );
-        model.addAttribute("nextLink"  , paging.getNextLink () );
-        
+        model.addAttribute("nextLink"  , paging.getNextLink () );        
         
         return "board/articleview";
+    }
+    
+
+    /**
+     * http://localhost/board/articlewirte/qna
+     */
+    @RequestMapping(value = "/board/articlewrite/{boardcd}", method = RequestMethod.GET)
+    public String articlewirte( Model model 
+            , @PathVariable(value="boardcd")  String boardcd
+            , @RequestParam(value="curPage"   , defaultValue="1") Integer curPage
+            , @RequestParam(value="searchWord", defaultValue="" ) String  searchWord ) {
+        logger.info("/board/articlewrite : GET");
+        
+        String boardnm = boardsrv.getBoardName(boardcd);      
+        // articleno 존재하지 않음.
+        
+        model.addAttribute("boardnm"   , boardnm);
+        model.addAttribute("boardcd"   , boardcd);
+        model.addAttribute("curPage"   , curPage);
+        model.addAttribute("searchWord", searchWord);        
+
+        return "board/articlewrite";
+    }
+    /**
+     * http://localhost/board/articlewirte/qna
+     */
+    @RequestMapping(value = "/board/articlewrite", method = RequestMethod.POST)
+    public String articlewrite( Model model 
+            , @ModelAttribute ModelArticle article
+            , MultipartFile uploadfile ) throws IllegalStateException, IOException  {
+        logger.info("/board/articlewrite : POST");
+        
+        // 1. 로컬 첨부 파일을 서버로 올리기 위한 코드
+        String fileName = uploadfile.getOriginalFilename();
+        String filepath = "D:/" + fileName;                 
+        java.io.File f = new java.io.File( filepath );                
+        uploadfile.transferTo( f );
+
+        // 2. DB article 테이블에 insert.
+        int articleno = boardsrv.insertArticle(article); // articleno 는 inserted 된 pk값 
+        articleno = boardsrv.getMaxArticleno();        
+                       
+        // 3. 첨부 파일을 attachfiel 테이블에 insert.
+        ModelAttachfile attachfile = new ModelAttachfile();
+        attachfile.setFilename( f.getName() );  // 파일명
+        attachfile.setFiletype( FilenameUtils.getExtension(fileName) ); //확장자
+        attachfile.setFilesize( (int)f.length() );
+        attachfile.setArticleno( articleno );
+        int result = boardsrv.insertAttachFile( attachfile );
+
+        if( result > 0 ){
+            // /board/boardlist 리다이렉트 
+            return "redirect:/board/boardlist/"+ article.getBoardcd(); 
+        }
+        else {       
+            // /board/boardview 리다이렉트 
+            return "redirect:/board/boardwrite/"+ article.getBoardcd();            
+        }
     }
 }

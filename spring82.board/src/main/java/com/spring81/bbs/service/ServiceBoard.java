@@ -249,14 +249,10 @@ public class ServiceBoard implements IServiceBoard {
 
     @Override
     public ModelArticle getNextArticle(int articleno, String boardcd, String searchWord) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("boardcd"   , boardcd    );
-        map.put("articleno" , articleno  );
-        map.put("searchWord", searchWord );
         
         ModelArticle result = null;
         try {
-            result = daoboard.getNextArticle( map );
+            result = daoboard.getNextArticle( articleno, boardcd, searchWord );
         } catch (Exception e) {
             logger.error("getNextArticle  " + e.getMessage() );
         }
@@ -266,14 +262,10 @@ public class ServiceBoard implements IServiceBoard {
 
     @Override
     public ModelArticle getPrevArticle(int articleno, String boardcd, String searchWord) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("boardcd"   , boardcd    );
-        map.put("articleno" , articleno  );
-        map.put("searchWord", searchWord );
         
         ModelArticle result = null;
         try {
-            result = daoboard.getPrevArticle( map );
+            result = daoboard.getPrevArticle( articleno, boardcd, searchWord );
         } catch (Exception e) {
             logger.error("getPrevArticle  " + e.getMessage() );
         }
@@ -385,6 +377,18 @@ public class ServiceBoard implements IServiceBoard {
             result = daoboard.deleteComment( comment );
         } catch (Exception e) {
             logger.error("deleteComment " + e.getMessage() );
+        }
+        
+        return result;
+    }
+
+    @Override
+    public int getMaxArticleno() {
+        int result = -1;
+        try {
+            result = daoboard.getMaxArticleno( );
+        } catch (Exception e) {
+            logger.error("getMaxArticleno " + e.getMessage() );
         }
         
         return result;

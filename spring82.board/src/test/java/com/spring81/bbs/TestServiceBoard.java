@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.spring81.bbs.model.ModelArticle;
 import com.spring81.bbs.service.IServiceBoard;
 
 public class TestServiceBoard {
@@ -98,7 +99,13 @@ public class TestServiceBoard {
     
     @Test
     public void testInsertArticle() {
-        fail("Not yet implemented");
+        ModelArticle article = new ModelArticle();
+        article.setBoardcd("free");
+        
+        int result = service.insertArticle(article);
+        assertNotEquals(result, 1);
+        assertNotEquals(result, 0);
+        assertNotEquals(result, -1);
     }
     
     @Test
@@ -169,5 +176,12 @@ public class TestServiceBoard {
     @Test
     public void testDeleteComment() {
         fail("Not yet implemented");
+    }
+    @Test
+    public void testGetMaxArticleno() {
+        int result = service.getMaxArticleno();
+        assertNotEquals(result, 1);
+        assertNotEquals(result, 0);
+        assertNotEquals(result, -1);
     }
 }

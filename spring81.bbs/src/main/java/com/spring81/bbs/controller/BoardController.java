@@ -266,7 +266,10 @@ public class BoardController {
         model.addAttribute("boardcd"   , boardcd   );
         model.addAttribute("curPage"   , curPage   );
         model.addAttribute("searchWord", searchWord);
-        
+
+        /*
+         *  articlelist-table.jsp 와 관련된 처리
+         */
         
         // 전체 게시글 갯수 가져오기
         int totalRecord = boardsrv.getArticleTotalRecord(boardcd, searchWord);
@@ -375,24 +378,23 @@ public class BoardController {
 
 
     /**
-     * http://localhost/board/articlewrite
+     * http://localhost/board/articlewirte/qna
      */
-    
-   @RequestMapping(value = "/board/articlewrite", method = RequestMethod.POST)
-    public String articlewrite(Model model
+    @RequestMapping(value = "/board/articlewrite", method = RequestMethod.POST)
+    public String articlewrite( Model model 
             , @ModelAttribute ModelArticle article
-            , MultipartFile upload ) throws IllegalStateException, IOException {
+            , MultipartFile uploadfile ) throws IllegalStateException, IOException {
        
-        logger.info("BoardController.articlewrite");
+        logger.info("/board/articlewrite : POST");
         
-        // article insert
+        // DB TB_BBS_article insert 
         int articleno = boardsrv.insertArticle(article);
                
         // 로컬 첨부 파일을 서버로 올리기 위한 코드
-        String fileName = upload.getOriginalFilename();
+        String fileName = uploadfile.getOriginalFilename();
         String filepath = WebConstants.UPLOAD_PATH + "/" + fileName;                 
         File f = new File( filepath );                
-        upload.transferTo( f );
+        uploadfile.transferTo( f );
         
         // 첨부 파일 insert 처리를 위한 코드
         ModelAttachfile attachfile = new ModelAttachfile();

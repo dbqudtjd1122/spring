@@ -59,7 +59,7 @@
 </div>
 
 <div id="list-menu" style="text-align:  right;">
-    <input type="button" value="새글쓰기" onclick="goWrite()" />
+    <input type="button" value="새글쓰기"  />
 </div>
 
 <div id="search" style="text-align: center;">

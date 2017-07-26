@@ -163,7 +163,11 @@
         WHERE articleno = #{articleno}
     </select>
     
-    <insert id="insertArticle" parameterType="ModelArticle">
+    <select id="getMaxArticleno" resultType="int">
+        SELECT Max(articleno) FROM TB_BBS_Article
+    </select>
+    
+    <insert id="insertArticle" parameterType="ModelArticle" >
         INSERT INTO 
         TB_BBS_Article ( boardcd   , title   , content   , email   , hit, regdate   , InsertUID   , InsertDT   , UpdateUID   , UpdateDT     )
             VALUES     ( #{boardcd}, #{title}, #{content}, #{email}, 0  , #{regdate}, #{InsertUID}, #{InsertDT}, #{UpdateUID}, #{UpdateDT}  )
