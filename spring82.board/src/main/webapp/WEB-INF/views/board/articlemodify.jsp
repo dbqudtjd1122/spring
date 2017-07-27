@@ -13,8 +13,9 @@
     <title>${boardnm }</title>
     
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" media="screen" />
-    <script src="/resources/js/jquery-3.1.1.js"></script>
+    <script src="/resources/js/jquery/jquery/jquery-3.1.1.js"></script>
     <script src="/resources/js/ajaxsetup.js"></script>
+    <script src="/resources/js/MyApp.board.js"></script>
     <script>      
         $(document).ready(function(e){            
             $('.golist').click(function(e) {
@@ -44,13 +45,13 @@
 
                 // submit 호출 : form 의 action 이 실행됨.
                 $('#modifyForm').submit();
-        });
-
-        $('.req_input').keyup( function (e) {
-            if( $(this).val() !== '') {
-                $(this).next().remove();
-            }
-        });
+            });
+    
+            $('.req_input').keyup( function (e) {
+                if( $(this).val() !== '') {
+                    $(this).next().remove();
+                }
+            });
         });
     </script>
 </head>
@@ -96,7 +97,15 @@
 								<td colspan="2">
                                     <textarea name="content" rows="17" class="req_input" >${thisArticle.content }</textarea>
 								</td>
-							</tr>
+							</tr>        
+                            <tr>
+                                <td>첨부 파일 목록</td>
+                                <td>
+                                    <c:forEach var="file" items="${attachFileList }" varStatus="status">
+                                       ${file.filename }<a href="javascript:deleteAttachFile('${file.attachfileno }')">x</a><br />
+                                    </c:forEach>
+                                </td>
+                            </tr>
 							<tr>
 								<td>파일첨부</td>
 								<td><input type="file" name="uploadfile" /></td>

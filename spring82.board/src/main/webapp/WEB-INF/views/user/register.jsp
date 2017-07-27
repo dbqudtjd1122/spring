@@ -8,7 +8,7 @@
     <meta name="Description" content="회원 가입" />
     <title>회원 가입</title>
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" />
-    <script src="/resources/js/jquery-3.1.1.js"></script>
+    <script src="/resources/js/ajaxsetup.js"></script>
     <script>
         $(document).ready( function(e){
             

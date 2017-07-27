@@ -376,12 +376,10 @@ public class BoardController {
             , @ModelAttribute ModelArticle article
             , MultipartFile uploadfile ) throws IllegalStateException, IOException  {
         logger.info("/board/articlewrite : POST");
-        int result = -1;
-
+    
         // 1. article 테이블에 insert.
         int articleno = boardsrv.insertArticle(article); // articleno 는 inserted 된 pk값 
-        articleno = boardsrv.getMaxArticleno(); 
-
+        
         // 2. 로컬 첨부 파일을 서버로 올리기 위한 코드
         if( !uploadfile.getOriginalFilename().isEmpty() ){
             String fileName = uploadfile.getOriginalFilename();
@@ -395,16 +393,18 @@ public class BoardController {
             attachfile.setFiletype( FilenameUtils.getExtension(fileName) ); //확장자
             attachfile.setFilesize( (int)f.length() );
             attachfile.setArticleno( articleno );
-            result = boardsrv.insertAttachFile( attachfile );            
+            int result = boardsrv.insertAttachFile( attachfile );     
+            
+            // TODO: make an error. 
         }
 
-        if( result > 0 ){
+        if( articleno > 0 ){
             // /board/boardlist 리다이렉트 
-            return "redirect:/board/boardlist/"+ article.getBoardcd(); 
+            return "redirect:/board/articlelist/"+ article.getBoardcd(); 
         }
         else {       
             // /board/boardview 리다이렉트 
-            return "redirect:/board/boardwrite/"+ article.getBoardcd();            
+            return "redirect:/board/articlewrite/"+ article.getBoardcd();            
         }
     }
 
@@ -419,15 +419,19 @@ public class BoardController {
             , @RequestParam(value="searchWord", defaultValue="" ) String  searchWord ) {
         logger.info("/board/articlewrite : GET");
         
-        String boardnm = boardsrv.getBoardName(boardcd);      
+        String boardnm = boardsrv.getBoardName(boardcd);    
+        // attachFileList
+        List<ModelAttachfile> attachFileList = boardsrv.getAttachFileList(articleno);
+        model.addAttribute("attachFileList", attachFileList);
+        
         ModelArticle thisArticle = boardsrv.getArticle(articleno);
+        model.addAttribute("thisArticle", thisArticle);   
         
         model.addAttribute("boardnm"    , boardnm);
         model.addAttribute("boardcd"    , boardcd);
         model.addAttribute("articleno"  , articleno);
         model.addAttribute("curPage"    , curPage);
-        model.addAttribute("searchWord" , searchWord); 
-        model.addAttribute("thisArticle", thisArticle);         
+        model.addAttribute("searchWord" , searchWord);       
 
         return "board/articlemodify";
     }

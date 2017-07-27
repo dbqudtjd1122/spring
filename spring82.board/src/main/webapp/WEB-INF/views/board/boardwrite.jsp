@@ -20,7 +20,7 @@
         form div {text-align: left; padding-bottom: 15px; }
     </style>    
     
-    <script src="/resources/js/jquery-3.1.1.js"></script>
+    <script src="/resources/js/jquery/jquery-3.1.1.js"></script>
     <script src="/resources/js/ajaxsetup.js"></script>
     <script>    
         $(document).ready( function(){

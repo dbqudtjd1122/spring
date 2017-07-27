@@ -12,25 +12,10 @@
     <title>${boardnm }</title>
     
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" media="screen" />
-    <script src="/resources/js/jquery-3.1.1.js"></script>
+    <script src="/resources/js/jquery/jquery-3.1.1.js"></script>
     <script src="/resources/js/ajaxsetup.js"></script>
-    <script>    
-
-    	function download(filename) {
-    		var form = document.getElementById("downForm");
-    		form.filename.value = filename;
-    		form.submit();
-    	}
-    	 
-    	function deleteAttachFile(attachfileno) {
-    		var chk = confirm("정말로 삭제하시겠습니까?");
-    		if (chk==true) {
-    			var form = document.getElementById("deleteAttachFileForm");
-    			form.attachfileno.value = attachfileno;
-    			form.submit();
-    		}
-    	}
-    
+    <script src="/resources/js/MyApp.board.js"></script>
+    <script>   
         $(document).ready(function(e){
             
             $('#paging > span[class!="bbs-strong"], .golist').click(function(e) {
