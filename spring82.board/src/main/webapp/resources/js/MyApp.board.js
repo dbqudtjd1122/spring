@@ -46,7 +46,7 @@ var commentadd = function commentadd(articleno, memo) {
         // 통신이 성공적으로 이루어졌을 때 이 함수를 타게 된다.
         if(data != null ){
             $('#commentlist').append( data );
-            $(textarea).val('');
+            $('#addComment textarea').val('');
         }
         else {
             alert( '댓글 추가 실패');
@@ -60,7 +60,7 @@ var commentupdate = function commentupdate(commentno) {
     var textarea = $('div[commentno="' + commentno + '"] textarea');
     
     $.ajax({
-        url : '/board/commentupdateajax',
+        url : '/board/commentupdate',
         data: { 'commentno': commentno, 'memo' : $(textarea).val() },   // 사용하는 경우에는 { data1:'test1', data2:'test2' }
         type: 'post',       // get, post
         timeout: 30000,     // 30초
@@ -84,7 +84,7 @@ var commentdelete = function commentdelete(commentno) {
     if (chk==true) {
 
         $.ajax({
-            url : '/board/commentdeleteajax',
+            url : '/board/commentdelete',
             data: { 'commentno': commentno },   // 사용하는 경우에는 { data1:'test1', data2:'test2' }
             type: 'post',       // get, post
             timeout: 30000,    // 30초

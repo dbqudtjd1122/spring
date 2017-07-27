@@ -109,19 +109,14 @@
     </ul>
     <hr />
     
-    <h2> RestController </h2>    
-    <ol>
-       
-        <li>댓글용 rest 서비스 만들기
-            <ol>
-                <li>./restservice/commentadd    만들기 </li>
-                <li>./restservice/commentedit   만들기 </li>
-                <li>./restservice/commentdelete 만들기 </li>
-            </ol>
-        </li>
-    </ol>      
-    <hr />
-    
+    <h2> RestController </h2>
+    댓글용 rest 서비스 만들기
+        <ol>
+            <li>./board/commentadd    만들기 (POST) </li>
+            <li>./board/commentupdate 만들기 (POST) </li>
+            <li>./board/commentdelete 만들기 (POST) </li>
+        </ol>
+    <hr />    
     
     <h2> UploadController, DownloadController 만들기 </h2>
     <a href="./upload/fileupload"    target="_blank">./upload/fileupload </a> <br> 
@@ -171,9 +166,9 @@
     </xmp>
     <hr />
 
-    <h2> UploadController, DownloadController 만들기 </h2>
+    <h2> RestConroller.java 만들기</h2>
     <ol>
-        <li>RestConroller.java 만들기
+        <li>
             <xmp>
 @Controller
 @RequestMapping("/restservice")

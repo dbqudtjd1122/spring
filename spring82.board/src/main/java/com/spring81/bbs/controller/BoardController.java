@@ -455,13 +455,15 @@ public class BoardController {
      * http://localhost/board/attachfiledelete
      */
     @RequestMapping(value = "/board/commentadd", method = RequestMethod.POST)
-    @ResponseBody
     public String commentadd( Model model
             , @RequestParam(value="articleno" , defaultValue="-1") Integer articleno 
             , @RequestParam(value="memo"      , defaultValue=""  ) String  memo )  {
         logger.info("/board/commentadd : POST");
         
         ModelComments comment = new ModelComments();
+        comment.setArticleno(articleno);
+        comment.setMemo(memo);
+        
         int commentno = boardsrv.insertComment(comment);
         
         comment = boardsrv.getComment(commentno);

@@ -41,7 +41,6 @@
             });
 
             $('#godelete').click(function(e) {
-                // window.location.href = "/board/articledelete/${boardcd}/${articleno}?curPage=${curPage}&searchWord=${searchWord}";
                 // POST로 "/board/articledelete/${boardcd}/${articleno}" 호출하기                
                 var chk = confirm('정말로 삭제하시겠습니까?');
                 if (chk == true) {
@@ -50,7 +49,7 @@
             });         
             
             $( '#addComment input[type="button"]' ).click(function(e){
-                var textarea  = $('#addCommentForm textarea');
+                var textarea  = $('#addComment textarea');
                 var memo      = $(textarea).val();
                 var articleno = $(textarea).attr('articleno'); 
 
