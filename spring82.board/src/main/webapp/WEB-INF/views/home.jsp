@@ -100,7 +100,6 @@
         <li><a href="/board/articlemodify/free/17?&curPage=1&searchWord=" target="_blank">/board/articlemodify/free/17?curPage=1&amp;searchWord=</a></li>
         <li><a href="/board/articledelete/free/17?curPage=1&searchWord="  target="_blank">/board/articledelete/free/17?curPage=1&amp;searchWord=</a></li>
     </ul>
-    <br />
     <hr />
     
     
@@ -108,57 +107,11 @@
     <ul>    
         <li><a href="/board/articlemodify/free/1"  target="_blank">첨부 파일 삭제 테스트</a> </li>
     </ul>
-    <br />
     <hr />
     
     <h2> RestController </h2>    
     <ol>
-        <li>RestConroller.java 만들기
-            <xmp>
-@Controller
-@RequestMapping("/restservice")
-public class RestController {
-
-    private static final Logger logger = LoggerFactory.getLogger(RestController.class);
-    
-    @Autowired
-    @Qualifier("serviceboard")    
-    private IServiceBoard boardsrv; 
-
-    @Autowired
-    private IServiceUser usersrv;
-    
-    // http://localhost/restservice/ajaxone
-    @RequestMapping(value = "/ajaxone", method = RequestMethod.GET)
-    public String ajaxone(Model model) {
-        logger.info("RestController.ajaxone");
-        return "restservice/ajaxone";       
-    }
-    
-    // http://localhost/restservice/jsonview
-    @RequestMapping(value = "/jsonview", method = RequestMethod.GET)
-    public @ResponseBody ModelBoard AjaxView(@RequestParam("boardcd") String boardcd) {
-        return  boardsrv.getBoardOne(boardcd);
-    }
-    
-    // http://localhost/restservice/login
-    @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST} )
-    public @ResponseBody ModelUser login(@RequestParam("id") String id, @RequestParam("pw") String pw) {
-        return usersrv.login(id, pw);
-    }
-}
-            </xmp>
-        </li>
-        <li>ajaxone.jsp 작성
-            <p>
-                <a href="./restservice/ajaxone?id=free"    target="_blank">./restservice/ajaxone?id=free    </a> <br />
-            </p>
-        </li>
-        <li>ajaxlist.jsp  작성
-            <p>
-                <a href="./restservice/ajaxlist?id=free"   target="_blank">./restservice/ajaxlist?id=free   </a> <br />
-            </p>
-        </li>        
+       
         <li>댓글용 rest 서비스 만들기
             <ol>
                 <li>./restservice/commentadd    만들기 </li>
@@ -217,6 +170,57 @@ public class RestController {
         </error-page>  
     </xmp>
     <hr />
+
+    <h2> UploadController, DownloadController 만들기 </h2>
+    <ol>
+        <li>RestConroller.java 만들기
+            <xmp>
+@Controller
+@RequestMapping("/restservice")
+public class RestController {
+
+    private static final Logger logger = LoggerFactory.getLogger(RestController.class);
+    
+    @Autowired
+    @Qualifier("serviceboard")    
+    private IServiceBoard boardsrv; 
+
+    @Autowired
+    private IServiceUser usersrv;
+    
+    // http://localhost/restservice/ajaxone
+    @RequestMapping(value = "/ajaxone", method = RequestMethod.GET)
+    public String ajaxone(Model model) {
+        logger.info("RestController.ajaxone");
+        return "restservice/ajaxone";       
+    }
+    
+    // http://localhost/restservice/jsonview
+    @RequestMapping(value = "/jsonview", method = RequestMethod.GET)
+    public @ResponseBody ModelBoard AjaxView(@RequestParam("boardcd") String boardcd) {
+        return  boardsrv.getBoardOne(boardcd);
+    }
+    
+    // http://localhost/restservice/login
+    @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST} )
+    public @ResponseBody ModelUser login(@RequestParam("id") String id, @RequestParam("pw") String pw) {
+        return usersrv.login(id, pw);
+    }
+}
+            </xmp>
+        </li>
+        <li>ajaxone.jsp 작성
+            <p>
+                <a href="./restservice/ajaxone?id=free"    target="_blank">./restservice/ajaxone?id=free    </a> <br />
+            </p>
+        </li>
+        <li>ajaxlist.jsp  작성
+            <p>
+                <a href="./restservice/ajaxlist?id=free"   target="_blank">./restservice/ajaxlist?id=free   </a> <br />
+            </p>
+        </li>        
+    </ol>
+    <hr>
    
 </body>
 </html>
