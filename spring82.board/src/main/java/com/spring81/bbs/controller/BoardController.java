@@ -447,7 +447,6 @@ public class BoardController {
         ModelAttachfile attachFile = new ModelAttachfile( attachfileno );
         
         return boardsrv.deleteAttachFile(attachFile);
-    
     }
 
 }
