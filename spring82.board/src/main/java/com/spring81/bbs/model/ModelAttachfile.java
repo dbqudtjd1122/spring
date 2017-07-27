@@ -111,10 +111,10 @@ public class ModelAttachfile {
         super();
     }
     
-    public ModelAttachfile(Integer articleno) {
-        this.articleno = articleno;
+    public ModelAttachfile(Integer attachfileno) {
+        this.attachfileno = attachfileno;
     }
-    
+
     // toString
     @Override
     public String toString() {

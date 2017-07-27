@@ -435,4 +435,19 @@ public class BoardController {
 
         return "board/articlemodify";
     }
+    
+    /**
+     * http://localhost/board/attachfiledelete
+     */
+    @RequestMapping(value = "/board/attachfiledelete", method = RequestMethod.POST)
+    public int attachfiledelete( Model model
+            , @RequestParam(value="attachfileno" , defaultValue="-1") Integer attachfileno )  {
+        logger.info("/board/attachfiledelete : POST");
+        
+        ModelAttachfile attachFile = new ModelAttachfile( attachfileno );
+        
+        return boardsrv.deleteAttachFile(attachFile);
+    
+    }
+
 }
