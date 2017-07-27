@@ -16,13 +16,13 @@ var deleteAttachFile = function deleteAttachFile(attachfileno) {
 
 	    $.ajax({
 	        url : '/board/attachfiledelete',
-	        data: { 'articlefileno': attachfileno },   // 사용하는 경우에는 { data1:'test1', data2:'test2' }
+	        data: { 'attachfileno': attachfileno },   // 사용하는 경우에는 { data1:'test1', data2:'test2' }
 	        type: 'post',       // get, post
 	        timeout: 30000,     // 30초
 	        dataType: 'html',   // text, html, xml, json, jsonp, script
 	    }).done( function(data, textStatus, xhr ){
 	        // 통신이 성공적으로 이루어졌을 때 이 함수를 타게 된다.
-	        if(data === 1 ){
+	        if(data === "1" ){
 	           $('#attachfile  a[attachfileno="' + attachfileno + '"]').parent().remove();
 	        }
 	        else {
@@ -37,7 +37,7 @@ var deleteAttachFile = function deleteAttachFile(attachfileno) {
 var commentadd = function commentadd(articleno, memo) {
 
     $.ajax({
-        url : '/board/commentaddajax',
+        url : '/board/commentadd',
         data: { 'articleno': articleno, 'memo': memo },   // 사용하는 경우에는 { data1:'test1', data2:'test2' }
         type: 'post',       // get, post
         timeout: 30000,     // 30초

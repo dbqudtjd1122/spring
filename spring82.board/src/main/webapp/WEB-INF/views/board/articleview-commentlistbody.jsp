@@ -26,9 +26,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    function commentModifyShowHide(commentno) {
-        $('div[commentno="'+ commentno +'"]  div.modify-comment').toggle(); 
-    }
-</script>

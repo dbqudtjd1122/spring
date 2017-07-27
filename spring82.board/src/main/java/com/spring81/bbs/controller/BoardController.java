@@ -440,6 +440,7 @@ public class BoardController {
      * http://localhost/board/attachfiledelete
      */
     @RequestMapping(value = "/board/attachfiledelete", method = RequestMethod.POST)
+    @ResponseBody
     public int attachfiledelete( Model model
             , @RequestParam(value="attachfileno" , defaultValue="-1") Integer attachfileno )  {
         logger.info("/board/attachfiledelete : POST");
@@ -448,6 +449,25 @@ public class BoardController {
         int result = boardsrv.deleteAttachFile(attachFile);
         
         return result ;
+    }
+    
+    /**
+     * http://localhost/board/attachfiledelete
+     */
+    @RequestMapping(value = "/board/commentadd", method = RequestMethod.POST)
+    @ResponseBody
+    public String commentadd( Model model
+            , @RequestParam(value="articleno" , defaultValue="-1") Integer articleno 
+            , @RequestParam(value="memo"      , defaultValue=""  ) String  memo )  {
+        logger.info("/board/commentadd : POST");
+        
+        ModelComments comment = new ModelComments();
+        int commentno = boardsrv.insertComment(comment);
+        
+        comment = boardsrv.getComment(commentno);
+        model.addAttribute("comment", comment);
+        
+        return "board/articleview-commentlistbody" ;
     }
 
 }

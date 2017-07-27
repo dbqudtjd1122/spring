@@ -15,7 +15,11 @@
     <script src="/resources/js/jquery/jquery-3.1.1.js"></script>
     <script src="/resources/js/ajaxsetup.js"></script>
     <script src="/resources/js/MyApp.board.js"></script>
-    <script>   
+    <script>
+        function commentModifyShowHide(commentno) {
+            $('div[commentno="'+ commentno +'"]  div.modify-comment').toggle(); 
+        }
+
         $(document).ready(function(e){
             
             $('#paging > span[class!="bbs-strong"], .golist').click(function(e) {
