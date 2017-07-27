@@ -103,6 +103,14 @@
     <br />
     <hr />
     
+    
+    <h2> 첨부 파일</h2>  
+    <ul>    
+        <li><a href="/board/articlemodify/free/1"  target="_blank">첨부 파일 삭제 테스트</a> </li>
+    </ul>
+    <br />
+    <hr />
+    
     <h2> RestController </h2>    
     <ol>
         <li>RestConroller.java 만들기

@@ -445,8 +445,9 @@ public class BoardController {
         logger.info("/board/attachfiledelete : POST");
         
         ModelAttachfile attachFile = new ModelAttachfile( attachfileno );
+        int result = boardsrv.deleteAttachFile(attachFile);
         
-        return boardsrv.deleteAttachFile(attachFile);
+        return result ;
     }
 
 }

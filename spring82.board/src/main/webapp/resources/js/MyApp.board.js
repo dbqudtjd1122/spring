@@ -2,7 +2,7 @@
  * 
  */
 
-var MyApp.board = {};
+var MyApp = {};
 
 var download = function download(filename) {
 	var form = document.getElementById("downForm");
@@ -22,9 +22,8 @@ var deleteAttachFile = function deleteAttachFile(attachfileno) {
 	        dataType: 'html',   // text, html, xml, json, jsonp, script
 	    }).done( function(data, textStatus, xhr ){
 	        // 통신이 성공적으로 이루어졌을 때 이 함수를 타게 된다.
-	        if(data != null ){
-	            $('#commentlist').append( data );
-	            $(textarea).val('');
+	        if(data === 1 ){
+	           $('#attachfile  a[attachfileno="' + attachfileno + '"]').parent().remove();
 	        }
 	        else {
 	            alert( '댓글 삭제 실패');
@@ -50,7 +49,7 @@ var commentadd = function commentadd(articleno, memo) {
             $(textarea).val('');
         }
         else {
-            alert( '댓글 삭제 실패');
+            alert( '댓글 추가 실패');
         }
     });
     

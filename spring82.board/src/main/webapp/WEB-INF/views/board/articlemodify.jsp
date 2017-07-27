@@ -13,7 +13,7 @@
     <title>${boardnm }</title>
     
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" media="screen" />
-    <script src="/resources/js/jquery/jquery/jquery-3.1.1.js"></script>
+    <script src="/resources/js/jquery/jquery-3.1.1.js"></script>
     <script src="/resources/js/ajaxsetup.js"></script>
     <script src="/resources/js/MyApp.board.js"></script>
     <script>      
@@ -100,9 +100,13 @@
 							</tr>        
                             <tr>
                                 <td>첨부 파일 목록</td>
-                                <td>
+                                <td id="attachfile">
                                     <c:forEach var="file" items="${attachFileList }" varStatus="status">
-                                       ${file.filename }<a href="javascript:deleteAttachFile('${file.attachfileno }')">x</a><br />
+                                        <span>
+                                           ${file.filename }
+                                           <a href="javascript:deleteAttachFile('${file.attachfileno }')" attachfileno="${file.attachfileno }">x</a>
+                                           <br />
+                                       </span>
                                     </c:forEach>
                                 </td>
                             </tr>
