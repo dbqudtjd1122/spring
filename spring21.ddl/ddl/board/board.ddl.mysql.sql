@@ -379,6 +379,25 @@ select * from TB_User;
 
 
 
+           
+-- '좋아요/나빠요' 테이블
+DROP TABLE IF EXISTS TB_Bbs_Article_Recommend;
+CREATE TABLE TB_Bbs_Article_Recommend (
+      userid        VARCHAR( 50)    NOT NULL
+    , articleno     INTEGER         NOT NULL       
+    , good          TINYINT(1)      NULL     DEFAULT  0  
+    , bad           TINYINT(1)      NULL     DEFAULT  0  
+    
+    , PRIMARY KEY(userid, articleno)
+)
+ENGINE=InnoDB 
+AUTO_INCREMENT=1 
+DEFAULT CHARACTER SET utf8 
+COLLATE utf8_general_ci;
+
+select * from TB_Bbs_Article_Recommend;
+
+
 --  Phone 테이블
 DROP TABLE IF EXISTS TB_Phone;
 CREATE TABLE IF NOT EXISTS  TB_Phone (
