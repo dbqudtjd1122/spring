@@ -5,6 +5,7 @@ import com.spring81.bbs.model.ModelArticle;
 
 public interface IServiceBoard extends IDaoBoard {
     
-    public abstract ModelArticle transUpdateHitAndGetArticle(int articleno);
+    ModelArticle transUpdateHitAndGetArticle(int articleno);
+    int transDeleteArticle(String boardcd, int articleno);
 
 }

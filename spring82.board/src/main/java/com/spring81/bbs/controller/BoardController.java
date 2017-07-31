@@ -446,10 +446,31 @@ public class BoardController {
 
         return "board/articlemodify";
     }
+
+    /**
+     * http://localhost/board/articlemodify/qna
+     */
+    @RequestMapping(value = "/board/articledelete/{boardcd}/{articleno}", method = RequestMethod.POST)
+    public String articledelete( Model model 
+            , @PathVariable(value="boardcd"  )  String boardcd
+            , @PathVariable(value="articleno")  Integer articleno
+            , @RequestParam(value="curPage"   , defaultValue="1") Integer curPage
+            , @RequestParam(value="searchWord", defaultValue="" ) String  searchWord ) {
+        logger.info("/board/articledelete : POST");
+              
+        // artilcedelet 시.
+        // 1. TB_BBS_Comments 테이블에서 있는 comment 정보 삭제.
+        // 2. 업로드 폴더에서 관련된 첨부 파일 삭제.
+        // 3. TB_BBS_AttachFile 테이블에서 있는 attachfile 정보 삭제.
+        // 4. TB_BBS_Article 테이블에서 artilce 정보 삭제
+        boardsrv.transDeleteArticle(boardcd, articleno);
+
+        return "redirect:/board/articlelist/"+boardcd + "?curPage="+curPage+"&searchWord="+searchWord;
+    }
     
     
     /**
-     * http://localhost/board/attachfiledelete
+     * http://localhost/board/commentadd
      */
     @RequestMapping(value = "/board/commentadd", method = RequestMethod.POST)
     public String commentadd( Model model

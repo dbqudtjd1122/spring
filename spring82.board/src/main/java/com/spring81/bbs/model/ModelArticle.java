@@ -20,105 +20,105 @@ public class ModelArticle {
     // 추가 컬럼
     private Integer attachfileNum = null;
     private Integer commentNum    = null;
-        
-    //
+    private Integer countgood = null;
+    private Integer countbad  = null;
+       
     public Integer getArticleno() {
         return articleno;
     }
-    
+
     public void setArticleno(Integer articleno) {
         this.articleno = articleno;
     }
-    
+
     public String getBoardcd() {
         return boardcd;
     }
-    
+
     public void setBoardcd(String boardcd) {
         this.boardcd = boardcd;
     }
-    
+
     public String getTitle() {
         return title;
     }
-    
+
     public void setTitle(String title) {
         this.title = title;
     }
-    
+
     public String getContent() {
         return content;
     }
-    
+
     public void setContent(String content) {
         this.content = content;
     }
-    
+
     public String getEmail() {
         return email;
     }
-    
+
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     public Integer getHit() {
         return hit;
     }
-    
+
     public void setHit(Integer hit) {
         this.hit = hit;
     }
-    
+
     public Date getRegdate() {
         return regdate;
     }
-    
+
     public void setRegdate(Date regdate) {
         this.regdate = regdate;
     }
-    
+
     public Boolean getUseYN() {
         return UseYN;
     }
-    
+
     public void setUseYN(Boolean useYN) {
         UseYN = useYN;
     }
-    
+
     public String getInsertUID() {
         return InsertUID;
     }
-    
+
     public void setInsertUID(String insertUID) {
         InsertUID = insertUID;
     }
-    
+
     public Date getInsertDT() {
         return InsertDT;
     }
-    
+
     public void setInsertDT(Date insertDT) {
         InsertDT = insertDT;
     }
-    
+
     public String getUpdateUID() {
         return UpdateUID;
     }
-    
+
     public void setUpdateUID(String updateUID) {
         UpdateUID = updateUID;
     }
-    
+
     public Date getUpdateDT() {
         return UpdateDT;
     }
-    
+
     public void setUpdateDT(Date updateDT) {
         UpdateDT = updateDT;
     }
 
-    
     public Integer getAttachfileNum() {
         return attachfileNum;
     }
@@ -135,6 +135,22 @@ public class ModelArticle {
         this.commentNum = commentNum;
     }
 
+    public Integer getCountgood() {
+        return countgood;
+    }
+
+    public void setCountgood(Integer countgood) {
+        this.countgood = countgood;
+    }
+
+    public Integer getCountbad() {
+        return countbad;
+    }
+
+    public void setCountbad(Integer countbad) {
+        this.countbad = countbad;
+    }
+
     @Override
     public String toString() {
         return "ModelArticle [articleno=" + articleno + ", boardcd=" + boardcd
@@ -143,9 +159,10 @@ public class ModelArticle {
                 + UseYN + ", InsertUID=" + InsertUID + ", InsertDT=" + InsertDT
                 + ", UpdateUID=" + UpdateUID + ", UpdateDT=" + UpdateDT
                 + ", attachfileNum=" + attachfileNum + ", commentNum="
-                + commentNum + "]";
+                + commentNum + ", countgood=" + countgood + ", countbad="
+                + countbad + "]";
     }
-    
+
     public ModelArticle() {
         super();
     }

@@ -56,6 +56,9 @@ CREATE TABLE IF NOT EXISTS  TB_Bbs_Article (
     , email         NVARCHAR(60)
     , hit           INT UNSIGNED  DEFAULT  0   
     , regdate       DateTime
+        
+    , countgood     INT  DEFAULT  0  -- 좋아요.
+    , countbad      INT  DEFAULT  0  -- 나빠요.
                        
     , UseYN         TINYINT(1)    NOT NULL   DEFAULT  1  
                                   
@@ -288,6 +291,9 @@ CREATE TABLE IF NOT EXISTS  TB_Bbs_Comments (
     , email         NVARCHAR(60)  
     , memo          NVARCHAR(4000)
     , regdate       DateTime 
+    
+    , countgood     INT  DEFAULT  0  -- 좋아요.
+    , countbad      INT  DEFAULT  0  -- 나빠요.
                        
     , UseYN         TINYINT(1)       NULL     DEFAULT  1  
                                      

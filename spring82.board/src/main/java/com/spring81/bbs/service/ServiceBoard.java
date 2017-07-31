@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 
+import com.spring81.bbs.commons.WebConstants;
 import com.spring81.bbs.dao.*;
 import com.spring81.bbs.model.*;
 
@@ -391,6 +392,95 @@ public class ServiceBoard implements IServiceBoard {
             result = daoboard.getArticle ( articleno );
         } catch (Exception e) {
             logger.error("getArticle  " + e.getMessage() );
+        }
+        
+        return result;
+    }
+
+    @Override
+    public int transDeleteArticle(String boardcd, int articleno) {
+        // artilcedelet 시.
+        // 1. TB_BBS_Comments 테이블에서 있는 comment 정보 삭제.
+        // 2. 업로드 폴더에서 관련된 첨부 파일 삭제.
+        // 3. TB_BBS_AttachFile 테이블에서 있는 attachfile 정보 삭제.
+        // 4. TB_BBS_Article 테이블에서 artilce 정보 삭제
+        
+        int result = -1;
+
+        // 1. TB_BBS_Comments 테이블에서 있는 comment 정보 삭제
+        ModelComments comment = new ModelComments( articleno );
+        result = daoboard.deleteComment(comment );
+        
+        // 2. 업로드 폴더에서 관련된 첨부 파일 삭제.
+        List<ModelAttachfile> files = daoboard.getAttachFileList(articleno);
+        for (int i = 0; i < files.size(); i++) {
+            ModelAttachfile attachfile = files.get(i);
+            
+            String path = WebConstants.UPLOAD_PATH + attachfile.getTempfilename();
+            java.io.File   file = new java.io.File( path );
+            
+            if( file.exists() ) {
+                file.delete();           
+            }
+        }
+        
+        // 3. TB_BBS_AttachFile 테이블에서 있는 attachfile 정보 삭제.
+        ModelAttachfile attachFile = new ModelAttachfile();
+        attachFile.setArticleno(articleno);
+        daoboard.deleteAttachFile(attachFile);
+        
+
+        // 4. TB_BBS_Article 테이블에서 artilce 정보 삭제
+        ModelArticle article = new ModelArticle();
+        article.setArticleno(articleno);                
+        result = daoboard.deleteArticle(article);        
+        
+        return result;
+    }
+
+    @Override
+    public int changeArticleGood(int articleno) {
+        int result = -1;
+        try {
+            result = daoboard.changeArticleGood( articleno );
+        } catch (Exception e) {
+            logger.error("changeArticleGood " + e.getMessage() );
+        }
+        
+        return result;
+    }
+
+    @Override
+    public int changeArticleBad(int articleno) {
+        int result = -1;
+        try {
+            result = daoboard.changeArticleBad( articleno );
+        } catch (Exception e) {
+            logger.error("changeArticleBad " + e.getMessage() );
+        }
+        
+        return result;
+    }
+
+    @Override
+    public int changeCommentGood(int commentno) {
+        int result = -1;
+        try {
+            result = daoboard.changeCommentGood( commentno );
+        } catch (Exception e) {
+            logger.error("changeCommentGood " + e.getMessage() );
+        }
+        
+        return result;
+    }
+
+    @Override
+    public int changeCommentBad(int commentno) {
+        int result = -1;
+        try {
+            result = daoboard.changeCommentBad( commentno );
+        } catch (Exception e) {
+            logger.error("changeCommentBad " + e.getMessage() );
         }
         
         return result;

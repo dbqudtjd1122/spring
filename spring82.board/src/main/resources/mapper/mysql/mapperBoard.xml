@@ -138,6 +138,8 @@
                            a.title, 
                            a.regdate, 
                            a.hit, 
+                           a.countgood, 
+                           a.countbad, 
                            count(distinct(f.attachfileno)) attachfileNum, 
                            count(distinct(c.commentno)) commentNum
                     FROM 
@@ -147,7 +149,8 @@
                     WHERE
                         a.boardcd = #{boardcd}
                         <if test="searchWord != null">
-                        AND ( title LIKE CONCAT('%', #{searchWord}, '%') OR content LIKE CONCAT('%', #{searchWord}, '%') )
+                        AND ( title LIKE CONCAT('%', #{searchWord}, '%') 
+                                 OR content LIKE CONCAT('%', #{searchWord}, '%') )
                         </if>
                     GROUP BY a.articleno, title, a.regdate, hit
                     ORDER BY articleno DESC
@@ -158,7 +161,7 @@
 
     
     <select id="getArticle" parameterType="int" resultType="ModelArticle">
-        SELECT articleno, boardcd, title, content, email, hit, regdate
+        SELECT articleno, boardcd, title, content, email, hit, regdate, countgood, countbad, 
         FROM TB_BBS_Article
         WHERE articleno = #{articleno}
     </select>
@@ -214,6 +217,20 @@
     <update id="increaseHit" parameterType="int">
         UPDATE TB_BBS_Article 
            SET hit=hit+1 
+         WHERE articleno=#{articleno}
+    </update>    
+    
+    <!--  count 로 올수 있는 값은 -1 또는 +1 만 가능 -->
+    <update id="changeArticleGood" parameterType="map">
+        UPDATE TB_BBS_Article 
+           SET countgood = countgood  + ( #{count} )
+         WHERE articleno=#{articleno}
+    </update>    
+    
+    <!--  count 로 올수 있는 값은 -1 또는 +1 만 가능 -->
+    <update id="changeArticleBad" parameterType="map">
+        UPDATE TB_BBS_Article 
+           SET countbad = countbad  + ( #{count} )
          WHERE articleno=#{articleno}
     </update>
     
@@ -296,13 +313,13 @@
     </delete>
     
     <select id="getComment" parameterType="int" resultType="ModelComments">
-        SELECT commentno,articleno,email,memo,regdate 
+        SELECT commentno,articleno,email,memo,regdate, countgood, countbad
         FROM TB_BBS_Comments 
         WHERE commentno = #{commentno}
     </select>
     
     <select id="getCommentList" parameterType="int" resultType="ModelComments">
-        SELECT commentno, articleno, email, memo, regdate
+        SELECT commentno, articleno, email, memo, regdate, countgood, countbad
         FROM TB_BBS_Comments
         WHERE articleno = #{articleno}
         ORDER BY commentno DESC
@@ -329,6 +346,20 @@
               <if test="searchValue.email != null and searchValue.email != ''">
               AND email     = #{searchValue.email}
               </if>
+    </update>     
+    
+    <!-- 좋아요: count 로 올수 있는 값은 -1 또는 +1 만 가능 -->
+    <update id="changeCommentGood" parameterType="map">
+        UPDATE TB_BBS_Comments 
+           SET countgood = countgood  + ( #{count} )
+         WHERE commentno=#{commentno}
+    </update>    
+    
+    <!-- 나빠요: count 로 올수 있는 값은 -1 또는 +1 만 가능 -->
+    <update id="changeCommentBad" parameterType="map">
+        UPDATE TB_BBS_Comments 
+           SET countbad = countbad  + ( #{count} )
+         WHERE commentno=#{commentno}
     </update>
     
     <delete id="deleteComment" parameterType="ModelComments">
