@@ -41,10 +41,28 @@
             });
 
             $('#godelete').click(function(e) {
-                // POST로 "/board/articledelete/${boardcd}/${articleno}" 호출하기                
+                // POST로 "/board/articledelete" 호출하기                
                 var chk = confirm('정말로 삭제하시겠습니까?');
                 if (chk == true) {
+                	var boardcd   = $(this).attr('boardcd'  );
+                	var articleno = $(this).attr('articleno');
                 	
+//                 	$.ajax({
+//                 	    url : '/board/articledelete'
+//                 	    , data: {'boardcd': boardcd, 'articleno': articleno }   // 사용하는 경우에는 { data1:'test1', data2:'test2' }
+//                 	    , type: 'post'       // get, post
+//                 	    , timeout: 30000    // 30초
+//                 	    , dataType: 'json'  // text, html, xml, json, jsonp, script
+//                 	}).done( function(data, textStatus, xhr ){
+//                 	    // 통신이 성공적으로 이루어졌을 때 이 함수를 타게 된다.
+//                 	    if( data === 1) // 삭제 성공
+//                 	    	window.location.href = "/board/articlelist/${boardcd}?curPage=1&searchWord=${searchWord}";
+//                 	    else  // 삭제 실패
+//                 	    	alert('삭제 실패');
+//                 	});
+                	
+                	sendPost( '/board/articledelete', 
+                			{'boardcd': boardcd, 'articleno':articleno, 'curPage':${curPage}, 'searchWord':${searchWord} } );
                 }
             });         
             
@@ -92,7 +110,7 @@
             		<p>${thisArticle.content }</p>
             		<p id="file-list" style="text-align: right;">
             			<c:forEach var="file" items="${attachFileList }" varStatus="status">
-                			<a href="javascript:download('${file.filename }')">${file.filename }</a>
+                			<a href="javascript:download('${file.tempfilename }', '${file.filename }')">${file.filename }</a>
             			<br />
             			</c:forEach>	
             		</p>		
@@ -127,7 +145,7 @@
             	<div id="view-menu">
             		<div class="fl">
             			<input type="button" value="수정" id="gomodify" />
-            			<input type="button" value="삭제" id="godelete" />
+            			<input type="button" value="삭제" id="godelete" articleno="${articleno }"  boardcd="${boardcd }" />
             		</div>
             		
             		<div class="fr">
@@ -165,32 +183,6 @@
 		<%@ include file="../inc/footer.jsp" %>
 	</div>
 
-</div>
-
-<div id="form-group" style="display: none;">
-	<form id="downForm" action="/download" method="post">
-		<p>
-			<input type="hidden" name="filename" />
-		</p>
-	</form>
-	<form id="deleteCommentForm" action="./commentdel" method="post">
-		<p>
-			<input type="hidden" name="commentno" />
-			<input type="hidden" name="articleno" value="${articleno }" />
-			<input type="hidden" name="boardcd" value="${boardcd }" />
-			<input type="hidden" name="curPage" value="${curPage }" />
-			<input type="hidden" name="searchWord" value="${searchWord }" />
-		</p>
-	</form>	
-	<form id="deleteAttachFileForm" action="./attachFileDel" method="post">
-		<p>
-			<input type="hidden" name="attachfileno" />
-			<input type="hidden" name="articleno" value="${articleno }" />
-			<input type="hidden" name="boardcd" value="${boardcd }" />
-			<input type="hidden" name="curPage" value="${curPage }" />
-			<input type="hidden" name="searchWord" value="${searchWord }" />
-		</p>
-	</form>	
 </div>
 
 </body>

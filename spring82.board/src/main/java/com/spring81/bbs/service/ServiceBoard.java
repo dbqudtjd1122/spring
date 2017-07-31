@@ -439,48 +439,72 @@ public class ServiceBoard implements IServiceBoard {
     }
 
     @Override
-    public int changeArticleGood(int articleno) {
+    public int updateArticleCountGood(int articleno, int count) {
         int result = -1;
         try {
-            result = daoboard.changeArticleGood( articleno );
+            result = daoboard.updateArticleCountGood( articleno, count );
         } catch (Exception e) {
-            logger.error("changeArticleGood " + e.getMessage() );
+            logger.error("updateArticleCountGood " + e.getMessage() );
         }
         
         return result;
     }
 
     @Override
-    public int changeArticleBad(int articleno) {
+    public int updateArticleCountBad(int articleno, int count) {
         int result = -1;
         try {
-            result = daoboard.changeArticleBad( articleno );
+            result = daoboard.updateArticleCountBad( articleno, count );
         } catch (Exception e) {
-            logger.error("changeArticleBad " + e.getMessage() );
+            logger.error("updateArticleCountBad " + e.getMessage() );
         }
         
         return result;
     }
 
     @Override
-    public int changeCommentGood(int commentno) {
+    public int updateRecommend(ModelArticleRecommend recommend) {
         int result = -1;
         try {
-            result = daoboard.changeCommentGood( commentno );
+            result = daoboard.updateRecommend( recommend);
         } catch (Exception e) {
-            logger.error("changeCommentGood " + e.getMessage() );
+            logger.error("updateRecommend " + e.getMessage() );
         }
         
         return result;
     }
 
     @Override
-    public int changeCommentBad(int commentno) {
+    public int deleteRecommend(ModelArticleRecommend recommend) {
         int result = -1;
         try {
-            result = daoboard.changeCommentBad( commentno );
+            result = daoboard.deleteRecommend( recommend);
         } catch (Exception e) {
-            logger.error("changeCommentBad " + e.getMessage() );
+            logger.error("deleteRecommend " + e.getMessage() );
+        }
+        
+        return result;
+    }
+
+    @Override
+    public ModelArticleRecommend getRecommendOne( ModelArticleRecommend recommend) {
+        ModelArticleRecommend result = null;
+        try {
+            result = daoboard.getRecommendOne( recommend);
+        } catch (Exception e) {
+            logger.error("getRecommendOne " + e.getMessage() );
+        }
+        
+        return result;
+    }
+
+    @Override
+    public int updateArticleGoodBadCount(int articleno) {
+        int result = -1;
+        try {
+            result = daoboard.updateArticleGoodBadCount( articleno );
+        } catch (Exception e) {
+            logger.error("updateArticleGoodBadCount " + e.getMessage() );
         }
         
         return result;

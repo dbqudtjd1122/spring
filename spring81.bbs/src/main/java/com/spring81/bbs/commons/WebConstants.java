@@ -1,12 +1,11 @@
 package com.spring81.bbs.commons;
 
 public class WebConstants {
+    // upload path
+    public static final String UPLOAD_PATH = "c:/upload/";
     
-    // Upload Path
-    public final static String UPLOAD_PATH           = "C:/upload/";
-    
-    // Session key
-    public final static String USER_KEY              = "user";
+    // session key : 세션 이름.
+    public static final String SESSION_NAME = "user";
     
     // Error Message
     public final static String NOT_LOGIN             = "Not Login";

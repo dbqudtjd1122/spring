@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" media="screen" />
     <script src="/resources/js/jquery/jquery-3.1.1.js"></script>
     <script src="/resources/js/ajaxsetup.js"></script>
+    <script src="/resources/js/MyApp.board.js"></script>
     <script>      
         $(document).ready(function(e){            
             $('.golist').click(function(e) {

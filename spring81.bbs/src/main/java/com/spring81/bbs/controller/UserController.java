@@ -130,6 +130,10 @@ public class UserController {
 
         ModelUser user = (ModelUser) session.getAttribute(WebConstants.SESSION_NAME);
         
+        // login 이 안된 상태에서 url을 통한 직접 접근시 오류 처리
+        if( user == null )
+            return "redirect:/user/login";
+        
         if (user == null) {
             
             // 로그인 후 다시 돌아오기 위해
@@ -144,39 +148,63 @@ public class UserController {
             
             return "redirect:/user/login?url=" + url;
         }
+
+        model.addAttribute("user", user);
         
         return "user/usermodify";
     }
 
     @RequestMapping(value = "/user/usermodify", method = RequestMethod.POST)
-    public String usermodify(@ModelAttribute ModelUser updateValue, HttpSession session) {
+    public String usermodify(Model model
+            , @ModelAttribute ModelUser updateValue
+            , HttpSession session ) {
+        logger.info("usermodify : post");
         
-        ModelUser searchValue = (ModelUser) session.getAttribute(WebConstants.USER_KEY);
+        // login 이 안된 상태에서 url을 통한 직접 접근시 오류 처리
+        if( user == null )
+            return "redirect:/user/login";
+
+        ModelUser user = (ModelUser) session.getAttribute(WebConstants.SESSION_NAME);
 
         // UseYN 값 수정
-        updateValue.setRetireYN( false );
+        user.setRetireYN( false );
         
+        ModelUser searchValue = new ModelUser( user.getUserno() );
         
         if (searchValue == null) {
             throw new RuntimeException(WebConstants.NOT_LOGIN);
         }
         
-        int check = serviceuser.updateUserInfo(updateValue, searchValue);
+
+        int result = usersvr.updateUserInfo(updateValue, searchValue);
         
-        if (check < 1) {
+        if( result == 1) {
+            // 1. 로그인
+            // 2. 세션생성
+            // 3. 회원정보 수정 --> DB의 회원 정보와 세션의 회원 정보 불일치 발생.
+            // 4. 세션 재생성
+            session.setAttribute(WebConstants.SESSION_NAME, usersvr.selectUserOne(user.getUserno()) );
+        }
+        else {
+            session.removeAttribute(WebConstants.SESSION_NAME);
             throw new RuntimeException( WebConstants.AUTHENTICATION_FAILED);
         }
         
-        session.setAttribute(WebConstants.USER_KEY, updateValue);
         
         return "user/changepassword";
-        
     }
     
-    @RequestMapping(value = "changepassword", method = RequestMethod.GET)
-    public String changepassword(HttpServletRequest request, HttpSession session) throws Exception {
+    @RequestMapping(value = "/user/changepassword", method = RequestMethod.GET)
+    public String changepassword(Model model
+            , HttpSession session
+            , HttpServletRequest request) {
+        logger.info("changepassword : get");
+
+        ModelUser user = (ModelUser) session.getAttribute(WebConstants.SESSION_NAME);
         
-        ModelUser user = (ModelUser) session .getAttribute(WebConstants.USER_KEY);
+        // login 이 안된 상태에서 url을 통한 직접 접근시 오류 처리
+        if( user == null )
+            return "redirect:/user/login";
         
         if (user == null) {
             // 로그인 후 다시 돌아오기 위해
@@ -194,22 +222,26 @@ public class UserController {
         
         return "user/changepassword";
     }
-    
-    @RequestMapping(value = "changepassword", method = RequestMethod.POST)
-    public String changepassword(
-              @RequestParam String currentPasswd
-            , @RequestParam String newPasswd
+
+    @RequestMapping(value = "/user/changepassword", method = RequestMethod.POST)
+    public String changepassword(Model model
+            , RedirectAttributes rttr
+            , @RequestParam(value="currentPasswd", defaultValue="") String  currentPasswd
+            , @RequestParam(value="newPasswd", defaultValue=""    ) String  newPasswd
             , HttpSession session ) {
+        logger.info("changepassword : post");
         
-        String userid = ((ModelUser) session.getAttribute(WebConstants.USER_KEY)).getUserid();
+        ModelUser user = (ModelUser) session.getAttribute(WebConstants.SESSION_NAME);
         
-        int check = serviceuser.updatePasswd(newPasswd, currentPasswd, userid);
+        int result = usersvr.updatePasswd(newPasswd, currentPasswd, user.getUserid() );
         
-        if (check < 1) {
-            throw new RuntimeException( WebConstants.AUTHENTICATION_FAILED);
+        if( result == 1) {
+            return "user/changepassword_post";
         }
-                
-        return "user/changepassword_post";
+        else {
+            rttr.addFlashAttribute("msg", "DB 오류로 인해 패스워드 변경 실패. 관리자 문의");                 
+            return "redirect:/user/changepassword";
+        }
     }
     
     @RequestMapping(value = "unregister", method = RequestMethod.GET)
@@ -249,5 +281,5 @@ public class UserController {
         session.removeAttribute(WebConstants.USER_KEY);
         
         return "user/unregister_post";
-    } 
+    }
 }

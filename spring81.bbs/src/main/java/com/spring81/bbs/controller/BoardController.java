@@ -2,9 +2,9 @@ package com.spring81.bbs.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.*;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FilenameUtils;
@@ -391,16 +391,24 @@ public class BoardController {
         
         // 2. 로컬 첨부 파일을 서버로 올리기 위한 코드
         if( !uploadfile.getOriginalFilename().isEmpty() ){
+            
+            // UPLOAD_PATH 존재 여부 체크. 없으면 폴더 생성.
+            java.io.File uploadDir = new java.io.File( WebConstants.UPLOAD_PATH  );
+            if( !uploadDir.exists() ) uploadDir.mkdir();            
+
+            // 클라이언트의 첨부 파일을 서버로 복사
             String fileName = uploadfile.getOriginalFilename();
-            String filepath = WebConstants.UPLOAD_PATH + "/" + fileName;                 
+            String tempFileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+            String filepath =  WebConstants.UPLOAD_PATH + tempFileName;                 
             java.io.File f = new java.io.File( filepath );                
             uploadfile.transferTo( f );       
                            
             // 첨부 파일을 attachfiel 테이블에 insert.
             ModelAttachfile attachfile = new ModelAttachfile();
-            attachfile.setFilename( f.getName() );  // 파일명
+            attachfile.setFilename    ( fileName    );  // 실제파일명
+            attachfile.setTempfilename( f.getName() );  // 임시파일명
             attachfile.setFiletype( FilenameUtils.getExtension(fileName) ); //확장자
-            attachfile.setFilesize( (int)f.length() );
+            attachfile.setFilesize( f.length() );
             attachfile.setArticleno( articleno );
             int result = boardsrv.insertAttachFile( attachfile );     
             
@@ -444,16 +452,18 @@ public class BoardController {
 
         return "board/articlemodify";
     }
-    
+
+    /**
+     * http://localhost/board/articlemodify
+     */
     @RequestMapping(value="/board/articlemodify", method=RequestMethod.POST)
-    public String articlemodify(
-              @ModelAttribute ModelArticle updatearticle
+    public String articlemodify( Model model 
+            , @ModelAttribute ModelArticle updatearticle
             , @RequestParam(value="articleno" , defaultValue="") Integer articleno 
             , @RequestParam(value="boardcd"   , defaultValue="") String boardcd 
             , @RequestParam(value="curPage"   , defaultValue="") Integer curPage
             , @RequestParam(value="searchWord", defaultValue="") String searchWord
             , MultipartHttpServletRequest mpRequest) throws Exception {
-        
         
         updatearticle.setUseYN(true);    
         updatearticle.setUpdateUID(" articlemodify 수정 필요 ");
@@ -496,158 +506,58 @@ public class BoardController {
             + "&boardcd=" + boardcd 
             + "&curPage=" + curPage 
             + "&searchWord=" + searchWord;
-
     }
 
-    @RequestMapping(value="/board/articledelete", method=RequestMethod.POST)
-    public String articledelete(
-              @RequestParam(value="articleno" , defaultValue="") Integer articleno 
-            , @RequestParam(value="boardcd"   , defaultValue="") String boardcd 
-            , @RequestParam(value="curPage"   , defaultValue="") Integer curPage
-            , @RequestParam(value="searchWord", defaultValue="") String searchWord ) throws Exception {
-        
-        ModelArticle article = new ModelArticle();
-        article.setArticleno(articleno);        
-
-        boardsrv.deleteArticle(article);
+    /**
+     * http://localhost/board/articledelete/free/17
+     */
+    @RequestMapping(value = "/board/articledelete/{boardcd}/{articleno}", method = RequestMethod.POST)
+    public String articledelete( Model model 
+            , @PathVariable(value="boardcd"  )  String boardcd
+            , @PathVariable(value="articleno")  Integer articleno
+            , @RequestParam(value="curPage"   , defaultValue="1") Integer curPage
+            , @RequestParam(value="searchWord", defaultValue="" ) String  searchWord ) {
+        logger.info("/board/articledelete : POST");
+              
+        // artilcedelet 시.
+        // 1. TB_BBS_Comments 테이블에서 있는 comment 정보 삭제.
+        // 2. 업로드 폴더에서 관련된 첨부 파일 삭제.
+        // 3. TB_BBS_AttachFile 테이블에서 있는 attachfile 정보 삭제.
+        // 4. TB_BBS_Article 테이블에서 artilce 정보 삭제
+        boardsrv.transDeleteArticle(boardcd, articleno);
 
         searchWord = URLEncoder.encode(searchWord, "UTF-8");
         
-        return "redirect:/board/articlelist?boardcd=" + boardcd + 
-            "&curPage=" + curPage + 
-            "&searchWord=" + searchWord;
+        return "redirect:/board/articlelist/"+boardcd + "?curPage="+curPage+"&searchWord="+searchWord;
     }
     
-	
-	@RequestMapping(value="/board/commentadd", method=RequestMethod.POST)
-	public String commentadd(
-              @RequestParam(value="articleno" , defaultValue="") Integer articleno 
-            , @RequestParam(value="boardcd"   , defaultValue="") String boardcd 
-            , @RequestParam(value="curPage"   , defaultValue="") Integer curPage
-            , @RequestParam(value="searchWord", defaultValue="") String searchWord 
-			, @RequestParam(value="memo", defaultValue="") String memo) throws Exception {
-			
-		ModelComments comment = new ModelComments();
-		comment.setMemo(memo);
-		comment.setArticleno(articleno);
-
-		boardsrv.insertComment(comment);
-		
-		searchWord = URLEncoder.encode(searchWord,"UTF-8");
-		
-		return "redirect:/board/articleview?articleno=" + articleno + 
-			"&boardcd=" + boardcd + 
-			"&curPage=" + curPage + 
-			"&searchWord=" + searchWord;
-	}
-
-	@RequestMapping(value="/board/commentupdate", method=RequestMethod.POST)
-	public String commentupdate(
-            @RequestParam(value="articleno" , defaultValue="") Integer articleno 
-          , @RequestParam(value="boardcd"   , defaultValue="") String boardcd 
-          , @RequestParam(value="curPage"   , defaultValue="") Integer curPage
-          , @RequestParam(value="searchWord", defaultValue="") String searchWord 
-          , @RequestParam(value="commentno", defaultValue="") Integer commentno  
-		  , @RequestParam(value="memo", defaultValue="") String memo) throws Exception {
-
-		ModelComments updatecomment = boardsrv.getComment(commentno);
-		updatecomment.setMemo(memo);
-		
-		ModelComments searchValue = new ModelComments();
-		searchValue.setCommentno(commentno);
-        
-		
-		boardsrv.updateComment(updatecomment, searchValue);
-		searchWord = URLEncoder.encode(searchWord, "UTF-8");
-		
-		return "redirect:/board/articleview?articleno=" + articleno + 
-			"&boardcd=" + boardcd + 
-			"&curPage=" + curPage + 
-			"&searchWord=" + searchWord;
-	}
-	
-
-	@RequestMapping(value="/board/commentdel", method=RequestMethod.POST)
-	public String commentdelete( 
-            @RequestParam(value="articleno" , defaultValue="") Integer articleno 
-          , @RequestParam(value="boardcd"   , defaultValue="") String boardcd 
-          , @RequestParam(value="curPage"   , defaultValue="") Integer curPage
-          , @RequestParam(value="searchWord", defaultValue="") String searchWord 
-          , @RequestParam(value="commentno", defaultValue="") Integer commentno  ) throws Exception {
-	    
-	    ModelComments comment = new ModelComments();
-	    comment.setCommentno(commentno);
-
-		boardsrv.deleteComment(comment);
-		
-		searchWord = URLEncoder.encode(searchWord,"UTF-8");
-		
-		return "redirect:/board/articleview?articleno=" + articleno + 
-			"&boardcd=" + boardcd + 
-			"&curPage=" + curPage + 
-			"&searchWord=" + searchWord;
-
-	}
-	
-
-	@RequestMapping(value="/attachfiledelete", method=RequestMethod.POST)
-	public String attachfiledelete(
-            @RequestParam(value="articleno" , defaultValue="") Integer articleno 
-          , @RequestParam(value="boardcd"   , defaultValue="") String boardcd 
-          , @RequestParam(value="curPage"   , defaultValue="") Integer curPage
-          , @RequestParam(value="searchWord", defaultValue="") String searchWord
-          , @RequestParam(value="attachfileno", defaultValue="") Integer attachfileno ) throws Exception {
-	    
-	    ModelAttachfile attachFile = new ModelAttachfile();
-	    attachFile.setAttachfileno(attachfileno);
-		
-		boardsrv.deleteAttachFile(attachFile);
-		
-		searchWord = URLEncoder.encode(searchWord,"UTF-8");
-		
-		return "redirect:/board/articleview?articleno=" + articleno + 
-			"&boardcd=" + boardcd + 
-			"&curPage=" + curPage + 
-			"&searchWord=" + searchWord;
-
-	}	
-	
-
-	@RequestMapping(value="/download", method=RequestMethod.POST)
-	public String download(String filename, Model model) {
-		model.addAttribute("filename", filename);
-		return "inc/download";
-	}
-
     
-    @RequestMapping(value="/board/commentaddajax", method=RequestMethod.POST)
-    public String commentaddajax(
-              @RequestParam(value="articleno" , defaultValue="") Integer articleno 
-            , @RequestParam(value="memo", defaultValue="") String memo
-            , Model model) throws Exception {
-            
+    /**
+     * http://localhost/board/commentadd
+     */
+    @RequestMapping(value = "/board/commentadd", method = RequestMethod.POST)
+    public String commentadd( Model model
+            , @RequestParam(value="articleno" , defaultValue="-1") Integer articleno 
+            , @RequestParam(value="memo"      , defaultValue=""  ) String  memo )  {
+        logger.info("/board/commentadd : POST");
+        
         ModelComments comment = new ModelComments();
+        comment.setArticleno(articleno);    
         comment.setMemo(memo);
-        comment.setArticleno(articleno);
         
-        try {
-            int commentno = boardsrv.insertComment(comment);
-            comment = boardsrv.getComment(commentno);
-            
-            model.addAttribute("comment", comment);
-        } catch (Exception e) {
-            logger.error("commentaddajax" + e.getMessage() );
-            throw e;
-        }
+        int commentno = boardsrv.insertComment(comment);
         
-        return "board/articleview-commentlistbody";
+        comment = boardsrv.getComment(commentno);
+        model.addAttribute("comment", comment);
+        
+        return "board/articleview-commentlistbody" ;
     }
 
-    @RequestMapping(value="/board/commentupdateajax", method=RequestMethod.POST)
+    @RequestMapping(value="/board/commentupdate", method=RequestMethod.POST)
     @ResponseBody
-    public int commentupdateajax(
-            @RequestParam(value="commentno", defaultValue="") Integer commentno  
-          , @RequestParam(value="memo", defaultValue="") String memo) throws Exception {
+    public int commentupdate( Model model
+           , @RequestParam(value="commentno", defaultValue="") Integer commentno  
+           , @RequestParam(value="memo", defaultValue="") String memo ) {
 
         ModelComments updatecomment = boardsrv.getComment(commentno);
         updatecomment.setMemo(memo);
@@ -656,21 +566,16 @@ public class BoardController {
         ModelComments searchValue = new ModelComments();
         searchValue.setCommentno(commentno);
 
-        int result=0;
-        try {
-            result = boardsrv.updateComment(updatecomment, searchValue);
-        } catch (Exception e) {
-            logger.error("commentupdateajax" + e.getMessage() );
-            throw e;
-        }
+        int result = result = boardsrv.updateComment(updatecomment, searchValue);
 
         return result;
     }
     
 
-    @RequestMapping(value="/board/commentdeleteajax", method=RequestMethod.POST)
+    @RequestMapping(value="/board/commentdelete", method=RequestMethod.POST)
     @ResponseBody
-    public int commentdeleteajax( @RequestParam(value="commentno", defaultValue="") Integer commentno  ) throws Exception {
+    public int commentdelete( Model model
+           , @RequestParam(value="commentno", defaultValue="") Integer commentno ) {
         
         ModelComments comment = new ModelComments();
         comment.setCommentno(commentno);
@@ -678,7 +583,21 @@ public class BoardController {
         int result = boardsrv.deleteComment(comment);
         
         return result ;
-    }   
-
-	
+    }
+    
+    /**
+     * http://localhost/board/attachfiledelete
+     */
+    @RequestMapping(value = "/board/attachfiledelete", method = RequestMethod.POST)
+    @ResponseBody
+    public int attachfiledelete( Model model
+            , @RequestParam(value="attachfileno" , defaultValue="-1") Integer attachfileno )  {
+        logger.info("/board/attachfiledelete : POST");
+        
+	    ModelAttachfile attachFile = new ModelAttachfile();
+	    attachFile.setAttachfileno(attachfileno);
+        int result = boardsrv.deleteAttachFile(attachFile);
+        
+        return result ;
+    }
 }

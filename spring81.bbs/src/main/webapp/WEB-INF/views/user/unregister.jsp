@@ -3,11 +3,14 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="Keywords" content="탈퇴" />
-<meta name="Description" content="탈퇴" />
-<title>탈퇴</title>
-<link rel="stylesheet" href="/resources/css/screen.css" type="text/css" />
+    <meta charset="UTF-8" />
+    <meta name="Keywords" content="탈퇴" />
+    <meta name="Description" content="탈퇴" />
+    <title>탈퇴</title>
+    <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" />    
+    <script src="/resources/js/jquery/jquery-3.1.1.js"></script>
+    <script src="/resources/js/ajaxsetup.js"></script>
+    <script src="/resources/js/MyApp.board.js"></script>
 <script type="text/javascript">
 //<![CDATA[
            

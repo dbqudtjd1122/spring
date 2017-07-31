@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.spring81.bbs.model.ModelArticle;
+import com.spring81.bbs.model.ModelArticleRecommend;
 import com.spring81.bbs.model.ModelAttachfile;
 import com.spring81.bbs.model.ModelBoard;
 import com.spring81.bbs.model.ModelComments;
@@ -242,36 +243,40 @@ public class DaoBoard implements IDaoBoard {
         return  session.selectList("mapper.mapperBoard.getCommentList", articleno);        
     }
     @Override
-    public int changeArticleGood(int articleno) {
+    public int updateArticleCountGood(int articleno, int count) {
         Map<String, Integer> map = new HashMap<>();
-        map.put("count", +1);
+        map.put("count", count );
         map.put("articleno", articleno);
         
-        return  session.update("mapper.mapperBoard.changeArticleGood", map );
+        return  session.update("mapper.mapperBoard.updateArticleCountGood", map );
     }
     @Override
-    public int changeArticleBad(int articleno) {
+    public int updateArticleCountBad(int articleno, int count) {
         Map<String, Integer> map = new HashMap<>();
-        map.put("count", -1);
+        map.put("count", count);
         map.put("articleno", articleno);
         
-        return  session.update("mapper.mapperBoard.changeArticleBad", map );
+        return  session.update("mapper.mapperBoard.updateArticleCountBad", map );
     }
+
     @Override
-    public int changeCommentGood(int commentno) {
-        Map<String, Integer> map = new HashMap<>();
-        map.put("count", +1);
-        map.put("commentno", commentno);
-        
-        return  session.update("mapper.mapperBoard.changeCommentGood", map );
+    public int updateRecommend(ModelArticleRecommend recommend) {
+        return  session.update("mapper.mapperBoard.updateRecommend", recommend );
     }
+    
     @Override
-    public int changeCommentBad(int commentno) {
-        Map<String, Integer> map = new HashMap<>();
-        map.put("count", -1);
-        map.put("commentno", commentno);
-        
-        return  session.update("mapper.mapperBoard.changeCommentBad", map );
+    public int deleteRecommend(ModelArticleRecommend recommend) {
+        return  session.update("mapper.mapperBoard.deleteRecommend", recommend );
+    }
+    
+    @Override
+    public ModelArticleRecommend getRecommendOne( ModelArticleRecommend recommend) {
+        return  session.selectOne("mapper.mapperBoard.getRecommendOne", recommend);
+    }
+    
+    @Override
+    public int updateArticleGoodBadCount(int articleno) {
+        return  session.update("mapper.mapperBoard.updateArticleGoodBadCount", articleno );
     }
     
 }

@@ -130,7 +130,7 @@
     </select>   
 
     <select id="getArticleList" parameterType="hashmap" resultType="ModelArticle">
-        SELECT articleno, title, regdate, hit, attachfileNum, commentNum 
+        SELECT articleno, title, regdate, hit, attachfileNum, commentNum, countgood, countbad
         FROM (
             SELECT @RNUM := @RNUM + 1 AS r, a.* 
             FROM (
@@ -149,8 +149,7 @@
                     WHERE
                         a.boardcd = #{boardcd}
                         <if test="searchWord != null">
-                        AND ( title LIKE CONCAT('%', #{searchWord}, '%') 
-                                 OR content LIKE CONCAT('%', #{searchWord}, '%') )
+                        AND ( title LIKE CONCAT('%', #{searchWord}, '%') OR content LIKE CONCAT('%', #{searchWord}, '%') )
                         </if>
                     GROUP BY a.articleno, title, a.regdate, hit
                     ORDER BY articleno DESC
@@ -161,7 +160,7 @@
 
     
     <select id="getArticle" parameterType="int" resultType="ModelArticle">
-        SELECT articleno, boardcd, title, content, email, hit, regdate, countgood, countbad, 
+        SELECT articleno, boardcd, title, content, email, hit, regdate, countgood, countbad
         FROM TB_BBS_Article
         WHERE articleno = #{articleno}
     </select>
@@ -221,17 +220,17 @@
     </update>    
     
     <!--  count 로 올수 있는 값은 -1 또는 +1 만 가능 -->
-    <update id="changeArticleGood" parameterType="map">
+    <update id="updateArticleCountGood" parameterType="map">
         UPDATE TB_BBS_Article 
            SET countgood = countgood  + ( #{count} )
-         WHERE articleno=#{articleno}
+         WHERE articleno = #{articleno}
     </update>    
     
     <!--  count 로 올수 있는 값은 -1 또는 +1 만 가능 -->
-    <update id="changeArticleBad" parameterType="map">
+    <update id="updateArticleCountBad" parameterType="map">
         UPDATE TB_BBS_Article 
-           SET countbad = countbad  + ( #{count} )
-         WHERE articleno=#{articleno}
+           SET countbad  = countbad  + ( #{count} )
+         WHERE articleno = #{articleno}
     </update>
     
     <select id="getNextArticle" parameterType="hashmap" resultType="ModelArticle">
@@ -276,9 +275,6 @@
     </select>
 
 
-
-
-
     <select id="getAttachFile" parameterType="int" resultType="ModelAttachFile">
         SELECT attachfileno, filename, tempfilename, filetype, filesize, articleno
           FROM TB_BBS_Attachfile
@@ -313,13 +309,13 @@
     </delete>
     
     <select id="getComment" parameterType="int" resultType="ModelComments">
-        SELECT commentno,articleno,email,memo,regdate, countgood, countbad
+        SELECT commentno,articleno,email,memo,regdate 
         FROM TB_BBS_Comments 
         WHERE commentno = #{commentno}
     </select>
     
     <select id="getCommentList" parameterType="int" resultType="ModelComments">
-        SELECT commentno, articleno, email, memo, regdate, countgood, countbad
+        SELECT commentno, articleno, email, memo, regdate
         FROM TB_BBS_Comments
         WHERE articleno = #{articleno}
         ORDER BY commentno DESC
@@ -346,21 +342,7 @@
               <if test="searchValue.email != null and searchValue.email != ''">
               AND email     = #{searchValue.email}
               </if>
-    </update>     
-    
-    <!-- 좋아요: count 로 올수 있는 값은 -1 또는 +1 만 가능 -->
-    <update id="changeCommentGood" parameterType="map">
-        UPDATE TB_BBS_Comments 
-           SET countgood = countgood  + ( #{count} )
-         WHERE commentno=#{commentno}
     </update>    
-    
-    <!-- 나빠요: count 로 올수 있는 값은 -1 또는 +1 만 가능 -->
-    <update id="changeCommentBad" parameterType="map">
-        UPDATE TB_BBS_Comments 
-           SET countbad = countbad  + ( #{count} )
-         WHERE commentno=#{commentno}
-    </update>
     
     <delete id="deleteComment" parameterType="ModelComments">
         DELETE FROM TB_BBS_Comments 
@@ -378,5 +360,40 @@
           AND UseYN    = #{UseYN}
           </if>
     </delete>
+    
+    
+    <select id="getRecommendOne"  parameterType="ModelArticleRecommend"  resultType="ModelArticleRecommend">           
+        select * 
+          from TB_Bbs_Recommend
+         where articleno = #{articleno} 
+           and userid    = #{userid}
+    </select>
+    
+    <update id="updateRecommend" parameterType="ModelArticleRecommend">           
+        insert into TB_Bbs_Recommend ( articleno   , userid   , good              ,  bad             )
+                                       values( #{articleno}, #{userid}, ifnull(#{good}, 0), ifnull(#{bad},0) )
+        on duplicate key
+        update good= ifnull( #{good}, 0) 
+             , bad = ifnull( #{bad }, 0)  
+    </update>
+    
+    <update id="deleteRecommend" parameterType="ModelArticleRecommend">           
+        DELETE FROM TB_Bbs_Recommend
+         WHERE articleno = #{articleno} 
+           and userid    = #{userid}
+    </update>
+    
+    <update id="updateArticleGoodBadCount" parameterType="int">           
+        UPDATE TB_BBS_Article a
+               INNER JOIN (   select articleno, sum(good) good, sum(bad) bad
+                                from TB_Bbs_Recommend 
+                               where articleno = #{articleno} 
+                          ) r
+               ON a.articleno = r.articleno
+           set a.countgood = r.good
+             , a.countbad  = r.bad 
+         where a.articleno = #{articleno} 
+    </update>
+    
 
  </mapper>

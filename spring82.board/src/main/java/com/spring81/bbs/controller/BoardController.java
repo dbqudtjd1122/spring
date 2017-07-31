@@ -2,8 +2,13 @@ package com.spring81.bbs.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
@@ -448,14 +453,71 @@ public class BoardController {
     }
 
     /**
-     * http://localhost/board/articlemodify/qna
+     * http://localhost/board/articlemodify
+     */
+    @RequestMapping(value="/board/articlemodify", method=RequestMethod.POST)
+    public String articlemodify( Model model 
+            , @ModelAttribute ModelArticle updatearticle
+            , @RequestParam(value="articleno" , defaultValue="") Integer articleno 
+            , @RequestParam(value="boardcd"   , defaultValue="") String boardcd 
+            , @RequestParam(value="curPage"   , defaultValue="") Integer curPage
+            , @RequestParam(value="searchWord", defaultValue="") String searchWord
+            , MultipartHttpServletRequest mpRequest) throws Exception {
+        
+        updatearticle.setUseYN(true);    
+        updatearticle.setUpdateUID(" articlemodify 수정 필요 ");
+        updatearticle.setUpdateDT(new Date() ); 
+        
+
+        ModelArticle searcharticle = new ModelArticle();
+        searcharticle.setArticleno( updatearticle.getArticleno() );// 게시판 종류 변경
+        boardsrv.updateArticle(updatearticle, searcharticle);
+
+        //파일업로드
+        Iterator<String> it = mpRequest.getFileNames();
+        List<MultipartFile> fileList = new ArrayList<MultipartFile>();
+        while (it.hasNext()) {
+            MultipartFile multiFile = mpRequest.getFile((String) it.next());
+            
+            if (multiFile.getSize() > 0) {
+                String filename = multiFile.getOriginalFilename();
+                multiFile.transferTo(new File(WebConstants.UPLOAD_PATH + "/" + filename));
+                fileList.add(multiFile);
+            }
+        }
+        
+        //파일데이터 삽입
+        int size = fileList.size();
+        for (int i = 0; i < size; i++) {
+            MultipartFile mpFile = fileList.get(i);
+            
+            ModelAttachfile attachFile = new ModelAttachfile();
+            String filename = mpFile.getOriginalFilename();
+            attachFile.setFilename(filename);
+            attachFile.setFiletype(mpFile.getContentType());
+            attachFile.setFilesize(mpFile.getSize());
+            attachFile.setArticleno(articleno);
+            boardsrv.insertAttachFile(attachFile);
+        }
+        
+        searchWord = URLEncoder.encode(searchWord,"UTF-8");
+        
+        return "redirect:/board/articleview?articleno=" + articleno 
+            + "&boardcd=" + boardcd 
+            + "&curPage=" + curPage 
+            + "&searchWord=" + searchWord;
+    }
+
+    /**
+     * http://localhost/board/articledelete/free/17
+     * @throws Exception 
      */
     @RequestMapping(value = "/board/articledelete/{boardcd}/{articleno}", method = RequestMethod.POST)
     public String articledelete( Model model 
             , @PathVariable(value="boardcd"  )  String boardcd
             , @PathVariable(value="articleno")  Integer articleno
             , @RequestParam(value="curPage"   , defaultValue="1") Integer curPage
-            , @RequestParam(value="searchWord", defaultValue="" ) String  searchWord ) {
+            , @RequestParam(value="searchWord", defaultValue="" ) String  searchWord ) throws Exception {
         logger.info("/board/articledelete : POST");
               
         // artilcedelet 시.
@@ -465,6 +527,8 @@ public class BoardController {
         // 4. TB_BBS_Article 테이블에서 artilce 정보 삭제
         boardsrv.transDeleteArticle(boardcd, articleno);
 
+        searchWord = URLEncoder.encode(searchWord, "UTF-8");
+        
         return "redirect:/board/articlelist/"+boardcd + "?curPage="+curPage+"&searchWord="+searchWord;
     }
     
@@ -479,8 +543,7 @@ public class BoardController {
         logger.info("/board/commentadd : POST");
         
         ModelComments comment = new ModelComments();
-        comment.setArticleno(articleno);
-    
+        comment.setArticleno(articleno);    
         comment.setMemo(memo);
         
         int commentno = boardsrv.insertComment(comment);
@@ -491,7 +554,39 @@ public class BoardController {
         return "board/articleview-commentlistbody" ;
     }
 
-/**
+    @RequestMapping(value="/board/commentupdate", method=RequestMethod.POST)
+    @ResponseBody
+    public int commentupdate( Model model
+           , @RequestParam(value="commentno", defaultValue="") Integer commentno  
+           , @RequestParam(value="memo", defaultValue="") String memo ) {
+
+        ModelComments updatecomment = boardsrv.getComment(commentno);
+        updatecomment.setMemo(memo);
+        updatecomment.setUseYN(true);
+        
+        ModelComments searchValue = new ModelComments();
+        searchValue.setCommentno(commentno);
+
+        int result = result = boardsrv.updateComment(updatecomment, searchValue);
+
+        return result;
+    }
+    
+
+    @RequestMapping(value="/board/commentdelete", method=RequestMethod.POST)
+    @ResponseBody
+    public int commentdelete( Model model
+           , @RequestParam(value="commentno", defaultValue="") Integer commentno ) {
+        
+        ModelComments comment = new ModelComments();
+        comment.setCommentno(commentno);
+
+        int result = boardsrv.deleteComment(comment);
+        
+        return result ;
+    }
+    
+    /**
      * http://localhost/board/attachfiledelete
      */
     @RequestMapping(value = "/board/attachfiledelete", method = RequestMethod.POST)

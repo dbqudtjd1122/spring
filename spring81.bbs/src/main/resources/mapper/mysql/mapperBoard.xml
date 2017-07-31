@@ -130,7 +130,7 @@
     </select>   
 
     <select id="getArticleList" parameterType="hashmap" resultType="ModelArticle">
-        SELECT articleno, title, regdate, hit, attachfileNum, commentNum 
+        SELECT articleno, title, regdate, hit, attachfileNum, commentNum, countgood, countbad
         FROM (
             SELECT @RNUM := @RNUM + 1 AS r, a.* 
             FROM (
@@ -138,6 +138,8 @@
                            a.title, 
                            a.regdate, 
                            a.hit, 
+                           a.countgood, 
+                           a.countbad, 
                            count(distinct(f.attachfileno)) attachfileNum, 
                            count(distinct(c.commentno)) commentNum
                     FROM 
@@ -158,7 +160,7 @@
 
     
     <select id="getArticle" parameterType="int" resultType="ModelArticle">
-        SELECT articleno, boardcd, title, content, email, hit, regdate
+        SELECT articleno, boardcd, title, content, email, hit, regdate, countgood, countbad
         FROM TB_BBS_Article
         WHERE articleno = #{articleno}
     </select>
@@ -215,7 +217,7 @@
         UPDATE TB_BBS_Article 
            SET hit=hit+1 
          WHERE articleno=#{articleno}
-    </update>
+    </update>    
     
     <select id="getNextArticle" parameterType="hashmap" resultType="ModelArticle">
         SELECT articleno, title
@@ -259,17 +261,14 @@
     </select>
 
 
-
-
-
     <select id="getAttachFile" parameterType="int" resultType="ModelAttachFile">
-        SELECT attachfileno, filename, filetype, filesize, articleno
+        SELECT attachfileno, filename, tempfilename, filetype, filesize, articleno
           FROM TB_BBS_Attachfile
          WHERE attachfileno = #{attachfileno}
     </select>
     
     <select id="getAttachFileList" parameterType="int" resultType="ModelAttachFile">
-        SELECT attachfileno, filename, filetype, filesize,articleno 
+        SELECT attachfileno, filename, tempfilename, filetype, filesize,articleno 
           FROM TB_BBS_Attachfile 
          WHERE articleno = #{articleno} 
         ORDER BY attachfileno
@@ -277,8 +276,8 @@
     
     <insert id="insertAttachFile" parameterType="ModelAttachFile">
         INSERT INTO 
-        TB_BBS_Attachfile (    filename,   filetype , filesize   , articleno   , InsertUID   , InsertDT   , UpdateUID   , UpdateDT    )
-        VALUES            ( #{filename}, #{filetype}, #{filesize}, #{articleno}, #{InsertUID}, #{InsertDT}, #{UpdateUID}, #{UpdateDT} )
+        TB_BBS_Attachfile (    filename,   tempfilename ,   filetype , filesize   , articleno   , InsertUID   , InsertDT   , UpdateUID   , UpdateDT    )
+        VALUES            ( #{filename}, #{tempfilename}, #{filetype}, #{filesize}, #{articleno}, #{InsertUID}, #{InsertDT}, #{UpdateUID}, #{UpdateDT} )
     </insert>
     
     <delete id="deleteAttachFile" parameterType="ModelAttachFile">
@@ -329,7 +328,7 @@
               <if test="searchValue.email != null and searchValue.email != ''">
               AND email     = #{searchValue.email}
               </if>
-    </update>
+    </update>    
     
     <delete id="deleteComment" parameterType="ModelComments">
         DELETE FROM TB_BBS_Comments 
@@ -347,5 +346,40 @@
           AND UseYN    = #{UseYN}
           </if>
     </delete>
+    
+    
+    <select id="getRecommendOne"  parameterType="ModelArticleRecommend"  resultType="ModelArticleRecommend">           
+        select * 
+          from TB_Bbs_Recommend
+         where articleno = #{articleno} 
+           and userid    = #{userid}
+    </select>
+    
+    <update id="updateRecommend" parameterType="ModelArticleRecommend">           
+        insert into TB_Bbs_Recommend ( articleno   , userid   , good              ,  bad             )
+                                       values( #{articleno}, #{userid}, ifnull(#{good}, 0), ifnull(#{bad},0) )
+        on duplicate key
+        update good= ifnull( #{good}, 0) 
+             , bad = ifnull( #{bad }, 0)  
+    </update>
+    
+    <update id="deleteRecommend" parameterType="ModelArticleRecommend">           
+        DELETE FROM TB_Bbs_Recommend
+         WHERE articleno = #{articleno} 
+           and userid    = #{userid}
+    </update>
+    
+    <update id="updateArticleGoodBadCount" parameterType="int">           
+        UPDATE TB_BBS_Article a
+               INNER JOIN (   select articleno, sum(good) good, sum(bad) bad
+                                from TB_Bbs_Recommend 
+                               where articleno = #{articleno} 
+                          ) r
+               ON a.articleno = r.articleno
+           set a.countgood = r.good
+             , a.countbad  = r.bad 
+         where a.articleno = #{articleno} 
+    </update>
+    
 
  </mapper>

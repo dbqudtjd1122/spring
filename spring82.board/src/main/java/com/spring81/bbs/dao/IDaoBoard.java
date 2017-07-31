@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.spring81.bbs.model.ModelArticle;
+import com.spring81.bbs.model.ModelArticleRecommend;
 import com.spring81.bbs.model.ModelAttachfile;
 import com.spring81.bbs.model.ModelBoard;
 import com.spring81.bbs.model.ModelComments;
@@ -164,21 +165,34 @@ public interface IDaoBoard {
     /*
      * 게시글의 좋아요
      */
-    int changeArticleGood(int articleno);
+    int updateArticleCountGood(int articleno, int count);
 
     /*
      * 게시글의 나빠요
      */
-    int changeArticleBad(int articleno);
+    int updateArticleCountBad(int articleno, int count);
 
     /*
-     * 댓글의 좋아요
+     * 
      */
-    int changeCommentGood(int commentno);
+    int updateRecommend(ModelArticleRecommend recommend);
 
     /*
-     * 댓글의 나빠요
+     * 
      */
-    int changeCommentBad(int commentno);
+    int deleteRecommend(ModelArticleRecommend recommend);
+
+    /*
+     * 
+     */    
+    ModelArticleRecommend getRecommendOne(ModelArticleRecommend recommend);
+
+    /*
+     * 
+     */    
+    int updateArticleGoodBadCount(int articleno);
+    
+    
+    
     
 }

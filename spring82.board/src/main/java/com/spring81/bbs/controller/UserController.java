@@ -1,5 +1,7 @@
 package com.spring81.bbs.controller;
 
+import java.net.URLEncoder;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -136,7 +138,7 @@ public class UserController {
 
         model.addAttribute("user", user);
         
-        return "user/register";
+        return "user/usermodify";
     }
 
     @RequestMapping(value = "/user/usermodify", method = RequestMethod.POST)
@@ -150,8 +152,16 @@ public class UserController {
         // login 이 안된 상태에서 url을 통한 직접 접근시 오류 처리
         if( user == null )
             return "redirect:/user/login";
+
+        // UseYN 값 수정
+        user.setRetireYN( false );
         
         ModelUser searchValue = new ModelUser( user.getUserno() );
+        
+        if (searchValue == null) {
+            throw new RuntimeException(WebConstants.NOT_LOGIN);
+        }
+        
 
         int result = usersvr.updateUserInfo(updateValue, searchValue);
         
@@ -162,12 +172,19 @@ public class UserController {
             // 4. 세션 재생성
             session.setAttribute(WebConstants.SESSION_NAME, usersvr.selectUserOne(user.getUserno()) );
         }
+        else {
+            session.removeAttribute(WebConstants.SESSION_NAME);
+            throw new RuntimeException( WebConstants.AUTHENTICATION_FAILED);
+        }
         
-        return "user/register_post";
+        
+        return "user/changepassword";
     }
     
     @RequestMapping(value = "/user/changepassword", method = RequestMethod.GET)
-    public String changepassword(Model model, HttpSession session) {
+    public String changepassword(Model model
+            , HttpSession session
+            , HttpServletRequest request) {
         logger.info("changepassword : get");
 
         ModelUser user = (ModelUser) session.getAttribute(WebConstants.SESSION_NAME);
@@ -193,13 +210,51 @@ public class UserController {
         
         int result = usersvr.updatePasswd(newPasswd, currentPasswd, user.getUserid() );
         
-        if( result > 1) {
+        if( result == 1) {
             return "user/changepassword_post";
         }
         else {
             rttr.addFlashAttribute("msg", "DB 오류로 인해 패스워드 변경 실패. 관리자 문의");                 
             return "redirect:/user/changepassword";
         }
+    }
+    
+    @RequestMapping(value = "unregister", method = RequestMethod.GET)
+    public String unregister(HttpServletRequest request, HttpSession session) throws Exception {
+        
+        ModelUser user = (ModelUser) session.getAttribute(WebConstants.SESSION_NAME);
+        
+        if (user == null) {
+            // 로그인 후 다시 돌아오기 위해
+            String url = request.getServletPath();
+            String query = request.getQueryString();
             
+            if (query != null)
+                url += "?" + query;
+            
+            // 로그인 페이지로 리다이렉트
+            url = URLEncoder.encode(url, "UTF-8");
+            
+            return "redirect:/user/login?url=" + url;
+        }
+        
+        return "user/unregister";
+    }
+    
+    @RequestMapping(value = "unregister", method = RequestMethod.POST)
+    public String unregister(String email, String passwd, HttpSession session) {
+        
+        ModelUser user = (ModelUser) session .getAttribute(WebConstants.SESSION_NAME);
+        
+        if (user == null || !user.getEmail().equals(email)) {
+            throw new RuntimeException( WebConstants.AUTHENTICATION_FAILED);
+        }
+        
+        user = usersvr.login(email, passwd);
+        
+        //serviceuser.unregister(user);
+        session.removeAttribute(WebConstants.SESSION_NAME);
+        
+        return "user/unregister_post";
     }
 }
