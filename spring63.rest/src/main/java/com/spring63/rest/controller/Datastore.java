@@ -28,8 +28,7 @@ import java.util.logging.Logger;
 public final class Datastore {
 
     private static final List<String> regIds = new ArrayList<String>();
-    private static final Logger logger = Logger.getLogger(Datastore.class
-            .getName());
+    private static final Logger logger = Logger.getLogger(Datastore.class.getName());
 
     private Datastore() {
         throw new UnsupportedOperationException();

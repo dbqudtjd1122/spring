@@ -6,6 +6,7 @@ public class ModelPerson {
     private String pw      = "";
     private String name    = ""; 
     private String email   = "";
+    
     public String getId() {
         return id;
     }
@@ -51,8 +52,6 @@ public class ModelPerson {
         this.pw = pw;
         this.name = name;
         this.email = email;
-    } 
-    
-    
+    }
     
 }
