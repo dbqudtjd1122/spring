@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 
+import com.spring81.bbs.commons.EnumGoodBad;
 import com.spring81.bbs.commons.WebConstants;
 import com.spring81.bbs.dao.*;
 import com.spring81.bbs.model.*;
@@ -439,30 +440,6 @@ public class ServiceBoard implements IServiceBoard {
     }
 
     @Override
-    public int updateArticleCountGood(int articleno, int count) {
-        int result = -1;
-        try {
-            result = daoboard.updateArticleCountGood( articleno, count );
-        } catch (Exception e) {
-            logger.error("updateArticleCountGood " + e.getMessage() );
-        }
-        
-        return result;
-    }
-
-    @Override
-    public int updateArticleCountBad(int articleno, int count) {
-        int result = -1;
-        try {
-            result = daoboard.updateArticleCountBad( articleno, count );
-        } catch (Exception e) {
-            logger.error("updateArticleCountBad " + e.getMessage() );
-        }
-        
-        return result;
-    }
-
-    @Override
     public int updateRecommend(ModelArticleRecommend recommend) {
         int result = -1;
         try {
@@ -505,6 +482,32 @@ public class ServiceBoard implements IServiceBoard {
             result = daoboard.updateArticleGoodBadCount( articleno );
         } catch (Exception e) {
             logger.error("updateArticleGoodBadCount " + e.getMessage() );
+        }
+        
+        return result;
+    }
+
+    @Override
+    public int transRecommendArticle(int articleno, String userid, EnumGoodBad codeGB, boolean updown) {
+
+        int result = -1;
+        try {
+            ModelArticleRecommend recommend = new ModelArticleRecommend();
+            recommend.setArticleno(articleno);
+            recommend.setUserid(userid);
+            
+            if( codeGB == EnumGoodBad.GOOD )   
+                recommend.setGood(updown);
+            else if( codeGB == EnumGoodBad.BAD )
+                recommend.setBad(updown);
+
+            // TB_Bbbs_Recommend 테이블에 insert or update : merge 와 같다. 
+            result = daoboard.updateRecommend( recommend );
+            
+            // B_Bbbs_Article 테이블에서 countgood 컬럼과 countbad 컬럼 값을 업데이트한다.
+            result = daoboard.updateArticleGoodBadCount(articleno);
+        } catch (Exception e) {
+            logger.error("transRecommendArticle " + e.getMessage() );
         }
         
         return result;

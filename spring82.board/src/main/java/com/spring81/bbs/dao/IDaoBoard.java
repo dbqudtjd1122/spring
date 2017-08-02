@@ -161,16 +161,6 @@ public interface IDaoBoard {
      * 게시글의 덧글리스트 구하기
      */
     List<ModelComments> getCommentList(int articleno);
-    
-    /*
-     * 게시글의 좋아요
-     */
-    int updateArticleCountGood(int articleno, int count);
-
-    /*
-     * 게시글의 나빠요
-     */
-    int updateArticleCountBad(int articleno, int count);
 
     /*
      * 

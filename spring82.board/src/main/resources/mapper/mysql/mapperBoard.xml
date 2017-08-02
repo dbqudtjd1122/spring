@@ -219,20 +219,6 @@
          WHERE articleno=#{articleno}
     </update>    
     
-    <!--  count 로 올수 있는 값은 -1 또는 +1 만 가능 -->
-    <update id="updateArticleCountGood" parameterType="map">
-        UPDATE TB_BBS_Article 
-           SET countgood = countgood  + ( #{count} )
-         WHERE articleno = #{articleno}
-    </update>    
-    
-    <!--  count 로 올수 있는 값은 -1 또는 +1 만 가능 -->
-    <update id="updateArticleCountBad" parameterType="map">
-        UPDATE TB_BBS_Article 
-           SET countbad  = countbad  + ( #{count} )
-         WHERE articleno = #{articleno}
-    </update>
-    
     <select id="getNextArticle" parameterType="hashmap" resultType="ModelArticle">
         SELECT articleno, title
         FROM

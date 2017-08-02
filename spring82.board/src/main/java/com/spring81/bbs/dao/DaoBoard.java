@@ -242,22 +242,6 @@ public class DaoBoard implements IDaoBoard {
     public List<ModelComments> getCommentList(int articleno) {
         return  session.selectList("mapper.mapperBoard.getCommentList", articleno);        
     }
-    @Override
-    public int updateArticleCountGood(int articleno, int count) {
-        Map<String, Integer> map = new HashMap<>();
-        map.put("count", count );
-        map.put("articleno", articleno);
-        
-        return  session.update("mapper.mapperBoard.updateArticleCountGood", map );
-    }
-    @Override
-    public int updateArticleCountBad(int articleno, int count) {
-        Map<String, Integer> map = new HashMap<>();
-        map.put("count", count);
-        map.put("articleno", articleno);
-        
-        return  session.update("mapper.mapperBoard.updateArticleCountBad", map );
-    }
 
     @Override
     public int updateRecommend(ModelArticleRecommend recommend) {

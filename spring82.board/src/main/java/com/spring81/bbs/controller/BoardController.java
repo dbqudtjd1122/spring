@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -567,7 +568,7 @@ public class BoardController {
         ModelComments searchValue = new ModelComments();
         searchValue.setCommentno(commentno);
 
-        int result = result = boardsrv.updateComment(updatecomment, searchValue);
+        int result = boardsrv.updateComment(updatecomment, searchValue);
 
         return result;
     }
@@ -599,6 +600,40 @@ public class BoardController {
 	    attachFile.setAttachfileno(attachfileno);
         int result = boardsrv.deleteAttachFile(attachFile);
         
+        return result ;
+    }
+    
+    /**
+     * http://localhost/board/articlegoodbad
+     */
+    @RequestMapping(value = "/board/articlegoodbad", method = RequestMethod.POST)
+    @ResponseBody
+    public int articlegoodbad( Model model
+            , HttpSession session
+            , @RequestParam(value="articleno", defaultValue=""     ) Integer articleno
+            , @RequestParam(value="codegb"   , defaultValue=""     ) String  codegb
+            , @RequestParam(value="updown"   , defaultValue="false") Boolean updown )  {
+        logger.info("/board/articlegoodbad : POST");
+
+        // login 이 안된 상태에서 url을 통한 직접 접근시 오류 처리
+        if( session.getAttribute(WebConstants.SESSION_NAME) != null )
+            return -1;
+        
+        // 
+        ModelUser user = (ModelUser)session.getAttribute( WebConstants.SESSION_NAME );
+        String userid = user.getUserid();
+        
+        ModelArticleRecommend recommend = null;
+
+        recommend = new ModelArticleRecommend();
+        recommend.setArticleno(articleno);
+        recommend.setUserid(userid);
+        
+        // case1. 2(articleno) --> 좋아요(good) --> up    
+        int result = boardsrv.transRecommendArticle(  articleno
+                                                    , userid 
+                                                    , EnumGoodBad.valueOf(codegb.toUpperCase())
+                                                    , updown );
         return result ;
     }
 }

@@ -9,6 +9,7 @@ import org.junit.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.spring81.bbs.commons.EnumGoodBad;
 import com.spring81.bbs.model.*;
 import com.spring81.bbs.service.*;
 
@@ -353,54 +354,6 @@ public class TestServiceBoard {
         assertEquals(result, 1);
     }
     
-    @Test
-    public void testUpdateArticleGood_up() {
-        int articleno = 1;
-        int count = +1;
-
-        ModelArticle articleBefore = serviceboard.getArticle(articleno);        
-        serviceboard.updateArticleCountGood(articleno, count);        
-        ModelArticle articleAfter = serviceboard.getArticle(articleno);
-        
-        assertSame(articleBefore.getCountgood() + 1 , articleAfter.getCountgood());
-    }
-    
-    @Test
-    public void testUpdateArticleGood_dn() {
-        int articleno = 1;
-        int count = -1;
-
-        ModelArticle articleBefore = serviceboard.getArticle(articleno);        
-        serviceboard.updateArticleCountGood(articleno, count);        
-        ModelArticle articleAfter = serviceboard.getArticle(articleno);
-        
-        assertSame(articleBefore.getCountgood() - 1 , articleAfter.getCountgood());
-    }
-    
-    @Test
-    public void testUpdateArticleBad_up() {
-        int articleno = 1;
-        int count = +1;
-
-        ModelArticle articleBefore = serviceboard.getArticle(articleno);        
-        serviceboard.updateArticleCountBad(articleno,count);        
-        ModelArticle articleAfter = serviceboard.getArticle(articleno);
-        
-        assertSame(articleBefore.getCountbad() + 1 , articleAfter.getCountbad());
-    }
-    
-    @Test
-    public void testUpdaterticleBad_dn() {
-        int articleno = 1;
-        int count = -1;
-
-        ModelArticle articleBefore = serviceboard.getArticle(articleno);        
-        serviceboard.updateArticleCountBad(articleno,count);        
-        ModelArticle articleAfter = serviceboard.getArticle(articleno);
-        
-        assertSame(articleBefore.getCountbad() -1 , articleAfter.getCountbad());
-    }
-    
     
 
     @Test
@@ -472,6 +425,58 @@ public class TestServiceBoard {
         ModelArticle article = serviceboard.getArticle(articleno);
         assertSame(article.getCountgood(), 1);
         assertSame(article.getCountbad() , 0);
-        
     }
+
+
+    @Test
+    public void testTransRecommendArticle() {
+        ModelArticleRecommend recommend = null, re1 = null;
+        String userid ="222";
+        int result =-1;
+        int articleno = 2; 
+        
+        recommend = new ModelArticleRecommend();
+        recommend.setArticleno(articleno);
+        recommend.setUserid(userid);
+        
+        // case1. 2(articleno) --> 좋아요(good) --> up    
+        result = serviceboard.transRecommendArticle(articleno, userid, EnumGoodBad.GOOD, true);
+        assertTrue(result >= 1);        
+        
+        re1 = serviceboard.getRecommendOne(recommend);
+        assertEquals(re1.getGood(), true );  
+        assertEquals(re1.getBad() , false);      
+        
+        // case2. 2(articleno) --> 좋아요(good) --> down
+        result = serviceboard.transRecommendArticle(articleno, userid, EnumGoodBad.GOOD, false);
+        assertTrue(result >= 1);        
+        
+        re1 = serviceboard.getRecommendOne(recommend);
+        assertEquals(re1.getGood(), false ); 
+        assertEquals(re1.getBad() , false);       
+        
+        // case3. 2(articleno) --> 나빠요(bad ) --> up 
+        result = serviceboard.transRecommendArticle(articleno, userid, EnumGoodBad.BAD, true);
+        assertTrue(result >= 1);        
+        
+        re1 = serviceboard.getRecommendOne(recommend);
+        assertEquals(re1.getGood(), false );
+        assertEquals(re1.getBad() , true);       
+        
+        // case4. 2(articleno) --> 나빠요(bad ) --> down 
+        result = serviceboard.transRecommendArticle(articleno, userid, EnumGoodBad.BAD, false);
+        assertTrue(result >= 1);        
+        
+        re1 = serviceboard.getRecommendOne(recommend);
+        assertEquals(re1.getGood(), false );
+        assertEquals(re1.getBad() , false );   
+    }
+    
+    @Test
+    public void testEnumGoodBad_valueOf() {
+        String codegb = "good";
+        EnumGoodBad value = EnumGoodBad.valueOf(codegb.toUpperCase());        
+        assertEquals(value , EnumGoodBad.GOOD);
+    }
+    
 }
