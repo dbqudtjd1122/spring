@@ -15,13 +15,14 @@
     <p> <a href="./rest/login?id=test2id&pw=test2pw" target="_blank"> "/rest/login?id=test2id&pw=test2pw"  </a></p>
     <p> <a href="./rest/personone"                   target="_blank"> "/rest/personone"                    </a></p>
     <p> <a href="./rest/personlist?name=test"        target="_blank"> "/rest/personlist?name=test"         </a></p>
+    <p> <a href="./rest/personlist?name=test"        target="_blank"> "/rest/personlist?name=test"         </a></p>
     <p> <a href="./rest/insertperson?id=test3id&pw=test3pw&name=test3name&email=test3email" target="_blank"> /rest/insertperson </a></p>
     <hr />
     
-    
-    <p> <a href="./rest/JSONServer?start=10&paging=20"   target="_blank"> "/rest/JSONServer?start=10&paging=20"       </a></p>
-    <p> <a href="./rest/ContactWS?start=10&paging=20"    target="_blank"> "/rest/ContactWS?start=10&paging=20"        </a></p>
-    <p> <a href="./rest/ModelItem?start=10&paging=20"    target="_blank"> "/rest/ModelItem?start=10&paging=20"        </a></p>
+    <h3> 실습</h3>
+    <p> <a href="./rest/itemview"                          target="_blank"> "./rest/itemview"                                </a></p>
+    <p> <a href="./rest/personlistpaging?start=10&end=20"  target="_blank"> "./rest/personlistpaging?start=10&end=20"    </a></p>
+    <p> <a href="./rest/itemlist?start=10&end=20"          target="_blank"> "./rest/itemlist?start=10&end=20"               </a></p>
     <hr />
     
     
