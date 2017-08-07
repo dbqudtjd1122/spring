@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.spring63.rest.model.ModelItem;
 import com.spring63.rest.model.ModelPerson;
 import com.spring63.rest.service.IServicePerson;
@@ -94,21 +95,6 @@ public class RestController {
         
         return result;
     }
-
-    
-    @RequestMapping(value = "/rest/personlistpaging", method = RequestMethod.GET)
-    @ResponseBody
-    public List<ModelPerson> personlistpaging( Model model
-                                      , @RequestParam(value="start", required = false, defaultValue = "0" ) Integer start
-                                      , @RequestParam(value="end"  , required = false, defaultValue = "10") Integer end
-                                      ) throws Throwable {
-        logger.info("/rest/personlistpaging");
-           
-        
-        List<ModelPerson> result = makePersonData(start, end);
-    
-        return result ;
-    }
     
     @RequestMapping(value = "/rest/insertperson", method = {RequestMethod.GET, RequestMethod.POST} )
     @ResponseBody
@@ -143,8 +129,13 @@ public class RestController {
     
     @RequestMapping(value = "/rest/personfind", method = {RequestMethod.GET, RequestMethod.POST} )
     @ResponseBody
-    public List<ModelPerson> personfind(Model model, @RequestBody ModelPerson person) {
+    public List<ModelPerson> personfind(Model model
+            , @RequestBody Map<String, Object> map) {
         logger.info("/rest/personfind");
+        
+        // gson 을 이용하여 json을 model로 변환.
+        ModelPerson person = new Gson().fromJson(map.get("searchvalue").toString(), ModelPerson.class);
+        String      name   = (String) map.get("orderby");
 
         List<ModelPerson>  result = null;
         if(svr != null) {
@@ -204,7 +195,21 @@ public class RestController {
         return map ;
     }
 
-    public String getRandString() {
+    @RequestMapping(value = "/rest/personlistpaging", method = RequestMethod.GET)
+    @ResponseBody
+    public List<ModelPerson> personlistpaging( Model model
+                                      , @RequestParam(value="start", required = false, defaultValue = "0" ) Integer start
+                                      , @RequestParam(value="end"  , required = false, defaultValue = "10") Integer end
+                                      ) throws Throwable {
+        logger.info("/rest/personlistpaging");
+           
+        
+        List<ModelPerson> result = makePersonData(start, end);
+    
+        return result ;
+    }
+    
+    private String getRandString() {
         String str = "";
         
         for (int i = 1; i <= (int) (Math.random() * 10000); i++) {
@@ -214,7 +219,7 @@ public class RestController {
         return str;
     }
 
-    private  List<ModelPerson> makePersonData(Integer start, Integer end ) {
+    private List<ModelPerson> makePersonData(Integer start, Integer end ) {
         List<ModelPerson> result = new ArrayList<>(); 
         for(int i = start ; i<= end; i++) {
             ModelPerson person = new ModelPerson();
@@ -228,4 +233,5 @@ public class RestController {
         
         return result;
     }
+
 }

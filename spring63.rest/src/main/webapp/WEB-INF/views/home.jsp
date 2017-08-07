@@ -17,11 +17,11 @@
     <p> <a href="./rest/personlist?name=test"        target="_blank"> "/rest/personlist?name=test"         </a></p>
     <p> <a href="./rest/personlist?name=test"        target="_blank"> "/rest/personlist?name=test"         </a></p>
     <p> <a href="./rest/insertperson?id=test3id&pw=test3pw&name=test3name&email=test3email" target="_blank"> /rest/insertperson </a></p>
+    <p> <a href="./rest/personlistpaging?start=10&end=20"  target="_blank"> "./rest/personlistpaging?start=10&end=20"    </a></p>
     <hr />
     
     <h3> 실습</h3>
     <p> <a href="./rest/itemview"                          target="_blank"> "./rest/itemview"                                </a></p>
-    <p> <a href="./rest/personlistpaging?start=10&end=20"  target="_blank"> "./rest/personlistpaging?start=10&end=20"    </a></p>
     <p> <a href="./rest/itemlist?start=10&end=20"          target="_blank"> "./rest/itemlist?start=10&end=20"               </a></p>
     <hr />
     
