@@ -1,3 +1,8 @@
+**/.classpath
+**/.project
+**/.springBeans
+
+
 .metadata/
 .recommenders/
 **/.idea/
@@ -10,6 +15,13 @@
 **/gradle/
 **/log*/
 **/target/
+
+
+**/nbproject/
+**/nbbuild/
+**/.nb-gradle/
+
+
 Server*/
 RemoteSystemsTempFiles/
 

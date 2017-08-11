@@ -1,3 +1,8 @@
+**/.classpath
+**/.project
+**/.springBeans
+
+
 .metadata/
 .recommenders/
 **/.idea/
@@ -27,4 +32,3 @@ RemoteSystemsTempFiles/
 /spring00.docs/책-JUnit을 이용한 테스트.pdf
 /spring00.docs/책-코드로배우는스프링웹프로젝트.ch06.mybatis.pdf
 /spring00.docs/책-JUnit을 이용한 테스트.pdf
-
