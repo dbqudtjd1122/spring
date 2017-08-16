@@ -1,13 +1,11 @@
 package com.spring63.rest.controller;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,7 +94,7 @@ public class RestController {
         return result;
     }
     
-    @RequestMapping(value = "/rest/insertperson", method = {RequestMethod.GET, RequestMethod.POST} )
+    @RequestMapping(value = "/rest/insertone", method = {RequestMethod.GET, RequestMethod.POST} )
     @ResponseBody
     public int insertperson(Model model, @RequestBody ModelPerson personJson) {
         logger.info("/rest/insertperson");
@@ -112,7 +110,7 @@ public class RestController {
         return result;
     }
     
-    @RequestMapping(value = "/rest/insertpersonlist", method = {RequestMethod.GET, RequestMethod.POST} )
+    @RequestMapping(value = "/rest/insertlist", method = {RequestMethod.GET, RequestMethod.POST} )
     @ResponseBody
     public int insertpersonlist(Model model, @RequestBody List<ModelPerson> persons) {
         logger.info("/rest/insertpersonlist");        
@@ -126,8 +124,15 @@ public class RestController {
         }    
         return result;
     }
-    
-    @RequestMapping(value = "/rest/personfind", method = {RequestMethod.GET, RequestMethod.POST} )
+
+
+    /**
+     * android ---전송(json:JSONObject)---> spring ---반환(json:JSONArray)--->andorid
+     *
+     * 1. 안드로이드 ---> 스프링     : 안드로이드는 json을 스프링으로 전송한다.
+     * 2. 스프링     ---> 안드로이드 : 안드로이드는 값을 1개 스프링으로부터 반환 받는다.
+     */
+    @RequestMapping(value = "/rest/findpersons", method = {RequestMethod.GET, RequestMethod.POST} )
     @ResponseBody
     public List<ModelPerson> personfind(Model model
             , @RequestBody Map<String, Object> map) {
@@ -183,8 +188,24 @@ public class RestController {
     @RequestMapping(value = "/rest/itemview", method =  {RequestMethod.GET, RequestMethod.POST} )
     @ResponseBody  
     public Map<String, Object> itemview( Model model
-                                         , @RequestParam(value="dataItemID", defaultValue = "") String dataItemID ) throws Throwable {
+         , @RequestParam(value="dataItemID", defaultValue = "") String dataItemID ) throws Throwable {
+        
         logger.info("/rest/itemview");
+        
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("msg1", dataItemID     );
+        map.put("msg2", "메시지2!"     );
+        map.put("msg3", "3번째 메시지!");
+        
+        return map ;
+    }
+    
+    @RequestMapping(value = "/rest/iteminsert", method =  {RequestMethod.GET, RequestMethod.POST} )
+    @ResponseBody  
+    public Map<String, Object> iteminsert( Model model
+                                         , @ModelAttribute ModelItem dataItemID ) throws Throwable {
+        logger.info("/rest/iteminsert");
         
         Map<String, Object> map = new HashMap<>();
 
