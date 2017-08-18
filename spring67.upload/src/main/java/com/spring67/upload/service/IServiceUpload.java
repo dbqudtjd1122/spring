@@ -1,6 +1,6 @@
-package com.spring61.mvc.service;
+package com.spring67.upload.service;
 
-import com.spring61.mvc.model.*;
+import com.spring67.upload.model.*;
 
 public interface IServiceUpload {
     int insertAttachFile(ModelUploadFile attachfile);

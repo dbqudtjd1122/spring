@@ -1,4 +1,4 @@
-package com.spring61.mvc.model;
+package com.spring67.upload.model;
 
 import java.util.Arrays;
 import java.util.Date;

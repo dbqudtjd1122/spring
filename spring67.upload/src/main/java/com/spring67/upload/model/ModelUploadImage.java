@@ -1,4 +1,4 @@
-package com.spring61.mvc.model;
+package com.spring67.upload.model;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -13,9 +13,9 @@ public class ModelUploadImage {
     private String  contentType    ;
     
     // 필드 추가 2017.01.25    
+    private byte[]  imageBytes;
+    private String  imageBase64;
     private CommonsMultipartFile image;
-    private byte[] imageBytes;
-    private String imageBase64;
     
     
     public Integer getUploadImageNo() {
@@ -42,12 +42,6 @@ public class ModelUploadImage {
     public void setContentType(String contentType) {
         this.contentType = contentType;
     }
-    public CommonsMultipartFile getImage() {
-        return image;
-    }
-    public void setImage(CommonsMultipartFile photo) {
-        this.image = photo;
-    }
     public byte[] getImageBytes() {
         return imageBytes;
     }
@@ -59,6 +53,12 @@ public class ModelUploadImage {
     }
     public void setImageBase64(String photoBase64) {
         this.imageBase64 = photoBase64;
+    }
+    public CommonsMultipartFile getImage() {
+        return image;
+    }
+    public void setImage(CommonsMultipartFile photo) {
+        this.image = photo;
     }
     
     @Override

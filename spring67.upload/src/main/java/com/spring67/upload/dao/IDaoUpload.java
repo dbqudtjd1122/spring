@@ -1,6 +1,6 @@
-package com.spring61.mvc.dao;
+package com.spring67.upload.dao;
 
-import com.spring61.mvc.model.*;
+import com.spring67.upload.model.*;
 
 public interface IDaoUpload {
     int insertAttachFile(ModelUploadFile attachfile);

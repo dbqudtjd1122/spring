@@ -1,4 +1,4 @@
-package com.spring61.mvc.repository;
+package com.spring67.upload.repository;
 
 import java.util.List;
 

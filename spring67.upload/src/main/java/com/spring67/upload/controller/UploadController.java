@@ -1,4 +1,4 @@
-package com.spring61.mvc.controller;
+package com.spring67.upload.controller;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.spring61.mvc.model.*;
-import com.spring61.mvc.repository.*;
-import com.spring61.mvc.service.*;
+import com.spring67.upload.model.*;
+import com.spring67.upload.repository.*;
+import com.spring67.upload.service.*;
 
 @Controller
 public class UploadController  {

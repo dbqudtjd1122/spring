@@ -1,4 +1,4 @@
-package com.spring61.mvc.dao;
+package com.spring67.upload.dao;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import com.spring61.mvc.model.*;
+import com.spring67.upload.model.*;
 
 @Repository
 public class DaoUpload implements IDaoUpload {
@@ -23,6 +23,7 @@ public class DaoUpload implements IDaoUpload {
 
     public int insertPhoto(ModelUploadImage attachfile) {
         
+       /*Oracle 용 
         Map<String, Object> map = new  HashMap<String, Object>();
         map.put("file"  , attachfile);
         map.put("result", null);
@@ -31,6 +32,10 @@ public class DaoUpload implements IDaoUpload {
         int result = map.get("result") != null ? (int) map.get("result") : -1;
         
         return result;
+        */
+        
+        session.insert("mapper.mapperUpload.insertPhoto", attachfile );
+        return attachfile.getUploadImageNo();
     }
     
     public ModelUploadImage getImageByte(int attachfileno) {

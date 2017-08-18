@@ -1,4 +1,4 @@
-package com.spring61.mvc.controller;
+package com.spring67.upload.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

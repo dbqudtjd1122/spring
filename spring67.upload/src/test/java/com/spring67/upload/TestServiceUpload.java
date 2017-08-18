@@ -1,4 +1,4 @@
-package com.spring61.mvc;
+package com.spring67.upload;
 
 import static org.junit.Assert.*;
 
@@ -18,8 +18,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.util.Base64;
 
-import com.spring61.mvc.model.*;
-import com.spring61.mvc.service.*;
+import com.spring67.upload.model.*;
+import com.spring67.upload.service.*;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestServiceUpload {

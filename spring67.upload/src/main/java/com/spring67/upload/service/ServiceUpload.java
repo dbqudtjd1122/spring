@@ -1,4 +1,4 @@
-package com.spring61.mvc.service;
+package com.spring67.upload.service;
 
 
 import org.slf4j.Logger;
@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring61.mvc.dao.*;
-import com.spring61.mvc.model.*;
+import com.spring67.upload.dao.*;
+import com.spring67.upload.model.*;
 
 @Service("serviceupload")
 public class ServiceUpload implements IServiceUpload {

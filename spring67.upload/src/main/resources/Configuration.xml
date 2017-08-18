@@ -12,14 +12,12 @@
 
     <!-- Model 클래스를 등록한다. --> 
     <typeAliases>
-        <package name="com.spring61.mvc.model" />
+        <package name="com.spring67.upload.model" />
     </typeAliases>
 
 
     <!-- sql 이 저장되는 mapper 파일 등록: 주의 사항은 경로로 설정해야 한다. -->
     <mappers>
-        <mapper resource="mapper/mysql/mapperPhone.xml" />
-        <mapper resource="mapper/mysql/mapperPerson.xml" />
         <mapper resource="mapper/mysql/mapperUpload.xml" />
     </mappers>
     

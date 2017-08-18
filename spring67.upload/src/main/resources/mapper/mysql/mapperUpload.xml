@@ -22,18 +22,10 @@
         where uploadImageNo = #{uploadImageNo}
     </select>
     
-    <insert id="insertPhoto" parameterType="map" statementType="CALLABLE">
-        
-        declare
-            s2  number := 0;
-        begin    
-            INSERT INTO 
-            TB_Upload_Image   (   fileName      ,   fileSize      ,   contentType      ,   imageBytes      ,   imageBase64       )
-            VALUES            ( #{file.fileName}, #{file.fileSize}, #{file.contentType}, #{file.imageBytes}, #{file.imageBase64} )            
-            RETURNING uploadImageNo INTO s2;
-            
-            #{result, jdbcType=INTEGER, mode=OUT} := s2;
-        end; 
+    <insert id="insertPhoto" parameterType="ModelUploadImage" useGeneratedKeys="true" keyProperty="uploadImageNo">       
+        INSERT INTO 
+        TB_Upload_Image   (   fileName ,   fileSize ,   contentType ,   imageBytes ,   imageBase64       )
+        VALUES            ( #{fileName}, #{fileSize}, #{contentType}, #{imageBytes}, #{imageBase64} )            
     </insert>
 
     <update id="updateAttachImage" parameterType="ModelUploadImage">
