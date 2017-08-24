@@ -1,6 +1,9 @@
 package com.spring81.bbs.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
@@ -382,16 +385,24 @@ public class BoardController {
         
         // 2. 로컬 첨부 파일을 서버로 올리기 위한 코드
         if( !uploadfile.getOriginalFilename().isEmpty() ){
+            
+            // UPLOAD_PATH 존재 여부 체크. 없으면 폴더 생성.
+            java.io.File uploadDir = new java.io.File( WebConstants.UPLOAD_PATH  );
+            if( !uploadDir.exists() ) uploadDir.mkdir();            
+
+            // 클라이언트의 첨부 파일을 서버로 복사
             String fileName = uploadfile.getOriginalFilename();
-            String filepath = WebConstants.UPLOAD_PATH + "/" + fileName;                 
+            String tempFileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+            String filepath =  WebConstants.UPLOAD_PATH + tempFileName;                 
             java.io.File f = new java.io.File( filepath );                
             uploadfile.transferTo( f );       
                            
             // 첨부 파일을 attachfiel 테이블에 insert.
             ModelAttachfile attachfile = new ModelAttachfile();
-            attachfile.setFilename( f.getName() );  // 파일명
+            attachfile.setFilename    ( fileName    );  // 실제파일명
+            attachfile.setTempfilename( f.getName() );  // 임시파일명
             attachfile.setFiletype( FilenameUtils.getExtension(fileName) ); //확장자
-            attachfile.setFilesize( (int)f.length() );
+            attachfile.setFilesize( f.length() );
             attachfile.setArticleno( articleno );
             int result = boardsrv.insertAttachFile( attachfile );     
             
@@ -436,20 +447,6 @@ public class BoardController {
         return "board/articlemodify";
     }
     
-    /**
-     * http://localhost/board/attachfiledelete
-     */
-    @RequestMapping(value = "/board/attachfiledelete", method = RequestMethod.POST)
-    @ResponseBody
-    public int attachfiledelete( Model model
-            , @RequestParam(value="attachfileno" , defaultValue="-1") Integer attachfileno )  {
-        logger.info("/board/attachfiledelete : POST");
-        
-        ModelAttachfile attachFile = new ModelAttachfile( attachfileno );
-        int result = boardsrv.deleteAttachFile(attachFile);
-        
-        return result ;
-    }
     
     /**
      * http://localhost/board/attachfiledelete
@@ -462,6 +459,7 @@ public class BoardController {
         
         ModelComments comment = new ModelComments();
         comment.setArticleno(articleno);
+    
         comment.setMemo(memo);
         
         int commentno = boardsrv.insertComment(comment);
@@ -472,4 +470,19 @@ public class BoardController {
         return "board/articleview-commentlistbody" ;
     }
 
+/**
+     * http://localhost/board/attachfiledelete
+     */
+    @RequestMapping(value = "/board/attachfiledelete", method = RequestMethod.POST)
+    @ResponseBody
+    public int attachfiledelete( Model model
+            , @RequestParam(value="attachfileno" , defaultValue="-1") Integer attachfileno )  {
+        logger.info("/board/attachfiledelete : POST");
+        
+	    ModelAttachfile attachFile = new ModelAttachfile();
+	    attachFile.setAttachfileno(attachfileno);
+        int result = boardsrv.deleteAttachFile(attachFile);
+        
+        return result ;
+    }
 }

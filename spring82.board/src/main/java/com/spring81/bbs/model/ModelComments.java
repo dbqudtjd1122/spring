@@ -15,15 +15,6 @@ public class ModelComments {
     private String  UpdateUID; // VARCHAR(40) NULL DEFAULT NULL
     private Date    UpdateDT;  // DATETIME NULL DEFAULT NULL
     
-    //
-    public ModelComments() {
-        super();
-    }
-    
-    public ModelComments(Integer articleno) {
-        this.articleno = articleno;
-    }
-    
     public Integer getCommentno() {
         return commentno;
     }
@@ -111,6 +102,16 @@ public class ModelComments {
                 + ", regdate=" + regdate + ", UseYN=" + UseYN + ", InsertUID="
                 + InsertUID + ", InsertDT=" + InsertDT + ", UpdateUID="
                 + UpdateUID + ", UpdateDT=" + UpdateDT + "]";
+    }
+    
+    //
+    public ModelComments() {
+        super();
+    }
+    
+    public ModelComments(Integer articleno ) {
+        super();
+        this.articleno = articleno;
     }
     
 }

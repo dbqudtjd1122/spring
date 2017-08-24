@@ -160,10 +160,5 @@ public interface IDaoBoard {
      * 게시글의 덧글리스트 구하기
      */
     public abstract List<ModelComments> getCommentList(int articleno);
-    
-    /*
-     * 게시판  추가
-     */
-    public abstract int getMaxArticleno();
 
 }

@@ -378,18 +378,6 @@ public class ServiceBoard implements IServiceBoard {
     }
 
     @Override
-    public int getMaxArticleno() {
-        int result = -1;
-        try {
-            result = daoboard.getMaxArticleno( );
-        } catch (Exception e) {
-            logger.error("getMaxArticleno " + e.getMessage() );
-        }
-        
-        return result;
-    }
-
-    @Override
     public ModelArticle transUpdateHitAndGetArticle(int articleno) {
         ModelArticle result = null;
         try {

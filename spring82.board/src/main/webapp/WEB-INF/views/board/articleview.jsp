@@ -92,7 +92,7 @@
             		<p>${thisArticle.content }</p>
             		<p id="file-list" style="text-align: right;">
             			<c:forEach var="file" items="${attachFileList }" varStatus="status">
-                			<a href="javascript:download('${file.filename }')">${file.filename }</a>
+                			<a href="javascript:download('${file.tempfilename }')">${file.filename }</a>
                 			<a href="javascript:deleteAttachFile('${file.attachfileno }')">x</a>
             			<br />
             			</c:forEach>	

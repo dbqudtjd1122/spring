@@ -242,9 +242,4 @@ public class DaoBoard implements IDaoBoard {
         return  session.selectList("mapper.mapperBoard.getCommentList", articleno);        
     }
     
-    @Override
-    public int getMaxArticleno() {
-        return session.selectOne("mapper.mapperBoard.getMaxArticleno");
-    }
-    
 }

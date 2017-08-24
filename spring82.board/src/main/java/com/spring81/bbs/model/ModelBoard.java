@@ -4,13 +4,13 @@ import java.util.Date;
 
 public class ModelBoard {
     
-    private String  boardcd;   // VARCHAR(20) NOT NULL
-    private String  boardnm;   // VARCHAR(40) NOT NULL
-    private Boolean UseYN;     // TINYINT(1) NOT NULL DEFAULT 1
-    private String  InsertUID; // VARCHAR(40) NULL DEFAULT NULL
-    private Date    InsertDT;  // DATETIME NULL DEFAULT NULL
-    private String  UpdateUID; // VARCHAR(40) NULL DEFAULT NULL
-    private Date    UpdateDT;  // DATETIME NULL DEFAULT NULL
+    private String  boardcd   = ""  ;   // VARCHAR(20) NOT NULL
+    private String  boardnm   = ""  ;   // VARCHAR(40) NOT NULL
+    private Boolean UseYN     = null;   // TINYINT(1) NOT NULL DEFAULT 1
+    private String  InsertUID = ""  ;   // VARCHAR(40) NULL DEFAULT NULL
+    private Date    InsertDT  = null;   // DATETIME NULL DEFAULT NULL
+    private String  UpdateUID = ""  ;   // VARCHAR(40) NULL DEFAULT NULL
+    private Date    UpdateDT  = null;   // DATETIME NULL DEFAULT NULL
     
     //
     public String getBoardcd() {
@@ -78,15 +78,21 @@ public class ModelBoard {
                 + ", UpdateDT=" + UpdateDT + "]";
     }
     
-    //
+    // constructor
     public ModelBoard() {
         super();
     }
 
     public ModelBoard(String boardcd) {
-        super();
-        
+        super();        
         this.boardcd = boardcd;
+    }
+    
+    public ModelBoard(String boardcd, String boardnm, Boolean useYN) {
+        super();
+        this.boardcd = boardcd;
+        this.boardnm = boardnm;
+        this.UseYN = useYN;
     }
     
 }

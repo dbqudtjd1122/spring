@@ -104,6 +104,15 @@ public class ModelUser {
         UpdateDT = updateDT;
     }
     
+    @Override
+    public String toString() {
+        return "ModelUser [userno=" + userno + ", userid=" + userid + ", email="
+                + email + ", passwd=" + passwd + ", name=" + name + ", mobile="
+                + mobile + ", retireYN=" + retireYN + ", InsertUID=" + InsertUID
+                + ", InsertDT=" + InsertDT + ", UpdateUID=" + UpdateUID
+                + ", UpdateDT=" + UpdateDT + "]";
+    }
+    
     public ModelUser() {
         super();
     }
@@ -114,13 +123,13 @@ public class ModelUser {
         this.passwd = pw;
     }
     
-    @Override
-    public String toString() {
-        return "ModelUser [userno=" + userno + ", userid=" + userid + ", email="
-                + email + ", passwd=" + passwd + ", name=" + name + ", mobile="
-                + mobile + ", retireYN=" + retireYN + ", InsertUID=" + InsertUID
-                + ", InsertDT=" + InsertDT + ", UpdateUID=" + UpdateUID
-                + ", UpdateDT=" + UpdateDT + "]";
-    }
+    public ModelUser(String id, String name, String email, String password) {
+        super();
+
+        this.userid = id;
+        this.name = name;
+        this.email = email;
+        this.passwd = password;
+    } 
     
 }

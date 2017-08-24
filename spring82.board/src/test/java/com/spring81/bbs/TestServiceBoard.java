@@ -175,11 +175,5 @@ public class TestServiceBoard {
     public void testDeleteComment() {
         fail("Not yet implemented");
     }
-    @Test
-    public void testGetMaxArticleno() {
-        int result = service.getMaxArticleno();
-        assertNotEquals(result, 1);
-        assertNotEquals(result, 0);
-        assertNotEquals(result, -1);
-    }
+
 }
