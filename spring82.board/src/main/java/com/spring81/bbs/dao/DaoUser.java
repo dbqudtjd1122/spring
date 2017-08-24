@@ -14,13 +14,7 @@ public class DaoUser implements IDaoUser {
     @Autowired
     @Qualifier("sqlSession")
     private SqlSession session;
-    
-
-    public DaoUser() {
-        super();
-    }
-
-
+ 
     @Override
     public ModelUser selectUserOne(ModelUser user) {
         return session.selectOne("mapper.mapperUser.selectUserOne", user);

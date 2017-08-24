@@ -116,6 +116,11 @@ public class ModelUser {
     public ModelUser() {
         super();
     }
+
+    public ModelUser(String userid) {        
+        super();
+        this.userid = userid;
+    } 
     
     public ModelUser(String id, String pw) {
         super();
@@ -130,6 +135,6 @@ public class ModelUser {
         this.name = name;
         this.email = email;
         this.passwd = password;
-    } 
+    }
     
 }

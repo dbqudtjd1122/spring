@@ -21,17 +21,12 @@ public class ServiceUser implements IServiceUser {
     @Qualifier("daouser")
     private IDaoUser daouser;
 
-    public ServiceUser() {
-        super();
-    }
-
     @Override
     public int insertUser(ModelUser user) {
         
         int result = -1;
         try {
             result = daouser.insertUser(user);
-            //session.commit();
         } catch (Exception e) {
             logger.error("insertUser " + e.getMessage() );
         }
