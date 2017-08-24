@@ -1,0 +1,30 @@
+-- drop a table
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE TB_Phone CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END; 
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE TB_Person CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END; 
+/
+
+-- create a table TB_PHONE
+CREATE TABLE TB_PHONE (
+      name          VARCHAR2(20)    NOT NULL ENABLE
+    , manufacturer  VARCHAR2(40)    NOT NULL ENABLE
+    , price         NUMBER(10)      DEFAULT 0 NOT NULL ENABLE
+);
+
+select * from TB_Phone;
+
+
+
+
+-- create a table TB_PERSON
+CREATE TABLE TB_PERSON (
+      id        VARCHAR2(20)    NOT NULL ENABLE
+    , name      VARCHAR2(40)    NOT NULL ENABLE
+    , email     VARCHAR2(40)    NOT NULL ENABLE
+    , country   VARCHAR2(40)    NOT NULL ENABLE
+);
+
+select * from TB_PERSON;
+
+
+commit;
