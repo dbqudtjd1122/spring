@@ -9,12 +9,12 @@
 <%@ page import="com.spring81.bbs.commons.WebConstants" %>
 <%
     //request.setCharacterEncoding("UTF-8");//이 작업은 필터가 한다.
-    String filename = request.getParameter("filename"); // filename : Controller 에서 넘겨 받는 값
+    String filename     = request.getParameter("filename");     // filename     : Controller 에서 넘겨 받는 실제파일명
+    String tempfilename = request.getParameter("tempfilename"); // tempfilename : Controller 에서 넘겨 받는 임시파일명
     
-    File file = new File(WebConstants.UPLOAD_PATH + filename);
+    File file = new File(WebConstants.UPLOAD_PATH + tempfilename );
     
-    String filetype = filename.substring(filename.indexOf(".") + 1,
-            filename.length());
+    String filetype = filename.substring(filename.indexOf(".") + 1, filename.length());
     
     if (filetype.trim().equalsIgnoreCase("txt")) {
         response.setContentType("text/plain");

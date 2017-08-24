@@ -4,10 +4,26 @@
 
 var MyApp = {};
 
-var download = function download(filename) {
-	var form = document.getElementById("downForm");
-	form.filename.value = filename;
-	form.submit();
+var download = function download(tempfilename, filename) {
+    var f = document.createElement('form');
+    f.setAttribute('method','post');
+    f.setAttribute('action','/download');
+    f.setAttribute('enctype','application/x-www-form-urlencoded');
+    document.body.appendChild(f);
+
+    var i = document.createElement('input'); //input element, text
+    i.type = 'text';
+    i.name = 'tempfilename';
+    i.value = tempfilename;
+    f.appendChild(i);
+    
+    var i = document.createElement('input'); //input element, text
+    i.type = 'text';
+    i.name = 'filename';
+    i.value = filename;
+    f.appendChild(i);
+
+    f.submit();
 };
  
 var deleteAttachFile = function deleteAttachFile(attachfileno) {

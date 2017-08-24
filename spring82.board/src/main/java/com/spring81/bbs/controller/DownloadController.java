@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Handles requests for the application home page.
@@ -22,11 +23,14 @@ public class DownloadController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/download", method = RequestMethod.GET)
-	public String download(Model model, String filename) {
+	@RequestMapping(value = "/download", method = RequestMethod.POST)
+	public String download(Model model
+	        , @RequestParam(value="filename", defaultValue=""    ) String filename
+            , @RequestParam(value="tempfilename", defaultValue="") String tempfilename  ) {
 		logger.info("download");
 		
-		model.addAttribute("filename", filename);
+		model.addAttribute("filename"    , filename);
+        model.addAttribute("tempfilename", tempfilename);
 		
 		return "inc/download";
 	}
