@@ -11,7 +11,7 @@
     <meta charset="utf-8" /> 
     <meta name="Keywords" content="새글쓰기" />
 
-    <title>${boardnm }</title>
+    <title>새글쓰기</title>
 
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" media="screen" />
     <style>
@@ -20,8 +20,9 @@
         form div {text-align: left; padding-bottom: 15px; }
     </style>    
     
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script>
+    <script src="/resources/js/jquery/jquery-3.1.1.js"></script>
+    <script src="/resources/js/ajaxsetup.js"></script>
+    <script>    
         $(document).ready( function(){
 
             $('#writeForm').submit( function(event){     
@@ -63,22 +64,22 @@
                 <!-- 본문 시작 -->
                 <div id="bbs">
                     <h2>글쓰기</h2>
-                    <form id="writeForm" action="boardwrite" method="post" enctype="application/x-www-form-urlencoded" >
+                    <form id="writeForm" action="/board/boardwrite" method="post" enctype="application/x-www-form-urlencoded" >
                         <div>                        
                             <p> Borad Code :
-                                <input type="text" id="boardcd"  name="boardcd" value="${model.boardcd}" />
+                                <input type="text" id="boardcd"  name="boardcd" />
                             </p>
                         </div>
                         
                         <div>
                             <p> Board Name : 
-                                <input type="text" id="boardnm" name="boardnm" value="${model.boardnm}" />
+                                <input type="text" id="boardnm" name="boardnm"  />
                             </p>
                         </div>
                         
                         <div>
                             <p> Use YN : 
-                                <input type="checkbox" id="UseYN" name="UseYN" <c:if test="${model.useYN}">checked="checked"</c:if> />
+                                <input type="checkbox" id="UseYN" name="UseYN"  />
                             </p>
                         </div>
 

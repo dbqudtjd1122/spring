@@ -49,10 +49,7 @@
 	<update id="deleteUser" parameterType="ModelUser" >
 	        UPDATE TB_USER 
 	           SET retireYN=1            
-	        WHERE 1 = 1
-	        <if test="userid != null">
-	            AND userid = #{userid}
-	        </if>
+	         WHERE userid = #{userid}
 	</update>
 
 

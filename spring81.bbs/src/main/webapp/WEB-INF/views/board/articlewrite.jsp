@@ -10,28 +10,21 @@
     <meta name="Keywords" content="게시판 새글쓰기" />
     <meta name="Description" content="게시판 새글쓰기" />
     
-    <title>${boardNm }</title>
+    <title>${boardnm }</title>
     
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" media="screen" />
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script type="text/javascript">
-    	function check() {
-    		var form = document.getElementById("writeForm");
-    		//유효성 검사로직 추가
-    		return true;
-    	}
-    
-    	function goList() {
-    		var form = document.getElementById("listForm");
-    		form.submit();
-    	}
-    
-    	function goView() {
-    		var form = document.getElementById("viewForm");
-    		if (form.articleno.value != 0) {
-    			form.submit();
-    		}
-    	}
+    <script src="/resources/js/jquery/jquery-3.1.1.js"></script>
+    <script src="/resources/js/ajaxsetup.js"></script>
+    <script>      
+        $(document).ready(function(e){            
+            $('.golist').click(function(e) {
+                window.location.href = "/board/articlelist/${boardcd}?curPage=${curPage}&searchWord=${searchWord}";
+            });
+            
+            $('.goview').click(function(e) {
+                window.location.href =  "/board/articleview/${boardcd}/${articleno}?curPage=${curPage}&searchWord=${searchWord}";
+            });
+        });
     </script>
 </head>
 <body>
@@ -51,10 +44,11 @@
 				
 
 				<!-- 본문 시작 -->
-				<h1>${boardNm }</h1>
+				<h1>${boardnm }</h1>
 				<div id="bbs">
 					<h2>글쓰기</h2>
-					<form id="writeForm" action="articlewrite" method="post" enctype="multipart/form-data" onsubmit="return check()">
+					<form id="writeForm" action="/board/articlewrite" method="post" enctype="multipart/form-data" >
+                          
 						<p style="margin: 0; padding: 0;">
 							<input type="hidden" name="boardcd" value="${boardcd }" />
 						</p>
@@ -63,22 +57,25 @@
 								<td>제목</td>
 								<td><input type="text" name="title" size="50" /></td>
 							</tr>
+                            <tr>
+                                <td>이메일</td>
+                                <td><input type="text" name="email" size="50" /></td>
+                            </tr>
 							<tr>
 								<td colspan="2"><textarea name="content" rows="17"></textarea>
 								</td>
 							</tr>
-
 							<tr>
 								<td>파일첨부</td>
-								<td><input type="file" name="upload" /></td>
+								<td><input type="file" name="uploadfile" /></td>
 							</tr>
 						</table>
 						<div style="text-align: center; padding-bottom: 15px;">
 							<input type="submit" value="전송" />
 							<c:if test="${!empty articleno }">
-								<input type="button" value="상세보기" onclick="goView()" />
+								<input type="button" value="상세보기" class="goview" />
 							</c:if>
-							<input type="button" value="목록" onclick="goList()" />
+							<input type="button" value="목록" class="golist" />
 						</div>
 					</form>
 				</div>
@@ -102,24 +99,6 @@
 			<%@ include file="../inc/footer.jsp"%>
 		</div>
 
-	</div>
-
-	<div id="form-group" style="display: none;">
-		<form id="listForm" action="artilcelist" method="get">
-			<p>
-				<input type="hidden" name="boardcd" value="${boardcd }" /> 
-				<input type="hidden" name="curPage" value="${curPage }" /> 
-				<input type="hidden" name="searchWord" value="${searchWord }" />
-			</p>
-		</form>
-		<form id="viewForm" action="artilceview" method="get">
-			<p>
-				<input type="hidden" name="articleno" value="${articleno }" />
-				<input type="hidden" name="boardcd" value="${boardcd }" /> 
-				<input type="hidden" name="curPage" value="${curPage }" /> 
-				<input type="hidden" name="searchWord" value="${searchWord }" />
-			</p>
-		</form>
 	</div>
 
 </body>

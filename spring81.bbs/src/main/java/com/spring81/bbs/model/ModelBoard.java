@@ -3,56 +3,73 @@ package com.spring81.bbs.model;
 import java.util.Date;
 
 public class ModelBoard {
-    String  boardcd    ; // VARCHAR2(20)    NOT NULL ENABLE
-    String  boardnm    ; // VARCHAR2(40)    NOT NULL ENABLE
-    Boolean UseYN      ; // NUMBER(1)       DEFAULT 1 NOT NULL ENABLE
-    String  InsertUID  ; // VARCHAR(40)     NULL                            
-    Date    InsertDT   ; // Date            NULL
-    String  UpdateUID  ; // VARCHAR(40)     NULL                            
-    Date    UpdateDT   ; // Date            NULL
+    
+    private String  boardcd   = ""  ;   // VARCHAR(20) NOT NULL
+    private String  boardnm   = ""  ;   // VARCHAR(40) NOT NULL
+    private Boolean UseYN     = NULL;   // TINYINT(1) NOT NULL DEFAULT 1
+    private String  InsertUID = ""  ;   // VARCHAR(40) NULL DEFAULT NULL
+    private Date    InsertDT  = NULL;   // DATETIME NULL DEFAULT NULL
+    private String  UpdateUID = ""  ;   // VARCHAR(40) NULL DEFAULT NULL
+    private Date    UpdateDT  = NULL;   // DATETIME NULL DEFAULT NULL
+    
+    //
     public String getBoardcd() {
         return boardcd;
     }
+    
     public void setBoardcd(String boardcd) {
         this.boardcd = boardcd;
     }
+    
     public String getBoardnm() {
         return boardnm;
     }
+    
     public void setBoardnm(String boardnm) {
         this.boardnm = boardnm;
     }
-    public Boolean getUseYN() {           
-        return this.UseYN;    
+    
+    public Boolean getUseYN() {
+       return UseYN;
     }
+    
     public void setUseYN(Boolean useYN) {
-        UseYN = useYN;
+       this.UseYN = useYN;
     }
+    
     public String getInsertUID() {
         return InsertUID;
     }
+    
     public void setInsertUID(String insertUID) {
         InsertUID = insertUID;
     }
+    
     public Date getInsertDT() {
         return InsertDT;
     }
+    
     public void setInsertDT(Date insertDT) {
         InsertDT = insertDT;
     }
+    
     public String getUpdateUID() {
         return UpdateUID;
     }
+    
     public void setUpdateUID(String updateUID) {
         UpdateUID = updateUID;
     }
+    
     public Date getUpdateDT() {
         return UpdateDT;
     }
+    
     public void setUpdateDT(Date updateDT) {
         UpdateDT = updateDT;
     }
     
+    // toString
     @Override
     public String toString() {
         return "ModelBoard [boardcd=" + boardcd + ", boardnm=" + boardnm
@@ -61,11 +78,13 @@ public class ModelBoard {
                 + ", UpdateDT=" + UpdateDT + "]";
     }
     
+    // constructor
     public ModelBoard() {
         super();
     }
-    
+
     public ModelBoard(String boardcd) {
+        super();        
         this.boardcd = boardcd;
     }
     
@@ -75,7 +94,5 @@ public class ModelBoard {
         this.boardnm = boardnm;
         this.UseYN = useYN;
     }
-     
-    
     
 }

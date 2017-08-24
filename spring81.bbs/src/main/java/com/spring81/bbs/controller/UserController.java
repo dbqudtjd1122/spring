@@ -24,29 +24,29 @@ import com.spring81.bbs.model.*;
 import com.spring81.bbs.service.*;
 
 @Controller
-@RequestMapping("user")
+@RequestMapping("/")
 public class UserController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	@Autowired
-	private IServiceUser serviceuser ;
+	@Qualifier("serviceuser")
+	IServiceUser user ;
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login( 
-	          @RequestParam(defaultValue="") String url 
-	        , HttpServletRequest request
-			, Model model ) {
-		logger.info("UserController.login");
-				
-        // get a previous page's url
-		if( StringUtils.isEmpty(url) ) 
-		    url =  request.getHeader("Referer");  
-
-		model.addAttribute("url", url );	
-		return "user/login";		
+	@RequestMapping(value = "/user/login", method = RequestMethod.GET)
+	public String login(Model model
+	        , @RequestParam(value="url", defaultValue="") String url
+	        , HttpServletRequest request) {
+		logger.info("login : get");
+		
+		// get a previous page's url
+		if( url.isEmpty() )
+		    url = request.getHeader("Referer");
+		
+		model.addAttribute("url", url);
+		
+		return "user/login";
 	}
-	
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(

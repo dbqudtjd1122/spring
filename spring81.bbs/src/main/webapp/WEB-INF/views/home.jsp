@@ -20,7 +20,7 @@
         <li><a href="./board/boardview?boardcd=qna" target="_blank">./board/boardview?boardcd=qna </a></li>
         <li><a href="./board/boardview" target="_blank">./board/boardview  == ./board/boardview?boardcd=free</a></li>
         <li><a href="./board/boardview/qna" target="_blank">./board/boardview/qna</a></li>
-        <li><a href="/board/boardlist" target="_blank">./board/boardlist</a>에 <a href="/board/boardview" target="_blank">./board/boardview</a> 연결하기</li>
+        <li><a href="./board/boardlist" target="_blank">./board/boardlist</a>에 <a href="/board/boardview" target="_blank">./board/boardview</a> 연결하기</li>
         <li><span> <a href="/board/boardlist" target="_blank">./board/boardlist</a>에서 tr을 클릭하면 boardview 가 열리게 하시오 </span>
             <xmp>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -37,10 +37,10 @@
     </script> 
             </xmp>        
         </li>
-        <li><a href="./board/boardmodify?boardcd=qna" target="_blank">./board/boardmodify?boardcd=qna</a></li>
-        <li><a href="./board/boardmodify/qna" target="_blank">./board/boardmodify/qna</a></li>
-        <li><a href=".//board/boardview" target="_blank">./board/boardview</a>에 ./board/boardmodify 연결하기 </li>
-        <li><a href="./board/boardwrite" target="_blank">./board/boardwrite</a></li>
+        <li><a href="/board/boardmodify?boardcd=qna" target="_blank">./board/boardmodify?boardcd=qna</a></li>
+        <li><a href="/board/boardmodify/qna" target="_blank">./board/boardmodify/qna</a></li>
+        <li><a href="/board/boardview" target="_blank">./board/boardview</a>에 ./board/boardmodify 연결하기 </li>
+        <li><a href="/board/boardwrite" target="_blank">./board/boardwrite</a></li>
         <li><a href="/board/boardlist" target="_blank">./board/boardlist</a>와 <a href="/board/boardview" target="_blank">./board/boardview</a> 에 <a href="/board/boardwrite" target="_blank">boardwrite</a> 연결하기</li>
         <li><a href="/board/boardview" target="_blank">./board/boardview</a>에 ./board/boarddelete 연결하기
             <ul>
@@ -92,18 +92,83 @@
     
     <h2>article 게시판 만들기</h2>  
     <ul>
-        <li><a href="./board/articlelist"  target="_blank">./board/articlelist</a> </li>
-        <li>/board/articleview  ?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
-        <li>/board/articlewrite ?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
-        <li>/board/articlemodify?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
-        <li>/board/articledelete?articleno=17&amp;boardcd=free&amp;curPage=1&amp;searchWord=</li>
+        ※ 번호순으로 액션 메서드 작성<br>
+        free는 boardcd 값을, 17은 arcticleno 값을, curPage는 현재 페이지값, searchWord는 검색 단어를  의미한다.    
+        <li><a href="/board/articlelist/free"  target="_blank">/board/articlelist/free</a> </li>
+        <li><a href="/board/articleview/free/17?curPage=1&searchWord="    target="_blank">/board/articleview/free/17?curPage=1&amp;searchWord=</a></li>
+        <li><a href="/board/articlewrite/free?curPage=1&searchWord="      target="_blank">/board/articlewrite/free?curPage=1&amp;searchWord=</a></li>
+        <li><a href="/board/articlemodify/free/17?&curPage=1&searchWord=" target="_blank">/board/articlemodify/free/17?curPage=1&amp;searchWord=</a></li>
+        <li><a href="/board/articledelete/free/17?curPage=1&searchWord="  target="_blank">/board/articledelete/free/17?curPage=1&amp;searchWord=</a></li>
     </ul>
-    <br />
     <hr />
     
-    <h2> RestController </h2>    
+    
+    <h2> 첨부 파일</h2>  
+    <ul>    
+        <li><a href="/board/articlemodify/free/1"  target="_blank">첨부 파일 삭제 테스트</a> </li>
+    </ul>
+    <hr />
+    
+    <h2> RestController </h2>
+    댓글용 rest 서비스 만들기
+        <ol>
+            <li>./board/commentadd    만들기 (POST) </li>
+            <li>./board/commentupdate 만들기 (POST) </li>
+            <li>./board/commentdelete 만들기 (POST) </li>
+        </ol>
+    <hr />    
+    
+    <h2> UploadController, DownloadController 만들기 </h2>
+    <a href="./upload/fileupload"    target="_blank">./upload/fileupload </a> <br> 
+    <a href="./upload/filedownload"  target="_blank">./upload/filedownload </a> <br>
+    <hr />
+    
+    
+    <h2> 테이블의 BLOB,CLOB 컬럼에 이미지 저장하고 가져오기</h2>   
+    <a href="./upload/imageupload"   target="_blank">./upload/imageupload </a> <br>
+    <a href="./upload/imageview/1"   target="_blank">./upload/imageview/1 </a> <br>
+    <hr />
+    
+    
+    <h2> 로그인 처리 </h2>    
     <ol>
-        <li>RestConroller.java 만들기
+        <li> <a href="./user/login"           target="_blank">./user/login           </a> </li>
+        <li> <a href="./user/logout"          target="_blank">./user/logout          </a> </li>
+        <li> <a href="./user/register"        target="_blank">./user/register        </a> </li>
+        <li> <a href="./user/unregister"      target="_blank">./user/unregister      </a> </li>
+        <li> <a href="./user/usermodify"      target="_blank">./user/usermodify          </a> </li>
+        <li> <a href="./user/changepassword"  target="_blank">./user/changepassword  </a> </li>
+    </ol>      
+    <hr />
+    
+    
+    <h2> 오류 페이지 설정 </h2>
+    <ol>
+        <li>web.xml 에 아래 내용 추가</li>
+    </ol>
+  
+    <xmp>
+        <!-- 에러 페이지 설정 -->
+        <error-page>
+            <error-code>403</error-code>
+            <location>/WEB-INF/views/common/error.jsp</location>
+        </error-page>
+    
+        <error-page>
+            <error-code>404</error-code>
+            <location>/WEB-INF/views/common/error/404.jsp</location>
+        </error-page>
+    
+        <error-page>
+            <error-code>500</error-code>
+            <location>/WEB-INF/views/common/error/500.jsp</location>
+        </error-page>  
+    </xmp>
+    <hr />
+
+    <h2> RestConroller.java 만들기</h2>
+    <ol>
+        <li>
             <xmp>
 @Controller
 @RequestMapping("/restservice")
@@ -149,54 +214,8 @@ public class RestController {
                 <a href="./restservice/ajaxlist?id=free"   target="_blank">./restservice/ajaxlist?id=free   </a> <br />
             </p>
         </li>        
-        <li>댓글용 rest 서비스 만들기
-            <ol>
-                <li>./restservice/commentadd    만들기 </li>
-                <li>./restservice/commentedit   만들기 </li>
-                <li>./restservice/commentdelete 만들기 </li>
-            </ol>
-        </li>
-    </ol>  
-    
-    <hr />
-   
-    
-    <h2> 로그인 처리 </h2>
-    
-    <ol>
-        <li> <a href="./user/login"           target="_blank">./user/login           </a> </li>
-        <li> <a href="./user/logout"          target="_blank">./user/logout          </a> </li>
-        <li> <a href="./user/register"        target="_blank">./user/register        </a> </li>
-        <li> <a href="./user/unregister"      target="_blank">./user/unregister      </a> </li>
-        <li> <a href="./user/usermodify"      target="_blank">./user/usermodify          </a> </li>
-        <li> <a href="./user/changepassword"  target="_blank">./user/changepassword  </a> </li>
-    </ol>  
-    
-    <hr />
-    
-    <h2> 오류 페이지 설정 </h2>
-    <ol>
-        <li>web.xml 에 아래 내용 추가</li>
     </ol>
-  
-    <xmp>
-        <!-- 에러 페이지 설정 -->
-        <error-page>
-            <error-code>403</error-code>
-            <location>/WEB-INF/views/common/error.jsp</location>
-        </error-page>
-    
-        <error-page>
-            <error-code>404</error-code>
-            <location>/WEB-INF/views/common/error/404.jsp</location>
-        </error-page>
-    
-        <error-page>
-            <error-code>500</error-code>
-            <location>/WEB-INF/views/common/error/500.jsp</location>
-        </error-page>  
-    </xmp>
-    <hr />
+    <hr>
    
 </body>
 </html>

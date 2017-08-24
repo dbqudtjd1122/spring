@@ -32,7 +32,7 @@ public class DaoBoard implements IDaoBoard {
     }
 
     @Override
-    public int getBoardTotalRecord(HashMap<String, String> hashmap) {
+    public int getBoardTotalRecord(String boardcd, String searchWord) {
         // TODO Auto-generated method stub
         return 0;
     }
@@ -125,16 +125,21 @@ public class DaoBoard implements IDaoBoard {
 
     @Override
     public int insertArticle(ModelArticle article) {
-        
+        /*
+        // Oracle 인 경우 
         Map<String, Object> map = new HashMap<>();
         map.put("article", article);
         map.put("result", "");
         
         session.insert("mapper.mapperBoard.insertArticle", map );
-        int result = (int) map.get("result");
+        int result = (int) map.get("result")
+         */
         
-        return  result;        
-    }
+        // mysql 인 경우
+        session.insert("mapper.mapperBoard.insertArticle", article );
+        return article.getArticleno();        
+    };
+    
 
     @Override
     public int updateArticle(ModelArticle updateValue, ModelArticle searchValue) {
@@ -157,13 +162,22 @@ public class DaoBoard implements IDaoBoard {
     }
 
     @Override
-    public ModelArticle getNextArticle(Map<String, Object> hashmap) {
-        return  session.selectOne("mapper.mapperBoard.getNextArticle", hashmap);        
+    public ModelArticle getNextArticle(int articleno, String boardcd, String searchWord) {
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("boardcd"   , boardcd    );
+        map.put("articleno" , articleno  );
+        map.put("searchWord", searchWord );
+        return  session.selectOne("mapper.mapperBoard.getNextArticle", map);        
     }
 
     @Override
-    public ModelArticle getPrevArticle(Map<String, Object> hashmap) {
-        return  session.selectOne("mapper.mapperBoard.getPrevArticle", hashmap);        
+    public ModelArticle getPrevArticle(int articleno, String boardcd, String searchWord) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("boardcd"   , boardcd    );
+        map.put("articleno" , articleno  );
+        map.put("searchWord", searchWord );
+        return  session.selectOne("mapper.mapperBoard.getPrevArticle", map);        
     }
 
     @Override
@@ -188,12 +202,19 @@ public class DaoBoard implements IDaoBoard {
 
     @Override
     public int insertComment(ModelComments comment) {
+        /*
+        // Oracle 인 경우 
         Map<String, Object> map = new HashMap<>();
         map.put("c"     , comment);
         map.put("result", null   );
         session.insert("mapper.mapperBoard.insertComment", map );
         
         return  (int)map.get("result");
+        */
+        
+        // mysql 인 경우
+        session.insert("mapper.mapperBoard.insertComment", comment );
+        return comment.getCommentno(); 
     }
 
     @Override

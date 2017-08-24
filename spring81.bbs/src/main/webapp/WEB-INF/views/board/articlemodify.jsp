@@ -10,26 +10,49 @@
     <meta name="Keywords" content="게시판 수정하기 폼" />
     <meta name="Description" content="게시판 수정하기 폼" />
     
-    <title>${boardNm }</title>
+    <title>${boardnm }</title>
     
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" media="screen" />
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script type="text/javascript">
-    	function check() {
-    		var form = document.getElementById("modifyForm");
-    		//TODO 유효성 검사
-    		return true;
-    	}
+    <script src="/resources/js/jquery/jquery-3.1.1.js"></script>
+    <script src="/resources/js/ajaxsetup.js"></script>
+    <script src="/resources/js/MyApp.board.js"></script>
+    <script>      
+        $(document).ready(function(e){            
+            $('.golist').click(function(e) {
+                window.location.href = "/board/articlelist/${boardcd}?curPage=${curPage}&searchWord=${searchWord}";
+            });
+            
+            $('.goview').click(function(e) {
+                window.location.href =  "/board/articleview/${boardcd}/${articleno}?curPage=${curPage}&searchWord=${searchWord}";
+            });
+            
+            $("#articlesubmit").click(function(e){
+
+                var list = $('.req_input');
+
+                for( var i=0; i< list.length; i= i+1){
+
+                    if( $( list[i] ).val() === '' ) {
+                        list[i].focus();
+
+                        if( $(list[i]).next().length == 0 ) {
+                            $(list[i]).after('<label>입력하세요</label>');
+                        }
+
+                        return false;
+                    }
+                }
+
+                // submit 호출 : form 의 action 이 실행됨.
+                $('#modifyForm').submit();
+            });
     
-    	function goList() {
-    		var form = document.getElementById("listForm");
-    		form.submit();
-    	}
-    
-    	function goView() {
-    		var form = document.getElementById("viewForm");
-    		form.submit();
-    	}
+            $('.req_input').keyup( function (e) {
+                if( $(this).val() !== '') {
+                    $(this).next().remove();
+                }
+            });
+        });
     </script>
 </head>
 <body>
@@ -49,35 +72,53 @@
 				
 
 				<!-- 본문 시작 -->
-				<h1>${boardNm }</h1>
+				<h1>${boardnm }</h1>
 				<div id="bbs">
 					<h2>수정</h2>
-					<form id="modifyForm" action="articlemodify" method="post" enctype="multipart/form-data" onsubmit="return check()">
+					<form id="modifyForm" action="articlemodify" method="post" enctype="multipart/form-data">
 						<p style="margin: 0; padding: 0;">
-							<input type="hidden" name="articleno" value="${articleno }" />
-							<input type="hidden" name="boardcd" value="${boardcd }" />
-							<input type="hidden" name="curPage" value="${curPage }" />
+							<input type="hidden" name="articleno"  value="${articleno }" />
+							<input type="hidden" name="boardcd"    value="${boardcd }" />
+							<input type="hidden" name="curPage"    value="${curPage }" />
 							<input type="hidden" name="searchWord" value="${searchWord }" />
 						</p>
 						<table id="write-form">
 							<tr>
 								<td>제목</td>
-								<td><input type="text" name="title" size="50"
+								<td><input type="text" name="title" size="50" class="req_input"
 									value="${thisArticle.title }" /></td>
 							</tr>
+                            <tr>
+                                <td>이메일</td>
+                                <td><input type="text" name="email" size="50" class="req_input"
+                                    value="${thisArticle.email }" /></td>
+                            </tr>
 							<tr>
-								<td colspan="2"><textarea name="content" rows="17">${thisArticle.content }</textarea>
+								<td colspan="2">
+                                    <textarea name="content" rows="17" class="req_input" >${thisArticle.content }</textarea>
 								</td>
-							</tr>
+							</tr>        
+                            <tr>
+                                <td>첨부 파일 목록</td>
+                                <td id="attachfile">
+                                    <c:forEach var="file" items="${attachFileList }" varStatus="status">
+                                        <span>
+                                           ${file.filename }
+                                           <a href="javascript:deleteAttachFile('${file.attachfileno }')" attachfileno="${file.attachfileno }">x</a>
+                                           <br />
+                                       </span>
+                                    </c:forEach>
+                                </td>
+                            </tr>
 							<tr>
 								<td>파일첨부</td>
-								<td><input type="file" name="upload" /></td>
+								<td><input type="file" name="uploadfile" /></td>
 							</tr>
 						</table>
 						<div style="text-align: center; padding-bottom: 15px;">
-							<input type="submit" value="전송" /> 
-							<input type="button" value="상세보기" onclick="goView()" /> 
-							<input type="button" value="목록" onclick="goList()" />
+							<input type="button" value="전송"     id="articlesubmit"/> 
+							<input type="button" value="상세보기" class="goview" /> 
+							<input type="button" value="목록"     class="golist" />
 						</div>
 					</form>
 
@@ -101,24 +142,6 @@
 			<%@ include file="../inc/footer.jsp"%>
 		</div>
 
-	</div>
-
-	<div id="form-group" style="display: none;">
-		<form id="listForm" action="articlelist" method="get">
-			<p>
-				<input type="hidden" name="boardcd" value="${boardcd }" /> 
-				<input type="hidden" name="curPage" value="${curPage }" /> 
-				<input type="hidden" name="searchWord" value="${searchWord }" />
-			</p>
-		</form>
-		<form id="viewForm" action="articleview" method="get">
-			<p>
-				<input type="hidden" name="articleno" value="${articleno }" />
-				<input type="hidden" name="boardcd" value="${boardcd }" /> 
-				<input type="hidden" name="curPage" value="${curPage }" /> 
-				<input type="hidden" name="searchWord" value="${searchWord }" />
-			</p>
-		</form>
 	</div>
 
 </body>

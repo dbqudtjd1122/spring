@@ -11,8 +11,9 @@
     <meta name="Description" content="게시판 상세보기" />
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" media="screen" />
     <title>${boardnm }</title>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script type="text/javascript">
+    <script src="/resources/js/jquery/jquery-3.1.1.js"></script>
+    <script src="/resources/js/ajaxsetup.js"></script>
+    <script>    
         $(document).ready( function(e){
         	$('.boardlist').click( function(e){
         		window.location = "/board/boardlist";

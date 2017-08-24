@@ -39,7 +39,7 @@ public class DaoUser implements IDaoUser {
     @Override
     public ModelUser login(String id, String pw ) {
 
-        ModelUser user = new ModelUser(id, null, null, pw);
+        ModelUser user = new ModelUser(id, pw);
         return session.selectOne("mapper.mapperUser.login", user);
     }
 
