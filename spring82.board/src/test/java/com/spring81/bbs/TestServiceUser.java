@@ -95,7 +95,7 @@ public class TestServiceUser {
     @Test
     public void testupdatePasswd() {
         
-        ModelUser user = service.selectUserOne(new ModelUser(this.userid ) );
+        ModelUser user = service.selectUserOne( 1 );
         user.setPasswd( "uuji" );
         user.setUserid( this.userid ); 
         
@@ -116,10 +116,7 @@ public class TestServiceUser {
 
     @Test
     public void testSelectUserOne() {
-        ModelUser user = new ModelUser();
-        user.setUserno(1);
-
-        ModelUser result = service.selectUserOne(user);
+        ModelUser result = service.selectUserOne(1);
         
         assertEquals(result.getUserid(), "MISS A");
     }

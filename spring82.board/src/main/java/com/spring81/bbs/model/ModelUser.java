@@ -130,11 +130,15 @@ public class ModelUser {
     
     public ModelUser(String id, String name, String email, String password) {
         super();
-
         this.userid = id;
         this.name = name;
         this.email = email;
         this.passwd = password;
+    }
+
+    public ModelUser(Integer userno) {
+        super();
+        this.userno = userno;
     }
     
 }

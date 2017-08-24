@@ -2,10 +2,12 @@
  * 
  */
 
-$( document ).ajaxStart(function() { // 통신이 시작되기 전에 이 함수를 타게 된다.
+$( document ).ajaxStart(function() { 
+	// 통신이 시작되기 전에 이 함수를 타게 된다.
     $('body').prepend('<img src="/resources/images/loading.gif">');
 });
-$( document ).ajaxComplete(function( event,request, settings ) { // 통신이 실패하든 성공하든 종료되면 이 함수를 타게 된다.
+$( document ).ajaxComplete(function( event,request, settings ) { 
+	// 통신이 실패하든 성공하든 종료되면 이 함수를 타게 된다.
     $('body img[src$="loading.gif"]').remove();
 });
 $( document ).ajaxError(function(xhr, textStatus, error) {

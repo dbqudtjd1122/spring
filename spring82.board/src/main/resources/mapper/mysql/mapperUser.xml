@@ -22,19 +22,18 @@
 
 	<update id="updateUserInfo" parameterType="hashmap">
 	        UPDATE TB_USER 
-	           SET email=#{updateValue.email}
-	           ,passwd=#{updateValue.passwd}
-	           ,name=#{updateValue.name}
-	           ,mobile=#{updateValue.mobile} 
-	           ,retireYN=#{updateValue.retireYN}
-	           ,UpdateUID=#{updateValue.UpdateUID} 
-	           ,UpdateDT=#{updateValue.UpdateDT}  
-           
+	           SET email     = #{updateValue.email     }
+	             , passwd    = #{updateValue.passwd    }
+	             , name      = #{updateValue.name      }
+	             , mobile    = #{updateValue.mobile    } 
+	             , retireYN  = #{updateValue.retireYN  }
+	             , UpdateUID = #{updateValue.UpdateUID } 
+	             , UpdateDT  = #{updateValue.UpdateDT  }             
 	        WHERE 1 = 1
-	        <if test="searchValue.userno != null">
+	        <if test="searchValue.userno != null and searchValue.userno != ''">
 	            AND userno = #{searchValue.userno}
 	        </if>
-            <if test="searchValue.userid != null">
+            <if test="searchValue.userid != null and searchValue.userid != ''">
                 AND userid = #{searchValue.userid}
             </if>
 
@@ -54,7 +53,7 @@
 
 
     	<!-- 회원 정보 수정  -->
-	<select id="selectUserOne" parameterType="ModelUser" resultType="ModelUser">
+	<select id="selectUserOne" parameterType="int" resultType="ModelUser">
 	         SELECT *
 	         FROM TB_USER 
 	         WHERE userno = #{userno}
@@ -64,22 +63,21 @@
 	        SELECT *
 	        FROM TB_USER
 	        where 1=1
-	            <if test= "userid != null">
-	                AND (userid LIKE '%'||#{userid}||'%')
+	            <if test= "userid != null and userid != ''">
+	                AND userid LIKE CONCAT('%', #{userid}, '%')
 	            </if>
-	            <if test= "name != null">
-	                AND (name LIKE '%'||#{name}||'%')
+	            <if test= "name != null and name != ''">
+	                AND name   LIKE CONCAT('%', #{name}, '%')
 	            </if>
-	            <if test= "email != null">
-	                AND (email LIKE '%'||#{email}||'%')
+	            <if test= "email != null and email != ''">
+	                AND email  LIKE CONCAT('%', #{email}, '%')
 	            </if>
-	            <if test= "mobile != null">
-	                AND (mobile LIKE '%'||#{mobile}||'%')
+	            <if test= "mobile != null and mobile != ''">
+	                AND mobile LIKE CONCAT('%', #{mobile}, '%')
 	            </if>
 	            <if test= "retireYN != null">
-	                AND (retireYN LIKE '%'||#{retireYN}||'%')
-	            </if>
-            
+	                AND retireYN = #{retireYN}
+	            </if>            
 	        ORDER BY userno
 	</select>
     

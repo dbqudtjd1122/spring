@@ -9,12 +9,10 @@
     <meta name="Description" content="로그인" />
     <title>로그인</title>
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" />
+    <script src="/resources/js/jquery/jquery-3.1.1.js"></script>
+    <script src="/resources/js/ajaxsetup.js"></script>
+    <script src="/resources/js/MyApp.board.js"></script>
     <script>
-        function check() {
-            //var form = document.getElementById("loginForm");
-            //TODO 유효성 검사
-            return true;
-        }
     </script>           
 </head>
 <body>
@@ -39,7 +37,7 @@
             <p style="color: red;">로그인에 실패했습니다.</p>
             </c:if>      
             
-            <form id="loginForm" action="login" method="post" onsubmit="return check()">
+            <form id="loginForm" action="/user/login" method="post">
                 <p style="margin: 0; padding: 0;">
                     <input type="hidden" name="url" value="${url }" />
                 </p>

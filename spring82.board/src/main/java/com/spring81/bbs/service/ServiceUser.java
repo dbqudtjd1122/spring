@@ -87,10 +87,10 @@ public class ServiceUser implements IServiceUser {
     }
 
     @Override
-    public ModelUser selectUserOne(ModelUser user) {
+    public ModelUser selectUserOne(Integer userno) {
         ModelUser result = null;
         try {
-            result = daouser.selectUserOne(user);
+            result = daouser.selectUserOne(userno);
         } catch (Exception e) {
             logger.error("selectUserOne " + e.getMessage() );
         }

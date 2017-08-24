@@ -18,7 +18,7 @@ public interface IDaoUser {
    
    int deleteUser(ModelUser user);
    
-   ModelUser selectUserOne(ModelUser user);
+   ModelUser selectUserOne(Integer userno);
    
    List<ModelUser> selectUserList(ModelUser user);   
 

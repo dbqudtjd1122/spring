@@ -16,8 +16,8 @@ public class DaoUser implements IDaoUser {
     private SqlSession session;
  
     @Override
-    public ModelUser selectUserOne(ModelUser user) {
-        return session.selectOne("mapper.mapperUser.selectUserOne", user);
+    public ModelUser selectUserOne(Integer userno) {
+        return session.selectOne("mapper.mapperUser.selectUserOne", userno);
     }
 
     @Override

@@ -13,6 +13,7 @@
     <title>${boardnm }</title>
     <script src="/resources/js/jquery/jquery-3.1.1.js"></script>
     <script src="/resources/js/ajaxsetup.js"></script>
+    <script src="/resources/js/MyApp.board.js"></script>
     <script>    
         $(document).ready( function(e){
         	$('.boardlist').click( function(e){
