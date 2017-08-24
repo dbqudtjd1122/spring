@@ -9,7 +9,7 @@
     <meta name="Description" content="로그인" />
     <title>로그인</title>
     <link rel="stylesheet" href="/resources/css/screen.css" type="text/css" />
-    <script type="text/javascript">
+    <script>
         function check() {
             //var form = document.getElementById("loginForm");
             //TODO 유효성 검사
