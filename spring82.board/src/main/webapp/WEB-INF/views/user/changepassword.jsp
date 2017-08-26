@@ -23,7 +23,6 @@
                 }
                 else {
                     $('#error_message').text('비밀번호가 다릅니다').delay( 8000 ).hide( 400 );
-
                 	return false;
                 }
             });
@@ -48,10 +47,13 @@
             <!-- 본문 시작 -->
             <div id="url-navi">회원</div>
             <h1>비밀번호 변경</h1>
-                ${user.name }<br />
-                ${user.mobile }<br />
+                ${user1.name }<br />
+                ${user1.mobile }<br />
                 
             <div id="error_message">
+                <c:if test="${not empty msg }">
+                <p style="color: red;">${msg }</p>
+                </c:if>
             </div>
             
             <form id="changePasswordForm" action="./changepassword" method="post">

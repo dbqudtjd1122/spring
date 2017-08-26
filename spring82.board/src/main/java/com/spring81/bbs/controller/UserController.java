@@ -165,4 +165,41 @@ public class UserController {
         
         return "user/register_post";
     }
+    
+    @RequestMapping(value = "/user/changepassword", method = RequestMethod.GET)
+    public String changepassword(Model model, HttpSession session) {
+        logger.info("changepassword : get");
+
+        ModelUser user = (ModelUser) session.getAttribute(WebConstants.SESSION_NAME);
+        
+        // login 이 안된 상태에서 url을 통한 직접 접근시 오류 처리
+        if( user == null )
+            return "redirect:/user/login";
+        
+        model.addAttribute("user1", user);
+                
+        return "user/changepassword";
+    }
+
+    @RequestMapping(value = "/user/changepassword", method = RequestMethod.POST)
+    public String changepassword(Model model
+            , RedirectAttributes rttr
+            , @RequestParam(value="currentPasswd", defaultValue="") String  currentPasswd
+            , @RequestParam(value="newPasswd", defaultValue=""    ) String  newPasswd
+            , HttpSession session ) {
+        logger.info("changepassword : post");
+        
+        ModelUser user = (ModelUser) session.getAttribute(WebConstants.SESSION_NAME);
+        
+        int result = usersvr.updatePasswd(newPasswd, currentPasswd, user.getUserid() );
+        
+        if( result > 1) {
+            return "user/changepassword_post";
+        }
+        else {
+            rttr.addFlashAttribute("msg", "DB 오류로 인해 패스워드 변경 실패. 관리자 문의");                 
+            return "redirect:/user/changepassword";
+        }
+            
+    }
 }
